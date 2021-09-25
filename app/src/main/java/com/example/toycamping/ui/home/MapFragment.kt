@@ -11,7 +11,6 @@ import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.utils.GpsTracker
-import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -19,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import net.daum.mf.map.api.MapView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
@@ -31,11 +30,76 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
     private val mapViewModel by viewModel<MapViewModel>()
 
+    private val mapViewEventListener =
+        object : MapView.MapViewEventListener {
+            override fun onMapViewInitialized(p0: MapView?) {
+
+            }
+
+            override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
+                mapViewModel.currentCenterMapPoint.value = p1
+            }
+
+            override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
+
+            }
+
+            override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
+
+            }
+
+            override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
+
+            }
+
+            override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
+
+            }
+
+            override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
+
+            }
+
+            override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
+
+            }
+
+            override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
+
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkPermission()
         initViewModel()
+    }
+
+    private fun initUi() {
+
+        gpsTracker = GpsTracker(requireActivity())
+
+        val currentMapPoint = MapPoint.mapPointWithGeoCoord(
+            gpsTracker.getCurrentLatitude(),
+            gpsTracker.getCurrentLongitude()
+        )
+
+        getItemsAroundCurrent(currentMapPoint)
+
+
+        val mapPOIItem = MapPOIItem().apply {
+            itemName = "searchItem"
+            mapPoint = currentMapPoint
+        }
+
+        with(binding) {
+            containerMap.apply {
+                setMapViewEventListener(this@MapFragment.mapViewEventListener)
+                addPOIItem(mapPOIItem)
+                setZoomLevel(8, false)
+                setMapCenterPoint(currentMapPoint, false)
+            }
+        }
     }
 
     private fun initViewModel() {
@@ -75,33 +139,11 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                     }
                 }
             }
+
+            is MapViewModel.MapViewState.Error -> {
+                Toast.makeText(requireContext(), viewState.errorMessage, Toast.LENGTH_SHORT).show()
+            }
         }
-    }
-
-
-    private fun loadMapView() {
-
-        gpsTracker = GpsTracker(requireActivity())
-
-        val currentMapPoint = MapPoint.mapPointWithGeoCoord(
-            gpsTracker.getCurrentLatitude(),
-            gpsTracker.getCurrentLongitude()
-        )
-
-        getItemsAroundCurrent(currentMapPoint)
-
-
-        val mapPOIItem = MapPOIItem().apply {
-            itemName = "searchItem"
-            mapPoint = currentMapPoint
-        }
-
-        with(binding.containerMap) {
-            addPOIItem(mapPOIItem)
-            setZoomLevel(8, false)
-            setMapCenterPoint(currentMapPoint, false)
-        }
-
     }
 
 
@@ -120,7 +162,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     ) {
         when (requestCode) {
             999 -> {
-                loadMapView()
+                initUi()
             }
 
             else -> {
@@ -147,7 +189,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                 ), 999
             )
         } else {
-            loadMapView()
+            initUi()
         }
 
     }
