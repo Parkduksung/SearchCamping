@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
@@ -11,24 +12,24 @@ import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.utils.GpsTracker
 import com.example.toycamping.viewmodel.HomeViewModel
+import com.example.toycamping.viewmodel.MapViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
-//    private lateinit var mapView: MapView
 
     private lateinit var gpsTracker: GpsTracker
 
     private val campingItemList = mutableSetOf<MapPOIItem>()
 
-    private val homeViewModel by sharedViewModel<HomeViewModel>()
+    private val mapViewModel by viewModel<MapViewModel>()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,16 +39,27 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     }
 
     private fun initViewModel() {
+        binding.viewModel = mapViewModel
 
-        homeViewModel.viewStateLiveData.observe(requireActivity()) { viewState ->
-            (viewState as? HomeViewModel.HomeViewState)?.let { onChangedViewState(it) }
+        mapViewModel.viewStateLiveData.observe(requireActivity()) { viewState: ViewState? ->
+            (viewState as? MapViewModel.MapViewState)?.let { onChangedViewState(viewState) }
         }
+
     }
 
 
     private fun onChangedViewState(viewState: ViewState) {
         when (viewState) {
-            is HomeViewModel.HomeViewState.GetGoCampingLocationList -> {
+            is MapViewModel.MapViewState.SetCurrentLocation -> {
+
+                val currentMapPoint = MapPoint.mapPointWithGeoCoord(
+                    gpsTracker.getCurrentLatitude(),
+                    gpsTracker.getCurrentLongitude()
+                )
+                binding.containerMap.setMapCenterPoint(currentMapPoint, true)
+            }
+
+            is MapViewModel.MapViewState.GetGoCampingLocationList -> {
                 GlobalScope.launch(Dispatchers.IO) {
                     viewState.itemList.forEach { item ->
                         val mapPOIItem = MapPOIItem().apply {
@@ -94,7 +106,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
 
     private fun getItemsAroundCurrent(mapPoint: MapPoint) {
-        homeViewModel.getGoCampingLocationList(
+        mapViewModel.getGoCampingLocationList(
             latitude = mapPoint.mapPointGeoCoord.latitude,
             longitude = mapPoint.mapPointGeoCoord.longitude,
             radius = 20000
