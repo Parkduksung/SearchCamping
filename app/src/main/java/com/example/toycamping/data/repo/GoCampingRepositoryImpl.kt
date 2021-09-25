@@ -22,13 +22,13 @@ class GoCampingRepositoryImpl :
     }
 
     override fun getLocationList(
-        mapX: Double,
-        mapY: Double,
+        longitude: Double,
+        latitude: Double,
         radius: Int,
         onSuccess: (locationBasedListResponse: LocationBasedListResponse) -> Unit,
         onFailure: (throwable: Throwable) -> Unit
     ) {
-        goCampingRemoteDataSource.getLocationList(mapX, mapY, radius, onSuccess, onFailure)
+        goCampingRemoteDataSource.getLocationList(longitude, latitude, radius, onSuccess, onFailure)
     }
 
     override fun getSearchList(

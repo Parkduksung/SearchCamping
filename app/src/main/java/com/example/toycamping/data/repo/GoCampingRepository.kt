@@ -13,8 +13,8 @@ interface GoCampingRepository {
     )
 
     fun getLocationList(
-        mapX: Double,
-        mapY: Double,
+        longitude: Double,
+        latitude: Double,
         radius: Int,
         onSuccess: (locationBasedListResponse: LocationBasedListResponse) -> Unit,
         onFailure: (throwable: Throwable) -> Unit

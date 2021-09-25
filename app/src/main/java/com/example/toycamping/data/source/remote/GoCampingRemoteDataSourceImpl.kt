@@ -35,13 +35,13 @@ class GoCampingRemoteDataSourceImpl :
     }
 
     override fun getLocationList(
-        mapX: Double,
-        mapY: Double,
+        longitude: Double,
+        latitude: Double,
         radius: Int,
         onSuccess: (locationBasedListResponse: LocationBasedListResponse) -> Unit,
         onFailure: (throwable: Throwable) -> Unit
     ) {
-        goCampingApi.getLocationList(mapX, mapY, radius)
+        goCampingApi.getLocationList(longitude, latitude, radius)
             .enqueue(object : Callback<LocationBasedListResponse> {
                 override fun onResponse(
                     call: Call<LocationBasedListResponse>,
