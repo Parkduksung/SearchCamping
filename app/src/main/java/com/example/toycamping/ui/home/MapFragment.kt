@@ -140,6 +140,22 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                 }
             }
 
+            is MapViewModel.MapViewState.GetSearchList -> {
+                GlobalScope.launch(Dispatchers.IO) {
+
+                    val mapPOIItem = MapPOIItem().apply {
+                        itemName = viewState.item.facltNm
+                        mapPoint =
+                            MapPoint.mapPointWithGeoCoord(viewState.item.mapY, viewState.item.mapX)
+                        markerType = MapPOIItem.MarkerType.RedPin
+                    }
+                    withContext(Dispatchers.Main) {
+                        binding.containerMap.addPOIItem(mapPOIItem)
+                        binding.containerMap.setMapCenterPoint(mapPOIItem.mapPoint, true)
+                    }
+                }
+            }
+
             is MapViewModel.MapViewState.Error -> {
                 Toast.makeText(requireContext(), viewState.errorMessage, Toast.LENGTH_SHORT).show()
             }

@@ -3,6 +3,7 @@ package com.example.toycamping.viewmodel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.example.toycamping.api.response.LocationItem
+import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.repo.GoCampingRepository
@@ -13,8 +14,15 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
     val currentCenterMapPoint = MutableLiveData<MapPoint>()
 
+    val search = MutableLiveData<String>()
+
     private val goCampingRepository: GoCampingRepository by inject(GoCampingRepository::class.java)
 
+    fun search() {
+        search.value?.let {
+            getSearchList(it)
+        }
+    }
 
     fun setCurrentLocation() {
         viewStateChanged(MapViewState.SetCurrentLocation)
@@ -28,6 +36,15 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
                 20000
             )
         }
+    }
+
+    fun getSearchList(keyword: String) {
+        goCampingRepository.getSearchList(keyword,
+            onSuccess = {
+                viewStateChanged(MapViewState.GetSearchList(it.response.body.items.item[0]))
+            }, onFailure = {
+                viewStateChanged(MapViewState.Error("캠핑장을 찾을 수 없습니다."))
+            })
     }
 
     fun getGoCampingLocationList(longitude: Double, latitude: Double, radius: Int) {
@@ -46,6 +63,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     sealed class MapViewState : ViewState {
         object SetCurrentLocation : MapViewState()
         data class GetGoCampingLocationList(val itemList: List<LocationItem>) : MapViewState()
+        data class GetSearchList(val item: SearchItem) : MapViewState()
         data class Error(val errorMessage: String) : MapViewState()
     }
 
