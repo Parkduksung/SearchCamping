@@ -109,9 +109,9 @@ data class SearchItem(
     @SerializedName("mangeDivNm")
     val mangeDivNm: String,
     @SerializedName("mapX")
-    val mapX: Any,
+    val mapX: Double,
     @SerializedName("mapY")
-    val mapY: Any,
+    val mapY: Double,
     @SerializedName("modifiedtime")
     val modifiedtime: String,
     @SerializedName("operDeCl")
