@@ -18,9 +18,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,9 +28,8 @@
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            android:launchMode="singleTask" />
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="2741fbdb122356ec58103c28070afcc7" />
