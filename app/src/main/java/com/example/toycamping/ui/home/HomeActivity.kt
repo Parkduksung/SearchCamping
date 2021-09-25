@@ -35,6 +35,7 @@ class HomeActivity : AppCompatActivity() {
         with(binding) {
             viewPager.adapter = pagerAdapter
             viewPager.offscreenPageLimit = 4
+            viewPager.isUserInputEnabled = false
 
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = titles[position]
@@ -50,6 +51,6 @@ class FragmentPagerAdapter(
 ) :
     FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount() = fragmentList.size
-    override fun createFragment(position: Int) = fragmentList.get(position)
+    override fun createFragment(position: Int) = fragmentList[position]
 
 }
