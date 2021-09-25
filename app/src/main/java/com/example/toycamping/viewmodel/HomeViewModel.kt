@@ -1,22 +1,18 @@
 package com.example.toycamping.viewmodel
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.toycamping.api.response.LocationItem
+import com.example.toycamping.base.BaseViewModel
+import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.model.GoCampingItem
 import com.example.toycamping.data.repo.GoCampingRepository
 import org.koin.java.KoinJavaComponent.inject
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(app: Application) : BaseViewModel(app) {
 
     private val goCampingRepository by inject<GoCampingRepository>(GoCampingRepository::class.java)
-
-    private val _homeViewStateLiveData = MutableLiveData<HomeViewState>()
-    val homeViewStateLiveData: LiveData<HomeViewState> = _homeViewStateLiveData
-
 
     @SuppressLint("LongLogTag")
     fun getGoCampingBasedList() {
@@ -34,8 +30,7 @@ class HomeViewModel : ViewModel() {
     fun getGoCampingLocationList(longitude: Double, latitude: Double, radius: Int) {
         goCampingRepository.getLocationList(longitude, latitude, radius,
             onSuccess = {
-                _homeViewStateLiveData.value =
-                    HomeViewState.GetGoCampingLocationList(it.response.body.items.item)
+                viewStateChanged(HomeViewState.GetGoCampingLocationList(it.response.body.items.item))
             }, onFailure = {
                 Log.d("결과 error", it.message.toString())
             })
@@ -61,7 +56,7 @@ class HomeViewModel : ViewModel() {
             })
     }
 
-    sealed class HomeViewState {
+    sealed class HomeViewState : ViewState {
         data class GetGoCampingBasedList(val goCampingItem: GoCampingItem) : HomeViewState()
         data class GetGoCampingLocationList(val itemList: List<LocationItem>) : HomeViewState()
         object ErrorGetGoCampingBasedList : HomeViewState()

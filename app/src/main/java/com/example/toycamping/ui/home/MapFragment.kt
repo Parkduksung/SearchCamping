@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
+import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.utils.GpsTracker
 import com.example.toycamping.viewmodel.HomeViewModel
@@ -38,17 +39,18 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     }
 
     private fun initViewModel() {
-        homeViewModel.homeViewStateLiveData.observe(requireActivity()) {
-            onChangedHomeViewState(it)
+
+        homeViewModel.viewStateLiveData.observe(requireActivity()) { viewState ->
+            (viewState as? HomeViewModel.HomeViewState)?.let { onChangedViewState(it) }
         }
     }
 
-    @SuppressLint("LongLogTag")
-    private fun onChangedHomeViewState(homeViewState: HomeViewModel.HomeViewState) {
-        when (homeViewState) {
+
+    private fun onChangedViewState(viewState: ViewState) {
+        when (viewState) {
             is HomeViewModel.HomeViewState.GetGoCampingLocationList -> {
                 GlobalScope.launch(Dispatchers.IO) {
-                    homeViewState.itemList.forEach { item ->
+                    viewState.itemList.forEach { item ->
                         val mapPOIItem = MapPOIItem().apply {
                             itemName = item.facltNm
                             mapPoint = MapPoint.mapPointWithGeoCoord(item.mapY, item.mapX)
