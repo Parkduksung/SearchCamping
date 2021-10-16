@@ -3,16 +3,13 @@ package com.example.toycamping.utils
 import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Location
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 
-class GpsTracker(private val application: Application) : LifecycleObserver {
+class GpsTracker(private val application: Application) {
 
     //현재의 경도
     private var currentLongitude: Double = 0.0
@@ -47,8 +44,7 @@ class GpsTracker(private val application: Application) : LifecycleObserver {
     fun getCurrentLatitude(): Double = currentLatitude
 
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private fun onStop() {
+    fun onCancel() {
         cancellationTokenSource.cancel()
     }
 
