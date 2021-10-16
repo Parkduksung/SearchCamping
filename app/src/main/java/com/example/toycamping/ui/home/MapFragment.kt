@@ -161,16 +161,6 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         }
     }
 
-
-    private fun getItemsAroundCurrent(mapPoint: MapPoint) {
-        mapViewModel.getGoCampingLocationList(
-            latitude = mapPoint.mapPointGeoCoord.latitude,
-            longitude = mapPoint.mapPointGeoCoord.longitude,
-            radius = 20000
-        )
-    }
-
-
     private fun locationRequest() {
         val permissionApproved =
             requireActivity().hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
