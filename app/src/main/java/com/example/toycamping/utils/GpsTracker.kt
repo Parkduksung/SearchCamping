@@ -27,7 +27,7 @@ class GpsTracker(private val application: Application) : LifecycleObserver {
     private var cancellationTokenSource = CancellationTokenSource()
 
     @SuppressLint("MissingPermission")
-    fun getLocation(): Result<Location> {
+    fun getLocation(): Result<Task<Location>> {
         return try {
             val currentLocationTask: Task<Location> =
                 fusedLocationProviderClient.getCurrentLocation(
@@ -35,7 +35,7 @@ class GpsTracker(private val application: Application) : LifecycleObserver {
                     cancellationTokenSource.token
                 )
 
-            Result.Success(currentLocationTask.result)
+            Result.Success(currentLocationTask)
         } catch (e: Exception) {
             Result.Error(e)
         }
