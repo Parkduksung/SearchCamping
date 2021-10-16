@@ -1,15 +1,19 @@
 package com.example.toycamping.ui.home
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import com.example.toycamping.BuildConfig
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
+import com.example.toycamping.ext.hasPermission
 import com.example.toycamping.utils.GpsTracker
 import com.example.toycamping.viewmodel.MapViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +26,6 @@ import net.daum.mf.map.api.MapView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
-
 
     private lateinit var gpsTracker: GpsTracker
 
@@ -37,7 +40,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
-                mapViewModel.currentCenterMapPoint.value = p1
+
             }
 
             override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
@@ -71,35 +74,18 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkPermission()
+
+        locationRequest()
         initViewModel()
     }
 
     private fun initUi() {
+        gpsTracker = GpsTracker(application = requireActivity().application)
+        lifecycle.addObserver(gpsTracker)
 
-        gpsTracker = GpsTracker(requireActivity())
+        binding.containerMap.setMapViewEventListener(this@MapFragment.mapViewEventListener)
 
-        val currentMapPoint = MapPoint.mapPointWithGeoCoord(
-            gpsTracker.getCurrentLatitude(),
-            gpsTracker.getCurrentLongitude()
-        )
-
-        getItemsAroundCurrent(currentMapPoint)
-
-
-        val mapPOIItem = MapPOIItem().apply {
-            itemName = "searchItem"
-            mapPoint = currentMapPoint
-        }
-
-        with(binding) {
-            containerMap.apply {
-                setMapViewEventListener(this@MapFragment.mapViewEventListener)
-                addPOIItem(mapPOIItem)
-                setZoomLevel(8, false)
-                setMapCenterPoint(currentMapPoint, false)
-            }
-        }
+        mapViewModel.setCurrentLocation()
     }
 
     private fun initViewModel() {
@@ -111,16 +97,29 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
     }
 
+    private lateinit var currentLocation: MapPOIItem
+
+
+    private fun setCurrentLocation(currentMapPoint: MapPoint) {
+        if (::currentLocation.isInitialized) {
+            binding.containerMap.removePOIItem(currentLocation)
+        }
+
+        currentLocation = MapPOIItem().apply {
+            itemName = "Current Location!"
+            mapPoint = currentMapPoint
+        }
+
+        with(binding.containerMap) {
+            addPOIItem(currentLocation)
+            setMapCenterPoint(currentMapPoint, false)
+        }
+    }
 
     private fun onChangedViewState(viewState: ViewState) {
         when (viewState) {
             is MapViewModel.MapViewState.SetCurrentLocation -> {
-
-                val currentMapPoint = MapPoint.mapPointWithGeoCoord(
-                    gpsTracker.getCurrentLatitude(),
-                    gpsTracker.getCurrentLongitude()
-                )
-                binding.containerMap.setMapCenterPoint(currentMapPoint, true)
+                setCurrentLocation(viewState.mapPoint)
             }
 
             is MapViewModel.MapViewState.GetGoCampingLocationList -> {
@@ -171,43 +170,63 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         )
     }
 
+
+    private fun locationRequest() {
+        val permissionApproved =
+            requireActivity().hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (permissionApproved) {
+            initUi()
+        } else {
+            val provideRationale = shouldShowRequestPermissionRationale(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            )
+
+            if (provideRationale) {
+                initUi()
+            } else {
+                requireActivity().requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE
+                )
+            }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when (requestCode) {
-            999 -> {
-                initUi()
-            }
+        if (requestCode == REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE) {
 
-            else -> {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            when {
+                grantResults.isEmpty() -> {
+                    Toast.makeText(requireContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+                grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
+                    Toast.makeText(requireContext(), "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> {
+                    val intent = Intent()
+                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    val uri = Uri.fromParts(
+                        "package",
+                        BuildConfig.APPLICATION_ID,
+                        null
+                    )
+                    intent.data = uri
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
             }
         }
-
     }
 
-    private fun checkPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ), 999
-            )
-        } else {
-            initUi()
-        }
-
+    companion object {
+        private const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
     }
 
 }

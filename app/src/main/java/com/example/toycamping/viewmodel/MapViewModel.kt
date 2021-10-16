@@ -2,11 +2,17 @@ package com.example.toycamping.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.toycamping.api.response.LocationItem
 import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.repo.GoCampingRepository
+import com.example.toycamping.utils.GpsTracker
+import com.example.toycamping.utils.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.daum.mf.map.api.MapPoint
 import org.koin.java.KoinJavaComponent.inject
 
@@ -18,6 +24,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
     private val goCampingRepository: GoCampingRepository by inject(GoCampingRepository::class.java)
 
+    private val gpsTracker = GpsTracker(app)
+
     fun search() {
         search.value?.let {
             getSearchList(it)
@@ -25,7 +33,27 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     }
 
     fun setCurrentLocation() {
-        viewStateChanged(MapViewState.SetCurrentLocation)
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result = gpsTracker.getLocation()) {
+                is Result.Success -> {
+                    result.data.addOnCompleteListener { task ->
+
+                        val location = task.result
+
+                        val resultMapPoint =
+                            MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
+
+                        viewStateChanged(MapViewState.SetCurrentLocation(resultMapPoint))
+                    }
+                }
+
+                is Result.Error -> {
+                    withContext(Dispatchers.Main) {
+                        viewStateChanged(MapViewState.Error(result.exception.message.toString()))
+                    }
+                }
+            }
+        }
     }
 
     fun searchCampingAroundCurrent() {
@@ -61,7 +89,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     }
 
     sealed class MapViewState : ViewState {
-        object SetCurrentLocation : MapViewState()
+        data class SetCurrentLocation(val mapPoint: MapPoint) : MapViewState()
         data class GetGoCampingLocationList(val itemList: List<LocationItem>) : MapViewState()
         data class GetSearchList(val item: SearchItem) : MapViewState()
         data class Error(val errorMessage: String) : MapViewState()
