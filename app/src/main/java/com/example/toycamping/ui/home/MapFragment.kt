@@ -14,7 +14,6 @@ import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.ext.hasPermission
-import com.example.toycamping.utils.GpsTracker
 import com.example.toycamping.viewmodel.MapViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,8 +26,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
-    private lateinit var gpsTracker: GpsTracker
-
     private val campingItemList = mutableSetOf<MapPOIItem>()
 
     private val mapViewModel by viewModel<MapViewModel>()
@@ -40,7 +37,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
-
+                mapViewModel.currentCenterMapPoint.value = binding.containerMap.mapCenterPoint
             }
 
             override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
@@ -80,9 +77,6 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     }
 
     private fun initUi() {
-        gpsTracker = GpsTracker(application = requireActivity().application)
-        lifecycle.addObserver(gpsTracker)
-
         binding.containerMap.setMapViewEventListener(this@MapFragment.mapViewEventListener)
 
         mapViewModel.setCurrentLocation()
@@ -127,7 +121,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                     viewState.itemList.forEach { item ->
                         val mapPOIItem = MapPOIItem().apply {
                             itemName = item.facltNm
-                            mapPoint = MapPoint.mapPointWithGeoCoord(item.mapY, item.mapX)
+                            mapPoint = MapPoint.mapPointWithGeoCoord(item.latitude, item.longitude)
                             markerType = MapPOIItem.MarkerType.RedPin
                         }
                         campingItemList.add(mapPOIItem)
