@@ -3,7 +3,6 @@ package com.example.toycamping.viewmodel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.toycamping.api.response.LocationItem
 import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
@@ -13,6 +12,7 @@ import com.example.toycamping.utils.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import org.koin.java.KoinJavaComponent.inject
 
@@ -79,7 +79,26 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         goCampingRepository.getLocationList(longitude, latitude, radius,
             onSuccess = {
                 if (!it.response.body.items.item.isNullOrEmpty()) {
-                    viewStateChanged(MapViewState.GetGoCampingLocationList(it.response.body.items.item))
+
+                    viewModelScope.launch(Dispatchers.IO) {
+                        val campingItemList = mutableSetOf<MapPOIItem>()
+
+                        val resultList = it.response.body.items.item
+
+                        resultList.forEach { item ->
+                            val mapPOIItem = MapPOIItem().apply {
+                                itemName = item.facltNm
+                                mapPoint =
+                                    MapPoint.mapPointWithGeoCoord(item.latitude, item.longitude)
+                                markerType = MapPOIItem.MarkerType.RedPin
+                            }
+                            campingItemList.add(mapPOIItem)
+                        }
+
+                        withContext(Dispatchers.Main) {
+                            viewStateChanged(MapViewState.GetGoCampingLocationList(campingItemList.toTypedArray()))
+                        }
+                    }
                 } else {
                     viewStateChanged(MapViewState.Error("캠핑장을 찾을 수 없습니다."))
                 }
@@ -90,7 +109,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
     sealed class MapViewState : ViewState {
         data class SetCurrentLocation(val mapPoint: MapPoint) : MapViewState()
-        data class GetGoCampingLocationList(val itemList: List<LocationItem>) : MapViewState()
+        data class GetGoCampingLocationList(val itemList: Array<MapPOIItem>) : MapViewState()
         data class GetSearchList(val item: SearchItem) : MapViewState()
         data class Error(val errorMessage: String) : MapViewState()
     }

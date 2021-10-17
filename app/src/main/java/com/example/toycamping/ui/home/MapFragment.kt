@@ -37,7 +37,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
-                mapViewModel.currentCenterMapPoint.value = binding.containerMap.mapCenterPoint
+                mapViewModel.currentCenterMapPoint.value = p1
             }
 
             override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
@@ -117,20 +117,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.GetGoCampingLocationList -> {
-                GlobalScope.launch(Dispatchers.IO) {
-                    viewState.itemList.forEach { item ->
-                        val mapPOIItem = MapPOIItem().apply {
-                            itemName = item.facltNm
-                            mapPoint = MapPoint.mapPointWithGeoCoord(item.latitude, item.longitude)
-                            markerType = MapPOIItem.MarkerType.RedPin
-                        }
-                        campingItemList.add(mapPOIItem)
-                    }
-
-                    withContext(Dispatchers.Main) {
-                        binding.containerMap.addPOIItems(campingItemList.toTypedArray())
-                    }
-                }
+                binding.containerMap.addPOIItems(viewState.itemList)
             }
 
             is MapViewModel.MapViewState.GetSearchList -> {

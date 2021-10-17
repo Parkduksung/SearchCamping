@@ -68,7 +68,9 @@ data class LocationItem(
     val manageNmpr: Int,
     val manageSttus: String,
     val mangeDivNm: String,
+    @SerializedName("mapX")
     val longitude: Double,
+    @SerializedName("mapY")
     val latitude: Double,
     val modifiedtime: String,
     val operDeCl: String,
