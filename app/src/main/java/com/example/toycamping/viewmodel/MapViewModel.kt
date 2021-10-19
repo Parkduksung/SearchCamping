@@ -3,16 +3,13 @@ package com.example.toycamping.viewmodel
 import android.app.Application
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.repo.GoCampingRepository
+import com.example.toycamping.ext.ioScope
 import com.example.toycamping.utils.GpsTracker
 import com.example.toycamping.utils.Result
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import org.koin.java.KoinJavaComponent.inject
@@ -37,11 +34,10 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     }
 
     fun setCurrentLocation() {
-        viewModelScope.launch(Dispatchers.IO) {
+        ioScope {
 
-            viewModelScope.launch(Dispatchers.Main) {
-                viewStateChanged(MapViewState.ShowProgress)
-            }
+            viewStateChanged(MapViewState.ShowProgress)
+
 
             when (val result = gpsTracker.getLocation()) {
                 is Result.Success -> {
@@ -51,18 +47,16 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
                         val resultMapPoint =
                             MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
-                        viewModelScope.launch(Dispatchers.Main) {
-                            viewStateChanged(MapViewState.SetCurrentLocation(resultMapPoint))
-                            viewStateChanged(MapViewState.HideProgress)
-                        }
+
+                        viewStateChanged(MapViewState.SetCurrentLocation(resultMapPoint))
+                        viewStateChanged(MapViewState.HideProgress)
+
                     }
                 }
 
                 is Result.Error -> {
-                    viewModelScope.launch(Dispatchers.Main) {
-                        viewStateChanged(MapViewState.Error(result.exception.message.toString()))
-                        viewStateChanged(MapViewState.HideProgress)
-                    }
+                    viewStateChanged(MapViewState.Error(result.exception.message.toString()))
+                    viewStateChanged(MapViewState.HideProgress)
                 }
             }
         }
@@ -101,7 +95,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
             onSuccess = {
                 if (!it.response.body.items.item.isNullOrEmpty()) {
 
-                    viewModelScope.launch(Dispatchers.IO) {
+                    ioScope {
                         val campingItemList = mutableSetOf<MapPOIItem>()
 
                         val resultList = it.response.body.items.item.sortedBy {
@@ -122,10 +116,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
                             )
                         )
 
+                        viewStateChanged(MapViewState.SetZoomLevel(zoomLevel))
 
-                        withContext(Dispatchers.Main) {
-                            viewStateChanged(MapViewState.SetZoomLevel(zoomLevel))
-                        }
 
                         resultList.forEach { item ->
                             val mapPOIItem = MapPOIItem().apply {
@@ -137,9 +129,9 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
                             campingItemList.add(mapPOIItem)
                         }
 
-                        withContext(Dispatchers.Main) {
-                            viewStateChanged(MapViewState.GetGoCampingLocationList(campingItemList.toTypedArray()))
-                        }
+
+                        viewStateChanged(MapViewState.GetGoCampingLocationList(campingItemList.toTypedArray()))
+
                     }
                 } else {
                     viewStateChanged(MapViewState.Error("캠핑장을 찾을 수 없습니다."))

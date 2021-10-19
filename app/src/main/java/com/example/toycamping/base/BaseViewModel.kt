@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.toycamping.ext.uiScope
 
 abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -11,8 +12,10 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     val viewStateLiveData: LiveData<ViewState> = _viewStateLiveData
 
     protected fun viewStateChanged(viewState: ViewState) {
-        _viewStateLiveData.value = viewState
-        _viewStateLiveData.value = null
+        uiScope {
+            _viewStateLiveData.value = viewState
+            _viewStateLiveData.value = null
+        }
     }
 
 }
