@@ -41,7 +41,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
-
+                mapViewModel.currentZoomLevel.value = p1
             }
 
             override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
@@ -76,8 +76,33 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         initViewModel()
     }
 
+    private val poiItemEventListener = object : MapView.POIItemEventListener {
+        override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
+            p1?.let {
+                Toast.makeText(requireContext(), it.itemName, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
+
+        }
+
+        override fun onCalloutBalloonOfPOIItemTouched(
+            p0: MapView?,
+            p1: MapPOIItem?,
+            p2: MapPOIItem.CalloutBalloonButtonType?
+        ) {
+
+        }
+
+        override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
+
+        }
+    }
+
     private fun initUi() {
         binding.containerMap.setMapViewEventListener(this@MapFragment.mapViewEventListener)
+        binding.containerMap.setPOIItemEventListener(this@MapFragment.poiItemEventListener)
 
         mapViewModel.setCurrentLocation()
     }
@@ -134,6 +159,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                         binding.containerMap.setMapCenterPoint(mapPOIItem.mapPoint, true)
                     }
                 }
+            }
+
+            is MapViewModel.MapViewState.SetZoomLevel -> {
+                binding.containerMap.setZoomLevel(viewState.zoomLevel, true)
             }
 
             is MapViewModel.MapViewState.Error -> {
