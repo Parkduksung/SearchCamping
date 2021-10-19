@@ -38,6 +38,11 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
     fun setCurrentLocation() {
         viewModelScope.launch(Dispatchers.IO) {
+
+            viewModelScope.launch(Dispatchers.Main) {
+                viewStateChanged(MapViewState.ShowProgress)
+            }
+
             when (val result = gpsTracker.getLocation()) {
                 is Result.Success -> {
                     result.data.addOnCompleteListener { task ->
@@ -46,14 +51,17 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
                         val resultMapPoint =
                             MapPoint.mapPointWithGeoCoord(location.latitude, location.longitude)
-
-                        viewStateChanged(MapViewState.SetCurrentLocation(resultMapPoint))
+                        viewModelScope.launch(Dispatchers.Main) {
+                            viewStateChanged(MapViewState.SetCurrentLocation(resultMapPoint))
+                            viewStateChanged(MapViewState.HideProgress)
+                        }
                     }
                 }
 
                 is Result.Error -> {
-                    withContext(Dispatchers.Main) {
+                    viewModelScope.launch(Dispatchers.Main) {
                         viewStateChanged(MapViewState.Error(result.exception.message.toString()))
+                        viewStateChanged(MapViewState.HideProgress)
                     }
                 }
             }
@@ -190,6 +198,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         data class GetGoCampingLocationList(val itemList: Array<MapPOIItem>) : MapViewState()
         data class GetSearchList(val item: SearchItem) : MapViewState()
         data class Error(val errorMessage: String) : MapViewState()
+        object ShowProgress : MapViewState()
+        object HideProgress : MapViewState()
     }
 
 }

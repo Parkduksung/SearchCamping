@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.example.toycamping.BuildConfig
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
@@ -167,6 +168,15 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             is MapViewModel.MapViewState.Error -> {
                 Toast.makeText(requireContext(), viewState.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+            is MapViewModel.MapViewState.ShowProgress -> {
+                binding.progressbar.bringToFront()
+                binding.progressbar.isVisible = true
+            }
+
+            is MapViewModel.MapViewState.HideProgress -> {
+                binding.progressbar.isVisible = false
             }
         }
     }
