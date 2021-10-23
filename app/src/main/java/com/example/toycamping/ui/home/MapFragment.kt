@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -80,7 +81,22 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     private val poiItemEventListener = object : MapView.POIItemEventListener {
         override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
             p1?.let {
-                Toast.makeText(requireContext(), it.itemName, Toast.LENGTH_SHORT).show()
+                if(campingItemList.contains(it)){
+                    val item = campingItemList.filter { it == p1 }
+
+                    if(item.isNotEmpty()) {
+
+                        Log.d("결과", item[0].itemName)
+                        Log.d("결과", p1.itemName)
+
+                        if(item[0].mapPoint == p1.mapPoint) {
+                            Toast.makeText(requireContext(), "포인트 같음", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(requireContext(), "포인트 다름", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                }
             }
         }
 
@@ -143,6 +159,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.GetGoCampingLocationList -> {
+                campingItemList.addAll(viewState.itemList)
                 binding.containerMap.addPOIItems(viewState.itemList)
             }
 
