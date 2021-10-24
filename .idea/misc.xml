@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable-v24/ic_favorite1.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable-v24/ic_favorite2.xml" value="0.159375" />
+        <entry key="app/src/main/res/drawable-v24/ic_favorite3.xml" value="0.159375" />
+        <entry key="app/src/main/res/drawable-v24/ic_favorite_select1.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable-v24/ic_favorite_select2.xml" value="0.159375" />
+        <entry key="app/src/main/res/drawable-v24/ic_favorite_white.xml" value="0.15104166666666666" />
+        <entry key="app/src/main/res/drawable-v24/round_bookmark_no.xml" value="0.159375" />
+        <entry key="app/src/main/res/drawable-v24/round_bookmark_ok.xml" value="0.159375" />
+        <entry key="app/src/main/res/drawable-v24/selector_checkbox_bookmark1.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable-v24/selector_checkbox_bookmark2.xml" value="0.159375" />
+        <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2991227038545238" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

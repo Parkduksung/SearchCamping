@@ -6,8 +6,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.toycamping.BuildConfig
@@ -59,7 +59,17 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
-
+                with(binding.containerPoiInfo) {
+                    if (isVisible) {
+                        isVisible = false
+                        startAnimation(
+                            AnimationUtils.loadAnimation(
+                                requireContext(),
+                                R.anim.slide_down
+                            )
+                        )
+                    }
+                }
             }
 
             override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
@@ -80,24 +90,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
     private val poiItemEventListener = object : MapView.POIItemEventListener {
         override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-            p1?.let {
-                if(campingItemList.contains(it)){
-                    val item = campingItemList.filter { it == p1 }
-
-                    if(item.isNotEmpty()) {
-
-                        Log.d("결과", item[0].itemName)
-                        Log.d("결과", p1.itemName)
-
-                        if(item[0].mapPoint == p1.mapPoint) {
-                            Toast.makeText(requireContext(), "포인트 같음", Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(requireContext(), "포인트 다름", Toast.LENGTH_SHORT).show()
-                        }
-
-                    }
-                }
-            }
+            p1?.let { mapViewModel.getSelectPOIItemInfo(it.itemName) }
         }
 
         override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
@@ -130,7 +123,6 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         mapViewModel.viewStateLiveData.observe(requireActivity()) { viewState: ViewState? ->
             (viewState as? MapViewModel.MapViewState)?.let { onChangedViewState(viewState) }
         }
-
     }
 
     private lateinit var currentLocation: MapPOIItem
@@ -185,6 +177,23 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             is MapViewModel.MapViewState.Error -> {
                 Toast.makeText(requireContext(), viewState.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+            is MapViewModel.MapViewState.GetSelectPOIItem -> {
+                with(binding) {
+                    containerPoiInfo.apply {
+                        bringToFront()
+                        isVisible = true
+                        startAnimation(
+                            AnimationUtils.loadAnimation(
+                                requireContext(),
+                                R.anim.slide_up
+                            )
+                        )
+                    }
+                    itemName.text = viewState.item.facltNm
+                    itemLocation.text = viewState.item.addr1
+                }
             }
 
             is MapViewModel.MapViewState.ShowProgress -> {

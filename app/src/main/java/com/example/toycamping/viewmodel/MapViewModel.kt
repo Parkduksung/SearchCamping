@@ -81,6 +81,17 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun getSelectPOIItemInfo(itemName: String) {
+        goCampingRepository.getSearchList(itemName,
+            onSuccess = {
+                viewStateChanged(MapViewState.GetSelectPOIItem(it.response.body.items.item))
+            }, onFailure = {
+                viewStateChanged(MapViewState.Error("캠핑장 정보를 찾을 수 없습니다."))
+            })
+
+    }
+
+
     fun getSearchList(keyword: String) {
         goCampingRepository.getSearchList(keyword,
             onSuccess = {
@@ -188,6 +199,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         data class SetZoomLevel(val zoomLevel: Int) : MapViewState()
         data class SetCurrentLocation(val mapPoint: MapPoint) : MapViewState()
         data class GetGoCampingLocationList(val itemList: Array<MapPOIItem>) : MapViewState()
+        data class GetSelectPOIItem(val item: SearchItem) : MapViewState()
         data class GetSearchList(val item: SearchItem) : MapViewState()
         data class Error(val errorMessage: String) : MapViewState()
         object ShowProgress : MapViewState()
