@@ -1,9 +1,6 @@
 package com.example.toycamping.data.source.remote
 
-import com.example.toycamping.api.response.BasedListResponse
-import com.example.toycamping.api.response.ImageListResponse
-import com.example.toycamping.api.response.LocationBasedListResponse
-import com.example.toycamping.api.response.SearchListResponse
+import com.example.toycamping.api.response.*
 
 interface GoCampingRemoteDataSource {
 

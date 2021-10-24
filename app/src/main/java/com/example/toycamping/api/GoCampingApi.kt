@@ -1,9 +1,6 @@
 package com.example.toycamping.api
 
-import com.example.toycamping.api.response.BasedListResponse
-import com.example.toycamping.api.response.ImageListResponse
-import com.example.toycamping.api.response.LocationBasedListResponse
-import com.example.toycamping.api.response.SearchListResponse
+import com.example.toycamping.api.response.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -12,7 +9,7 @@ interface GoCampingApi {
 
     companion object {
         private const val GO_CAMPING_KEY =
-            "yPTjR42Wl6N%2FIFgWg0eMRf00dJ6fxMTOe3h4CEW%2F4GErO9W8gsC%2F46FtXCDFFDyPTrCxhDnDixF703uCHN8NZw%3D%3D"
+            "R2RhdScz9hCftK1V5Ouq1pbZYgwUN5DYGpryUpEaaqb5XbqD0putXtCzB7GQ1y1F2fAzzD5c%2BkT8lD4E3nSQ1g%3D%3D"
 
         private const val MOBILE_OS = "AND"
 
@@ -52,8 +49,8 @@ interface GoCampingApi {
 
     @GET(SEARCH_LIST_URL)
     fun getSearchList(
-        @Query(value = "keyword", encoded = true) keyword: String,
-        @Query(value = "_type") type: String = TYPE_JSON
+        @Query("keyword", encoded = true) keyword: String,
+        @Query("_type") _type: String = TYPE_JSON
     ): Call<SearchListResponse>
 
 

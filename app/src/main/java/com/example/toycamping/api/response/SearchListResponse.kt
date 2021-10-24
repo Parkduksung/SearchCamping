@@ -28,7 +28,7 @@ data class SearchBody(
 
 data class SearchItems(
     @SerializedName("item")
-    val item: List<SearchItem>
+    val item: SearchItem
 )
 
 data class SearchItem(

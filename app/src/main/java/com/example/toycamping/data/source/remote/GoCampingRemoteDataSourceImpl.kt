@@ -64,7 +64,7 @@ class GoCampingRemoteDataSourceImpl :
 
         val toEncodingKeyword = URLEncoder.encode(keyword, "UTF-8")
 
-        goCampingApi.getSearchList(toEncodingKeyword)
+        goCampingApi.getSearchList(keyword = toEncodingKeyword)
             .enqueue(object : Callback<SearchListResponse> {
                 override fun onResponse(
                     call: Call<SearchListResponse>,

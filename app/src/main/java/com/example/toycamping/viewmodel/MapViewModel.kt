@@ -84,7 +84,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     fun getSearchList(keyword: String) {
         goCampingRepository.getSearchList(keyword,
             onSuccess = {
-                viewStateChanged(MapViewState.GetSearchList(it.response.body.items.item[0]))
+                viewStateChanged(MapViewState.GetSearchList(it.response.body.items.item))
             }, onFailure = {
                 viewStateChanged(MapViewState.Error("캠핑장을 찾을 수 없습니다."))
             })

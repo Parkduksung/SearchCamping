@@ -1,9 +1,6 @@
 package com.example.toycamping.data.repo
 
-import com.example.toycamping.api.response.BasedListResponse
-import com.example.toycamping.api.response.ImageListResponse
-import com.example.toycamping.api.response.LocationBasedListResponse
-import com.example.toycamping.api.response.SearchListResponse
+import com.example.toycamping.api.response.*
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
 import org.koin.java.KoinJavaComponent.inject
 
