@@ -1,6 +1,8 @@
 package com.example.toycamping.data.repo
 
 import com.example.toycamping.api.response.*
+import com.example.toycamping.data.source.loca.GoCampingLocalDataSource
+import com.example.toycamping.data.source.loca.GoCampingLocalDataSourceImpl
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
 import org.koin.java.KoinJavaComponent.inject
 
@@ -9,6 +11,10 @@ class GoCampingRepositoryImpl :
 
     private val goCampingRemoteDataSource by inject<GoCampingRemoteDataSource>(
         GoCampingRemoteDataSource::class.java
+    )
+
+    private val goCampingLocalDataSource by inject<GoCampingLocalDataSource>(
+        GoCampingLocalDataSource::class.java
     )
 
     override fun getBasedList(
