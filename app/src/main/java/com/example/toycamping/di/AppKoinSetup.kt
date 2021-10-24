@@ -1,10 +1,14 @@
 package com.example.toycamping.di
 
+import androidx.room.Room
 import com.example.toycamping.api.GoCampingApi
 import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.data.repo.GoCampingRepositoryImpl
+import com.example.toycamping.data.source.loca.GoCampingLocalDataSource
+import com.example.toycamping.data.source.loca.GoCampingLocalDataSourceImpl
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSourceImpl
+import com.example.toycamping.room.database.CampingDatabase
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
 import org.koin.android.ext.koin.androidApplication
@@ -33,6 +37,7 @@ class AppKoinSetup : KoinBaseKoinSetup() {
 
     private val sourceModule = module {
         single<GoCampingRemoteDataSource> { GoCampingRemoteDataSourceImpl() }
+        single<GoCampingLocalDataSource> { GoCampingLocalDataSourceImpl() }
     }
 
     private val apiModule = module {
@@ -45,13 +50,26 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         }
     }
 
+    private val databaseModule = module {
+        single {
+            Room.databaseBuilder(
+                get(),
+                CampingDatabase::class.java,
+                "camping_database"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+    }
+
 
     override fun getModules(): List<Module> {
         return listOf(
             viewModelModule,
             repositoryModule,
             sourceModule,
-            apiModule
+            apiModule,
+            databaseModule
         )
     }
 }
