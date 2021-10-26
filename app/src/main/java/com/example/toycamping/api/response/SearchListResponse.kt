@@ -1,5 +1,6 @@
 package com.example.toycamping.api.response
 
+import com.example.toycamping.room.entity.CampingEntity
 import com.google.gson.annotations.SerializedName
 
 data class SearchListResponse(
@@ -180,4 +181,17 @@ data class SearchItem(
     val wtrplCo: Int,
     @SerializedName("zipcode")
     val zipcode: Int
-)
+) {
+
+    fun toCampingEntity(like : Boolean): CampingEntity =
+        CampingEntity(
+            name = facltNm,
+            address = addr1,
+            tel = tel,
+            like = like,
+            homepage = homepage,
+            log = mapX,
+            lat = mapY
+        )
+
+}
