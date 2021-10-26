@@ -180,6 +180,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             is MapViewModel.MapViewState.GetGoCampingLocationList -> {
                 campingItemList.addAll(viewState.itemList)
+                binding.containerMap.removeAllPOIItems()
                 binding.containerMap.addPOIItems(viewState.itemList)
             }
 
