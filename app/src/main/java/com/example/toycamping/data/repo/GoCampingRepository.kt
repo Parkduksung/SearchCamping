@@ -47,4 +47,8 @@ interface GoCampingRepository {
     suspend fun getCampingData(
         name: String
     ): Result<CampingEntity>
+
+    suspend fun isExistCampingEntity(
+        name: String
+    ): Boolean
 }

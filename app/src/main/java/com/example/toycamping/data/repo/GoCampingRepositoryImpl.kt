@@ -85,4 +85,8 @@ class GoCampingRepositoryImpl :
     ): Result<CampingEntity> = withContext(Dispatchers.IO) {
         return@withContext goCampingLocalDataSource.getCampingData(name)
     }
+
+    override suspend fun isExistCampingEntity(name: String): Boolean = withContext(Dispatchers.IO) {
+        return@withContext goCampingLocalDataSource.isExistCampingEntity(name)
+    }
 }
