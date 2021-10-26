@@ -1,6 +1,7 @@
 package com.example.toycamping.data.source.loca
 
 import com.example.toycamping.room.entity.CampingEntity
+import com.example.toycamping.utils.Result
 
 interface GoCampingLocalDataSource {
 
@@ -15,7 +16,8 @@ interface GoCampingLocalDataSource {
     suspend fun checkExistCampingData(): Boolean
 
     suspend fun checkExistCampingData(
-        item: CampingEntity
+        name: String,
+        address: String
     ): Boolean
 
     suspend fun registerCampingData(campingEntity: CampingEntity): Boolean

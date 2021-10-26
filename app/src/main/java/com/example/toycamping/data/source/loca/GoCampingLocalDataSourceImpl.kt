@@ -5,6 +5,7 @@ import com.example.toycamping.room.entity.CampingEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
+import com.example.toycamping.utils.Result
 
 class GoCampingLocalDataSourceImpl : GoCampingLocalDataSource {
 
@@ -13,9 +14,9 @@ class GoCampingLocalDataSourceImpl : GoCampingLocalDataSource {
     override suspend fun getAllCampingData(): Result<List<CampingEntity>> =
         withContext(Dispatchers.IO) {
             return@withContext try {
-                Result.success(campingDatabase.campingDao().getAll())
+                Result.Success(campingDatabase.campingDao().getAll())
             } catch (e: Exception) {
-                Result.failure(Throwable("Error GetAllCampingEntity"))
+                Result.Error(Exception(Throwable("Error GetAllCampingEntity")))
             }
         }
 
@@ -28,9 +29,9 @@ class GoCampingLocalDataSourceImpl : GoCampingLocalDataSource {
             )
             return@withContext if (updateCampingData == 1) {
                 val updateVocaEntity = item.copy(like = !item.like)
-                Result.success(updateVocaEntity)
+                Result.Success(updateVocaEntity)
             } else {
-                Result.failure(Throwable("Error ToggleBookmark"))
+                Result.Error(Exception(Throwable("Error ToggleBookmark")))
             }
         }
 
@@ -39,9 +40,9 @@ class GoCampingLocalDataSourceImpl : GoCampingLocalDataSource {
             return@withContext try {
                 val getAllBookmarkList =
                     campingDatabase.campingDao().getBookmarkCampingEntity(true)
-                Result.success(getAllBookmarkList)
+                Result.Success(getAllBookmarkList)
             } catch (e: Exception) {
-                Result.failure(Throwable("bookmarkList is Null!"))
+                Result.Error(Exception(Throwable("bookmarkList is Null!")))
             }
         }
 
@@ -49,11 +50,11 @@ class GoCampingLocalDataSourceImpl : GoCampingLocalDataSource {
         return@withContext campingDatabase.campingDao().getAll().isNotEmpty()
     }
 
-    override suspend fun checkExistCampingData(item: CampingEntity): Boolean =
+    override suspend fun checkExistCampingData(name: String, address: String): Boolean =
         withContext(Dispatchers.IO) {
             return@withContext try {
                 campingDatabase.campingDao()
-                    .checkCampingEntity(name = item.name, address = item.address)
+                    .checkCampingEntity(name = name, address = address)
                 true
             } catch (e: Exception) {
                 false

@@ -2,9 +2,12 @@ package com.example.toycamping.data.repo
 
 import com.example.toycamping.api.response.*
 import com.example.toycamping.data.source.loca.GoCampingLocalDataSource
-import com.example.toycamping.data.source.loca.GoCampingLocalDataSourceImpl
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
+import com.example.toycamping.room.entity.CampingEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
+import com.example.toycamping.utils.Result
 
 class GoCampingRepositoryImpl :
     GoCampingRepository {
@@ -49,4 +52,36 @@ class GoCampingRepositoryImpl :
     ) {
         goCampingRemoteDataSource.getImageList(contentId, onSuccess, onFailure)
     }
+
+
+
+
+    override suspend fun getAllCampingData(): Result<List<CampingEntity>> =
+        withContext(Dispatchers.IO) {
+            return@withContext goCampingLocalDataSource.getAllCampingData()
+        }
+
+    override suspend fun toggleBookmarkCampingData(item: CampingEntity): Result<CampingEntity> =
+        withContext(Dispatchers.IO) {
+            return@withContext goCampingLocalDataSource.toggleBookmarkCampingData(item)
+        }
+
+    override suspend fun getAllBookmarkList(): Result<List<CampingEntity>> =
+        withContext(Dispatchers.IO) {
+            return@withContext goCampingLocalDataSource.getAllBookmarkList()
+        }
+
+    override suspend fun checkExistCampingData(): Boolean = withContext(Dispatchers.IO) {
+        return@withContext goCampingLocalDataSource.checkExistCampingData()
+    }
+
+    override suspend fun checkExistCampingData(name: String, address: String): Boolean =
+        withContext(Dispatchers.IO) {
+            return@withContext goCampingLocalDataSource.checkExistCampingData(name, address)
+        }
+
+    override suspend fun registerCampingData(campingEntity: CampingEntity): Boolean =
+        withContext(Dispatchers.IO) {
+            return@withContext goCampingLocalDataSource.registerCampingData(campingEntity)
+        }
 }

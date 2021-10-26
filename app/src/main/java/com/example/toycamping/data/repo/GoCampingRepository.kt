@@ -1,6 +1,8 @@
 package com.example.toycamping.data.repo
 
 import com.example.toycamping.api.response.*
+import com.example.toycamping.room.entity.CampingEntity
+import com.example.toycamping.utils.Result
 
 interface GoCampingRepository {
 
@@ -28,4 +30,21 @@ interface GoCampingRepository {
         onSuccess: (imageListResponse: ImageListResponse) -> Unit,
         onFailure: (throwable: Throwable) -> Unit
     )
+
+
+    suspend fun getAllCampingData(): Result<List<CampingEntity>>
+
+    suspend fun toggleBookmarkCampingData(
+        item: CampingEntity
+    ): Result<CampingEntity>
+
+    suspend fun getAllBookmarkList(): Result<List<CampingEntity>>
+
+    suspend fun checkExistCampingData(): Boolean
+
+    suspend fun checkExistCampingData(
+        name: String, address: String
+    ): Boolean
+
+    suspend fun registerCampingData(campingEntity: CampingEntity): Boolean
 }
