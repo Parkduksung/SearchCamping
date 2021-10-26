@@ -23,7 +23,10 @@ interface CampingDao {
     @Query("SELECT * FROM camping_table WHERE `like` = (:like)")
     fun getBookmarkCampingEntity(like: Boolean = true): List<CampingEntity>
 
-    @Query("SELECT * FROM camping_table WHERE `name` = (:name) AND `address` = (:address)")
-    fun checkCampingEntity(name: String, address: String): CampingEntity
+    @Query("SELECT * FROM camping_table WHERE `name` = (:name) ")
+    fun getCampingEntity(name: String): CampingEntity
 
+
+    @Query("SELECT * FROM camping_table WHERE `name` = (:name) ")
+    fun isExistCampingEntity(name: String): Long
 }
