@@ -1,65 +1,96 @@
 package com.example.toycamping.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.util.Log
-import com.example.toycamping.api.response.LocationItem
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
-import com.example.toycamping.data.model.GoCampingItem
 import com.example.toycamping.data.repo.GoCampingRepository
+import com.example.toycamping.ext.ioScope
+import com.example.toycamping.utils.Result
 import org.koin.java.KoinJavaComponent.inject
 
 class HomeViewModel(app: Application) : BaseViewModel(app) {
 
     private val goCampingRepository by inject<GoCampingRepository>(GoCampingRepository::class.java)
 
-    @SuppressLint("LongLogTag")
-    fun getGoCampingBasedList() {
 
-        goCampingRepository.getBasedList(
-            onSuccess = {
+    fun addBookmark(itemName: String) {
 
-            }, onFailure = {
+        ioScope {
+            if (goCampingRepository.isExistCampingEntity(itemName)) {
+                when (val result = goCampingRepository.getCampingData(itemName)) {
 
+                    is Result.Success -> {
+                        when (val result =
+                            goCampingRepository.toggleBookmarkCampingData(result.data)) {
+                            is Result.Success -> {
+                                viewStateChanged(HomeViewState.AddBookmark(itemName))
+                            }
+
+                            is Result.Error -> {
+                                viewStateChanged(HomeViewState.Error("즐겨찾기 추가 실패."))
+                            }
+                        }
+                    }
+                    is Result.Error -> {
+                        viewStateChanged(HomeViewState.Error("즐겨찾기 추가 실패."))
+                    }
+                }
+
+            } else {
+                goCampingRepository.getSearchList(itemName,
+                    onSuccess = {
+                        ioScope {
+                            if (goCampingRepository.registerCampingData(
+                                    it.response.body.items.item.toCampingEntity(
+                                        true
+                                    )
+                                )
+                            ) {
+                                viewStateChanged(HomeViewState.AddBookmark(itemName))
+                            } else {
+                                viewStateChanged(HomeViewState.Error("즐겨찾기 추가 실패."))
+                            }
+                        }
+                    }, onFailure = {
+                        viewStateChanged(HomeViewState.Error("즐겨찾기 추가 실패."))
+                    }
+                )
             }
-        )
+        }
     }
 
+    fun deleteBookmark(itemName: String) {
+        ioScope {
+            when (val result = goCampingRepository.getCampingData(itemName)) {
 
-    fun getGoCampingLocationList(longitude: Double, latitude: Double, radius: Int) {
-        goCampingRepository.getLocationList(longitude, latitude, radius,
-            onSuccess = {
-                viewStateChanged(HomeViewState.GetGoCampingLocationList(it.response.body.items.item))
-            }, onFailure = {
-                Log.d("결과 error", it.message.toString())
-            })
-
+                is Result.Success -> {
+                    when (val result =
+                        goCampingRepository.toggleBookmarkCampingData(result.data)) {
+                        is Result.Success -> {
+                            viewStateChanged(HomeViewState.DeleteBookmark(itemName))
+                        }
+                        is Result.Error -> {
+                            viewStateChanged(HomeViewState.Error("즐겨찾기 제거 실패."))
+                        }
+                    }
+                }
+                is Result.Error -> {
+                    viewStateChanged(HomeViewState.Error("즐겨찾기 제거 실패."))
+                }
+            }
+        }
     }
 
-    fun getSearchList(keyword: String) {
-
-        goCampingRepository.getSearchList(keyword,
-            onSuccess = {
-
-            }, onFailure = {
-            })
-
-    }
-
-    fun getImageList(contentId: String) {
-        goCampingRepository.getImageList(contentId,
-            onSuccess = {
-                val urlList =
-                    it.imageResponse.body.items.item.map { imageItem -> imageItem.imageUrl }
-            }, onFailure = {
-            })
-    }
 
     sealed class HomeViewState : ViewState {
-        data class GetGoCampingBasedList(val goCampingItem: GoCampingItem) : HomeViewState()
-        data class GetGoCampingLocationList(val itemList: List<LocationItem>) : HomeViewState()
-        object ErrorGetGoCampingBasedList : HomeViewState()
+        data class Error(val errorMessage: String) : HomeViewState()
+        data class AddBookmark(val itemName: String) : HomeViewState()
+        data class DeleteBookmark(val itemName: String) : HomeViewState()
+    }
+
+    companion object {
+
+
     }
 
 }
