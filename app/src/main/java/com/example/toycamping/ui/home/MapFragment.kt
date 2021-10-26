@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.toycamping.BuildConfig
 import com.example.toycamping.R
+import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
@@ -90,7 +91,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
     private val poiItemEventListener = object : MapView.POIItemEventListener {
         override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-            p1?.let { mapViewModel.getSelectPOIItemInfo(it.itemName) }
+            p1?.let {
+                mapViewModel.getSelectPOIItemInfo(it.itemName)
+                mapViewModel.checkBookmarkState(it.itemName)
+            }
         }
 
         override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
@@ -203,6 +207,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             is MapViewModel.MapViewState.HideProgress -> {
                 binding.progressbar.isVisible = false
+            }
+
+            is MapViewModel.MapViewState.BookmarkState -> {
+                binding.itemBookmark.isChecked = viewState.isChecked
             }
         }
     }

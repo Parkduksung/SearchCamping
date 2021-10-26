@@ -2,6 +2,7 @@ package com.example.toycamping.viewmodel
 
 import android.app.Application
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
@@ -32,6 +33,23 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
             getSearchList(it)
         }
     }
+
+    fun checkBookmarkState(itemName: String) {
+        ioScope {
+            when (val result = goCampingRepository.getCampingData(
+                itemName
+            )) {
+                is Result.Success -> {
+                    viewStateChanged(MapViewState.BookmarkState(result.data.like))
+                }
+
+                is Result.Error -> {
+                    viewStateChanged(MapViewState.BookmarkState(false))
+                }
+            }
+        }
+    }
+
 
     fun setCurrentLocation() {
         ioScope {
@@ -204,6 +222,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         data class Error(val errorMessage: String) : MapViewState()
         object ShowProgress : MapViewState()
         object HideProgress : MapViewState()
+        data class BookmarkState(val isChecked: Boolean) : MapViewState()
     }
 
 }
