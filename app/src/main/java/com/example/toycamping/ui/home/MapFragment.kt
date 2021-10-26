@@ -10,13 +10,14 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import com.example.toycamping.BuildConfig
 import com.example.toycamping.R
-import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.ext.hasPermission
+import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -32,6 +33,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     private val campingItemList = mutableSetOf<MapPOIItem>()
 
     private val mapViewModel by viewModel<MapViewModel>()
+
+    private val homeViewModel by activityViewModels<HomeViewModel>()
+
+    private lateinit var currentLocation: MapPOIItem
 
     private val mapViewEventListener =
         object : MapView.MapViewEventListener {
@@ -87,13 +92,18 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
         locationRequest()
         initViewModel()
+
     }
 
     private val poiItemEventListener = object : MapView.POIItemEventListener {
         override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-            p1?.let {
-                mapViewModel.getSelectPOIItemInfo(it.itemName)
-                mapViewModel.checkBookmarkState(it.itemName)
+            p1?.let { item ->
+                mapViewModel.getSelectPOIItemInfo(item.itemName)
+                mapViewModel.checkBookmarkState(item.itemName)
+
+                binding.itemBookmark.setOnClickListener {
+                    mapViewModel.toggleBookmark(item.itemName, binding.itemBookmark.isChecked)
+                }
             }
         }
 
@@ -124,12 +134,14 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     private fun initViewModel() {
         binding.viewModel = mapViewModel
 
-        mapViewModel.viewStateLiveData.observe(requireActivity()) { viewState: ViewState? ->
-            (viewState as? MapViewModel.MapViewState)?.let { onChangedViewState(viewState) }
+        mapViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState: ViewState? ->
+            (viewState as? MapViewModel.MapViewState)?.let { onChangedMapViewState(viewState) }
+        }
+
+        homeViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState: ViewState? ->
+            (viewState as? HomeViewModel.HomeViewState)?.let { onChangedHomeViewState(viewState) }
         }
     }
-
-    private lateinit var currentLocation: MapPOIItem
 
 
     private fun setCurrentLocation(currentMapPoint: MapPoint) {
@@ -148,7 +160,20 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         }
     }
 
-    private fun onChangedViewState(viewState: ViewState) {
+    private fun onChangedHomeViewState(viewState: ViewState) {
+
+        when (viewState) {
+            is HomeViewModel.HomeViewState.AddBookmark -> {
+                binding.itemBookmark.isChecked = true
+            }
+            is HomeViewModel.HomeViewState.DeleteBookmark -> {
+                binding.itemBookmark.isChecked = false
+            }
+        }
+
+    }
+
+    private fun onChangedMapViewState(viewState: ViewState) {
         when (viewState) {
             is MapViewModel.MapViewState.SetCurrentLocation -> {
                 setCurrentLocation(viewState.mapPoint)
@@ -211,6 +236,14 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             is MapViewModel.MapViewState.BookmarkState -> {
                 binding.itemBookmark.isChecked = viewState.isChecked
+            }
+
+            is MapViewModel.MapViewState.AddBookmark -> {
+                homeViewModel.addBookmark(viewState.itemName)
+            }
+
+            is MapViewModel.MapViewState.DeleteBookmark -> {
+                homeViewModel.deleteBookmark(viewState.itemName)
             }
         }
     }

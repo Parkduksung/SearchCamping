@@ -9,6 +9,7 @@ import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.ext.ioScope
+import com.example.toycamping.room.entity.CampingEntity
 import com.example.toycamping.utils.GpsTracker
 import com.example.toycamping.utils.Result
 import net.daum.mf.map.api.MapPOIItem
@@ -50,6 +51,13 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun toggleBookmark(itemName: String, isBookmark: Boolean) {
+        if (isBookmark) {
+            viewStateChanged(MapViewState.AddBookmark(itemName))
+        } else {
+            viewStateChanged(MapViewState.DeleteBookmark(itemName))
+        }
+    }
 
     fun setCurrentLocation() {
         ioScope {
@@ -223,6 +231,9 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         object ShowProgress : MapViewState()
         object HideProgress : MapViewState()
         data class BookmarkState(val isChecked: Boolean) : MapViewState()
+
+        data class AddBookmark(val itemName: String) : MapViewState()
+        data class DeleteBookmark(val itemName: String) : MapViewState()
     }
 
 }
