@@ -30,8 +30,8 @@ class HomeViewModel(app: Application) : BaseViewModel(app) {
                 }
 
             } else {
-                if (goCampingRepository.registerCampingData(item)) {
-                    viewStateChanged(HomeViewState.AddBookmark(item))
+                if (goCampingRepository.registerCampingData(item.copy(like = true))) {
+                    viewStateChanged(HomeViewState.AddBookmark(item.copy(like = true)))
                 } else {
                     viewStateChanged(HomeViewState.Error("즐겨찾기 추가 실패."))
                 }
