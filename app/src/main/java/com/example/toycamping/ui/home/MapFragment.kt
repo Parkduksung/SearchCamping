@@ -3,7 +3,6 @@ package com.example.toycamping.ui.home
 import android.Manifest
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -81,11 +80,13 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     private val poiItemEventListener = object : MapView.POIItemEventListener {
         override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
             p1?.let { item ->
-                mapViewModel.getSelectPOIItemInfo(item.itemName)
-                mapViewModel.checkBookmarkState(item.itemName)
+                if (item.mapPoint != currentLocation.mapPoint) {
+                    mapViewModel.getSelectPOIItemInfo(item.itemName)
+                    mapViewModel.checkBookmarkState(item.itemName)
 
-                binding.itemBookmark.setOnClickListener {
-                    mapViewModel.toggleBookmark(item.itemName, binding.itemBookmark.isChecked)
+                    binding.itemBookmark.setOnClickListener {
+                        mapViewModel.toggleBookmark(item.itemName, binding.itemBookmark.isChecked)
+                    }
                 }
             }
         }
@@ -227,7 +228,6 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             val provideRationale = shouldShowRequestPermissionRationale(
                 Manifest.permission.ACCESS_FINE_LOCATION,
             )
-
             if (provideRationale) {
                 initUi()
             } else {
