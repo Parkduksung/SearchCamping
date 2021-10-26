@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_cancel.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite1.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite2.xml" value="0.159375" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite3.xml" value="0.159375" />
@@ -13,6 +14,11 @@
         <entry key="app/src/main/res/drawable-v24/round_bookmark_ok.xml" value="0.159375" />
         <entry key="app/src/main/res/drawable-v24/selector_checkbox_bookmark1.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/selector_checkbox_bookmark2.xml" value="0.159375" />
+        <entry key="app/src/main/res/drawable-v24/shape_border.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable-v24/shape_border_false.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable-v24/shape_border_true.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2991227038545238" />
       </map>
     </option>
