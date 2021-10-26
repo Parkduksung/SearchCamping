@@ -52,11 +52,22 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     }
 
     fun toggleBookmark(itemName: String, isBookmark: Boolean) {
-        if (isBookmark) {
-            viewStateChanged(MapViewState.AddBookmark(itemName))
-        } else {
-            viewStateChanged(MapViewState.DeleteBookmark(itemName))
-        }
+
+
+        goCampingRepository.getSearchList(itemName,
+            onSuccess = {
+                if (isBookmark) {
+                    val toCampingEntity = it.response.body.items.item.toCampingEntity(false)
+                    viewStateChanged(MapViewState.AddBookmark(toCampingEntity))
+                } else {
+                    val toCampingEntity = it.response.body.items.item.toCampingEntity(true)
+                    viewStateChanged(MapViewState.DeleteBookmark(toCampingEntity))
+                }
+            }, onFailure = {
+
+            }
+        )
+
     }
 
     fun setCurrentLocation() {
@@ -232,8 +243,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         object HideProgress : MapViewState()
         data class BookmarkState(val isChecked: Boolean) : MapViewState()
 
-        data class AddBookmark(val itemName: String) : MapViewState()
-        data class DeleteBookmark(val itemName: String) : MapViewState()
+        data class AddBookmark(val item: CampingEntity) : MapViewState()
+        data class DeleteBookmark(val item: CampingEntity) : MapViewState()
     }
 
 }

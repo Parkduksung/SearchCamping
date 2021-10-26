@@ -50,7 +50,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
     }
 
     private fun initUi() {
-        val list = listOf(MapFragment(), BookMarkFragment(), SnapFragment())
+        val list = listOf(MapFragment(), BookmarkFragment(), SnapFragment())
 
         val pagerAdapter = FragmentPagerAdapter(list, this)
         val titles = listOf("Map", "BookMark", "Snap")

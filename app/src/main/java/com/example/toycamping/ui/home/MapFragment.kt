@@ -239,11 +239,11 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.AddBookmark -> {
-                homeViewModel.addBookmark(viewState.itemName)
+                homeViewModel.addBookmark(viewState.item)
             }
 
             is MapViewModel.MapViewState.DeleteBookmark -> {
-                homeViewModel.deleteBookmark(viewState.itemName)
+                homeViewModel.deleteBookmark(viewState.item)
             }
         }
     }
