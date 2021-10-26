@@ -10,8 +10,8 @@ data class CampingEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "address") val address: String,
     @ColumnInfo(name = "like") val like: Boolean,
-    @ColumnInfo(name = "homepage") val homepage: String,
-    @ColumnInfo(name = "tel") val tel: String,
+    @ColumnInfo(name = "homepage") val homepage: String? = null,
+    @ColumnInfo(name = "tel") val tel: String? = null,
     @ColumnInfo(name = "latitude") val lat: Double,
     @ColumnInfo(name = "longitude") val log: Double
 )
