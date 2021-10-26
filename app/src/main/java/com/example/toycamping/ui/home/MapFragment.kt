@@ -12,6 +12,8 @@ import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.ext.hasPermission
+import com.example.toycamping.ext.hidePOIInfoContainer
+import com.example.toycamping.ext.showPOIInfoContainer
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
 import net.daum.mf.map.api.MapPOIItem
@@ -56,17 +58,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
-                with(binding.containerPoiInfo) {
-                    if (isVisible) {
-                        isVisible = false
-                        startAnimation(
-                            AnimationUtils.loadAnimation(
-                                requireContext(),
-                                R.anim.slide_down
-                            )
-                        )
-                    }
-                }
+                binding.containerPoiInfo.hidePOIInfoContainer(requireContext())
             }
 
             override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
@@ -196,16 +188,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             is MapViewModel.MapViewState.GetSelectPOIItem -> {
                 with(binding) {
-                    containerPoiInfo.apply {
-                        bringToFront()
-                        isVisible = true
-                        startAnimation(
-                            AnimationUtils.loadAnimation(
-                                requireContext(),
-                                R.anim.slide_up
-                            )
-                        )
-                    }
+                    containerPoiInfo.showPOIInfoContainer(requireContext())
                     itemName.text = viewState.item.facltNm
                     itemLocation.text = viewState.item.addr1
                 }
