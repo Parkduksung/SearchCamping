@@ -14,10 +14,6 @@ import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.ext.hasPermission
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -185,19 +181,9 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.GetSearchList -> {
-                GlobalScope.launch(Dispatchers.IO) {
+                binding.containerMap.addPOIItem(viewState.item)
+                binding.containerMap.setMapCenterPoint(viewState.item.mapPoint, true)
 
-                    val mapPOIItem = MapPOIItem().apply {
-                        itemName = viewState.item.facltNm
-                        mapPoint =
-                            MapPoint.mapPointWithGeoCoord(viewState.item.mapY, viewState.item.mapX)
-                        markerType = MapPOIItem.MarkerType.RedPin
-                    }
-                    withContext(Dispatchers.Main) {
-                        binding.containerMap.addPOIItem(mapPOIItem)
-                        binding.containerMap.setMapCenterPoint(mapPOIItem.mapPoint, true)
-                    }
-                }
             }
 
             is MapViewModel.MapViewState.SetZoomLevel -> {

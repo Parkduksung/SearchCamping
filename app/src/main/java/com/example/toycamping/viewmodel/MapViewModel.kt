@@ -129,10 +129,23 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     }
 
 
-    fun getSearchList(keyword: String) {
+    private fun getSearchList(keyword: String) {
         goCampingRepository.getSearchList(keyword,
             onSuccess = {
-                viewStateChanged(MapViewState.GetSearchList(it.response.body.items.item))
+                ioScope {
+                    val mapPOIItem = MapPOIItem().apply {
+                        itemName = it.response.body.items.item.facltNm
+                        mapPoint =
+                            MapPoint.mapPointWithGeoCoord(
+                                it.response.body.items.item.mapY,
+                                it.response.body.items.item.mapX
+                            )
+                        markerType = MapPOIItem.MarkerType.RedPin
+                    }
+
+                    viewStateChanged(MapViewState.GetSearchList(mapPOIItem))
+                }
+
             }, onFailure = {
                 viewStateChanged(MapViewState.Error("캠핑장을 찾을 수 없습니다."))
             })
@@ -237,7 +250,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         data class SetCurrentLocation(val mapPoint: MapPoint) : MapViewState()
         data class GetGoCampingLocationList(val itemList: Array<MapPOIItem>) : MapViewState()
         data class GetSelectPOIItem(val item: SearchItem) : MapViewState()
-        data class GetSearchList(val item: SearchItem) : MapViewState()
+        data class GetSearchList(val item: MapPOIItem) : MapViewState()
         data class Error(val errorMessage: String) : MapViewState()
         object ShowProgress : MapViewState()
         object HideProgress : MapViewState()
