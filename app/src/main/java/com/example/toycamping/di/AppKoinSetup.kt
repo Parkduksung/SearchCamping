@@ -9,6 +9,7 @@ import com.example.toycamping.data.source.loca.GoCampingLocalDataSourceImpl
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSourceImpl
 import com.example.toycamping.room.database.CampingDatabase
+import com.example.toycamping.viewmodel.BookmarkViewModel
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
 import org.koin.android.ext.koin.androidApplication
@@ -29,6 +30,7 @@ class AppKoinSetup : KoinBaseKoinSetup() {
     private val viewModelModule = module {
         viewModel { HomeViewModel(androidApplication()) }
         viewModel { MapViewModel(androidApplication()) }
+        viewModel { BookmarkViewModel(androidApplication()) }
     }
 
     private val repositoryModule = module {
