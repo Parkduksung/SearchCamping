@@ -1,17 +1,12 @@
 package com.example.toycamping.ui.home
 
 import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import com.example.toycamping.BuildConfig
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
@@ -169,6 +164,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             is HomeViewModel.HomeViewState.DeleteBookmark -> {
                 binding.itemBookmark.isChecked = false
             }
+
+            is HomeViewModel.HomeViewState.PermissionGrant -> {
+                initUi()
+            }
         }
 
     }
@@ -263,47 +262,55 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                 initUi()
             } else {
                 requireActivity().requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ),
                     REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE
                 )
             }
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE) {
-
-            when {
-                grantResults.isEmpty() -> {
-                    Toast.makeText(requireContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
-                    Toast.makeText(requireContext(), "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                else -> {
-                    val intent = Intent()
-                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                    val uri = Uri.fromParts(
-                        "package",
-                        BuildConfig.APPLICATION_ID,
-                        null
-                    )
-                    intent.data = uri
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                }
-            }
-        }
-    }
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        Log.d("결과-", requestCode.toString())
+//        Log.d("결과--", permissions.toString())
+//        Log.d("결과---", grantResults.toString())
+//
+//
+//        if (requestCode == REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE) {
+//
+//            when {
+//                grantResults.isEmpty() -> {
+//                    Toast.makeText(requireContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
+//                    Toast.makeText(requireContext(), "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                else -> {
+//                    val intent = Intent()
+//                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+//                    val uri = Uri.fromParts(
+//                        "package",
+//                        BuildConfig.APPLICATION_ID,
+//                        null
+//                    )
+//                    intent.data = uri
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                    startActivity(intent)
+//                }
+//            }
+//        }
+//    }
 
     companion object {
-        private const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
+        const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
     }
 
 }

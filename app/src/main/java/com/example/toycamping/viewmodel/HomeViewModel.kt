@@ -53,10 +53,15 @@ class HomeViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun permissionGrant() {
+        viewStateChanged(HomeViewState.PermissionGrant)
+    }
+
 
     sealed class HomeViewState : ViewState {
         data class Error(val errorMessage: String) : HomeViewState()
         data class AddBookmark(val item: CampingEntity) : HomeViewState()
         data class DeleteBookmark(val item: CampingEntity) : HomeViewState()
+        object PermissionGrant : HomeViewState()
     }
 }
