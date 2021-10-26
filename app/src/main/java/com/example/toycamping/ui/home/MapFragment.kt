@@ -271,44 +271,6 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         }
     }
 
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        Log.d("결과-", requestCode.toString())
-//        Log.d("결과--", permissions.toString())
-//        Log.d("결과---", grantResults.toString())
-//
-//
-//        if (requestCode == REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE) {
-//
-//            when {
-//                grantResults.isEmpty() -> {
-//                    Toast.makeText(requireContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show()
-//                }
-//
-//                grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
-//                    Toast.makeText(requireContext(), "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
-//                }
-//
-//                else -> {
-//                    val intent = Intent()
-//                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-//                    val uri = Uri.fromParts(
-//                        "package",
-//                        BuildConfig.APPLICATION_ID,
-//                        null
-//                    )
-//                    intent.data = uri
-//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                    startActivity(intent)
-//                }
-//            }
-//        }
-//    }
-
     companion object {
         const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
     }
