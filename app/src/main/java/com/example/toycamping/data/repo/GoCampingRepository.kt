@@ -42,9 +42,9 @@ interface GoCampingRepository {
 
     suspend fun checkExistCampingData(): Boolean
 
-    suspend fun checkExistCampingData(
-        name: String, address: String
-    ): Boolean
-
     suspend fun registerCampingData(campingEntity: CampingEntity): Boolean
+
+    suspend fun getCampingData(
+        name: String
+    ): Result<CampingEntity>
 }

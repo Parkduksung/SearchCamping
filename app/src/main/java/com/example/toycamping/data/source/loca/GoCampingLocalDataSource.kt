@@ -15,10 +15,14 @@ interface GoCampingLocalDataSource {
 
     suspend fun checkExistCampingData(): Boolean
 
-    suspend fun checkExistCampingData(
-        name: String,
-        address: String
+    suspend fun registerCampingData(campingEntity: CampingEntity): Boolean
+
+    suspend fun getCampingData(
+        name: String
+    ): Result<CampingEntity>
+
+    suspend fun isExistCampingEntity(
+        name: String
     ): Boolean
 
-    suspend fun registerCampingData(campingEntity: CampingEntity): Boolean
 }
