@@ -23,6 +23,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
     private val homeViewModel by viewModel<HomeViewModel>()
 
+    private val tabConfigurationStrategy =
+        TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+            tab.icon = resources.obtainTypedArray(R.array.array_tab_icon).getDrawable(position)
+        }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,16 +64,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
         val list = listOf(MapFragment(), BookmarkFragment(), SnapFragment(), MyPageFragment())
 
         val pagerAdapter = FragmentPagerAdapter(list, this)
-        val titles = listOf("Map", "BookMark", "Snap", "MyPage")
+
 
         with(binding) {
             viewPager.adapter = pagerAdapter
             viewPager.offscreenPageLimit = 5
             viewPager.isUserInputEnabled = false
 
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = titles[position]
-            }.attach()
+            TabLayoutMediator(tabLayout, viewPager, tabConfigurationStrategy).attach()
         }
     }
 

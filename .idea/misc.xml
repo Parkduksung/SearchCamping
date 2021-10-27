@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_cancel.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable-v24/ic_favorite.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite1.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite2.xml" value="0.159375" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite3.xml" value="0.159375" />
+        <entry key="app/src/main/res/drawable-v24/ic_favorite_gray.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite_select1.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite_select2.xml" value="0.159375" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite_white.xml" value="0.15104166666666666" />
@@ -17,6 +19,10 @@
         <entry key="app/src/main/res/drawable-v24/shape_border.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/shape_border_false.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/shape_border_true.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable/ic_mypage.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable/ic_place.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable/ic_snap.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2991227038545238" />

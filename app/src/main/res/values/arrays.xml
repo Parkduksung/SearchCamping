@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="array_tab_icon">
+        <item>@drawable/ic_place</item>
+        <item>@drawable/ic_favorite</item>
+        <item>@drawable/ic_snap</item>
+        <item>@drawable/ic_mypage</item>
+    </array>
+</resources>
