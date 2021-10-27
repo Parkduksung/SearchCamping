@@ -28,40 +28,14 @@
 
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/container_appbar"
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <ImageButton
-                    android:id="@+id/ib_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{()->viewModel.search()}"
-                    android:src="@android:drawable/ic_menu_search"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias=".0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:text="@={viewModel.search}"
-                    app:layout_constraintBottom_toBottomOf="@id/ib_search"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ib_search"
-                    app:layout_constraintTop_toTopOf="@id/ib_search" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="0dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent=".07"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".0" />
 
 
         <net.daum.mf.map.api.MapView
@@ -69,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container_appbar" />
+            app:layout_constraintTop_toBottomOf="@id/appbar" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_search"

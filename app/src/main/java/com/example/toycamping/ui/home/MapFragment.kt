@@ -2,7 +2,7 @@ package com.example.toycamping.ui.home
 
 import android.Manifest
 import android.os.Bundle
-import android.view.View
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -157,8 +157,15 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             is HomeViewModel.HomeViewState.PermissionGrant -> {
                 initUi()
             }
-        }
 
+            is HomeViewModel.HomeViewState.NotLoginState -> {
+                binding.itemBookmark.isVisible = false
+            }
+
+            is HomeViewModel.HomeViewState.LoginState -> {
+                binding.itemBookmark.isVisible = true
+            }
+        }
     }
 
     private fun onChangedMapViewState(viewState: ViewState) {
@@ -240,6 +247,24 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_map, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.search_study -> {
+            }
+
+            R.id.add_study -> {
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     companion object {
         const val REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE = 34
