@@ -3,6 +3,7 @@ package com.example.toycamping.ui.home
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -83,6 +84,14 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
             }
             is HomeViewModel.HomeViewState.DeleteBookmark -> {
                 bookmarkAdapter.deleteBookmark(viewState.item)
+            }
+
+            is HomeViewModel.HomeViewState.NotLoginState -> {
+                binding.bookmarkRv.isVisible = false
+            }
+
+            is HomeViewModel.HomeViewState.LoginState -> {
+                binding.bookmarkRv.isVisible = true
             }
         }
     }
