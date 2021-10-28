@@ -63,8 +63,8 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes private val layoutId
         return toolbarHelper?.getCustomView()
     }
 
-    override fun setToobarVisibility(isVisible: Boolean) {
-        toolbarHelper?.setToobarVisibility(isVisible)
+    override fun setToolbarVisibility(isVisible: Boolean) {
+        toolbarHelper?.setToolbarVisibility(isVisible)
     }
 
     companion object {

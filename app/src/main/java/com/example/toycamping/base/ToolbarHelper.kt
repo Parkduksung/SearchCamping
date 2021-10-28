@@ -61,7 +61,7 @@ class ToolbarHelper(activity: AppCompatActivity,private val rootView: ViewGroup)
         return toolbar.findViewWithTag(CUSTOM_VIEW_TAG)
     }
 
-    override fun setToobarVisibility(isVisible: Boolean) {
+    override fun setToolbarVisibility(isVisible: Boolean) {
         rootView.isVisible = isVisible
     }
 

@@ -29,6 +29,6 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutId
     }
 
     protected fun setToolbarVisibility(isVisible: Boolean) {
-        baseActivity?.setToobarVisibility(isVisible)
+        baseActivity?.setToolbarVisibility(isVisible)
     }
 }
