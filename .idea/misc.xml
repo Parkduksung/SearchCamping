@@ -28,13 +28,16 @@
         <entry key="app/src/main/res/layout/dashboard_fragment.xml" value="0.13489583333333333" />
         <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
-        <entry key="app/src/main/res/layout/login_fragment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/login_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2991227038545238" />
         <entry key="app/src/main/res/layout/mypage_fragment.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/mypage_login_fragment.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/layout/register_fragment.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/layout/reset_fragment.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/user_fragment.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/view_toolbar.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.335" />
+        <entry key="app/src/main/res/menu/menu_back.xml" value="0.10064646866382533" />
         <entry key="app/src/main/res/menu/menu_map.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/menu/menu_study.xml" value="0.26145833333333335" />
       </map>
