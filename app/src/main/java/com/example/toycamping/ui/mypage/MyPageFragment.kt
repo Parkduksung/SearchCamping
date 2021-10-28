@@ -35,15 +35,14 @@ class MyPageFragment : BaseFragment<MypageFragmentBinding>(R.layout.mypage_fragm
 
     private fun onChangedHomeViewState(viewState: HomeViewModel.HomeViewState) {
         when (viewState) {
-
             is HomeViewModel.HomeViewState.NotLoginState -> {
-                parentFragmentManager.beginTransaction()
+                childFragmentManager.beginTransaction()
                     .replace(R.id.container_route, LoginFragment())
                     .commit()
             }
 
             is HomeViewModel.HomeViewState.LoginState -> {
-                parentFragmentManager.beginTransaction()
+                childFragmentManager.beginTransaction()
                     .replace(R.id.container_route, DashboardFragment())
                     .commit()
             }
