@@ -4,6 +4,7 @@ import com.example.toycamping.data.source.remote.FirebaseRemoteDataSource
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
@@ -32,6 +33,8 @@ class FirebaseRepositoryImpl : FirebaseRepository {
     override fun getFirebaseAuth(): FirebaseAuth =
         firebaseRemoteDataSource.getFirebaseAuth()
 
+    override fun getFirebaseFireStore(): FirebaseFirestore =
+        firebaseRemoteDataSource.getFirebaseFireStore()
 
     override suspend fun delete(): Task<Void>? = withContext(Dispatchers.IO) {
         return@withContext firebaseRemoteDataSource.delete()

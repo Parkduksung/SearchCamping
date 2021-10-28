@@ -3,10 +3,14 @@ package com.example.toycamping.data.source.remote
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class FirebaseRemoteDataSourceImpl(private val firebaseAuth: FirebaseAuth) :
+class FirebaseRemoteDataSourceImpl(
+    private val firebaseAuth: FirebaseAuth,
+    private val fireStore: FirebaseFirestore
+) :
     FirebaseRemoteDataSource {
 
 
@@ -38,11 +42,14 @@ class FirebaseRemoteDataSourceImpl(private val firebaseAuth: FirebaseAuth) :
         return@withContext firebaseAuth.currentUser?.delete()
     }
 
-    override suspend fun resetPass(resetPassToId: String) : Task<Void> = withContext(Dispatchers.IO) {
-        return@withContext firebaseAuth.sendPasswordResetEmail(resetPassToId)
-    }
+    override suspend fun resetPass(resetPassToId: String): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseAuth.sendPasswordResetEmail(resetPassToId)
+        }
 
     override fun getFirebaseAuth(): FirebaseAuth =
         firebaseAuth
 
+    override fun getFirebaseFireStore(): FirebaseFirestore =
+        fireStore
 }
