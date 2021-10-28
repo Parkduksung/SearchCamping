@@ -31,6 +31,14 @@ class LoginViewModel(app: Application) : BaseViewModel(app) {
     }
 
 
+    fun routeRegister() {
+        viewStateChanged(LoginViewState.RouteRegister)
+    }
+
+    fun routeResetPassword() {
+        viewStateChanged(LoginViewState.RouteResetPassword)
+    }
+
     private fun checkLogin(): User? {
         return when {
             userIdLiveData.value.isNullOrEmpty() -> {
@@ -55,6 +63,8 @@ class LoginViewModel(app: Application) : BaseViewModel(app) {
         object EmptyUserPass : LoginViewState()
         object LoginSuccess : LoginViewState()
         object LoginFailure : LoginViewState()
+        object RouteRegister : LoginViewState()
+        object RouteResetPassword : LoginViewState()
     }
 
 }

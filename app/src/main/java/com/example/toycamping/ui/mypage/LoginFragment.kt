@@ -47,6 +47,15 @@ class LoginFragment :
                 showToast("로그인을 실패하였습니다.")
             }
 
+            is LoginViewModel.LoginViewState.RouteResetPassword -> {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container_route, ResetPassFragment()).commit()
+            }
+
+            is LoginViewModel.LoginViewState.RouteRegister -> {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container_route, RegisterFragment()).commit()
+            }
         }
     }
 }
