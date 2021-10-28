@@ -22,6 +22,11 @@ class LoginFragment :
         initViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setToolbarVisibility(false)
+    }
+
     private fun initViewModel() {
         loginViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState: ViewState? ->
             (viewState as? LoginViewModel.LoginViewState)?.let { onChangedLoginViewState(viewState) }
