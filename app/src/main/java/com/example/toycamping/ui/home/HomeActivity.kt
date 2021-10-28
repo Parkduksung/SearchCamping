@@ -14,6 +14,7 @@ import com.example.toycamping.R
 import com.example.toycamping.base.BaseActivity
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.ActivityHomeBinding
+import com.example.toycamping.ui.mypage.MyPageFragment
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,6 +38,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
     }
 
     private fun initViewModel() {
+        lifecycle.addObserver(homeViewModel)
         homeViewModel.viewStateLiveData.observe(this) { viewState: ViewState? ->
             (viewState as? HomeViewModel.HomeViewState)?.let { onChangedViewState(viewState) }
         }
