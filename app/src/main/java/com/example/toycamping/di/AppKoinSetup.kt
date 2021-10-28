@@ -15,6 +15,7 @@ import com.example.toycamping.data.source.remote.GoCampingRemoteDataSourceImpl
 import com.example.toycamping.room.database.CampingDatabase
 import com.example.toycamping.viewmodel.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -49,7 +50,12 @@ class AppKoinSetup : KoinBaseKoinSetup() {
     private val sourceModule = module {
         single<GoCampingRemoteDataSource> { GoCampingRemoteDataSourceImpl() }
         single<GoCampingLocalDataSource> { GoCampingLocalDataSourceImpl() }
-        single<FirebaseRemoteDataSource> { FirebaseRemoteDataSourceImpl(FirebaseAuth.getInstance()) }
+        single<FirebaseRemoteDataSource> {
+            FirebaseRemoteDataSourceImpl(
+                FirebaseAuth.getInstance(),
+                FirebaseFirestore.getInstance()
+            )
+        }
     }
 
     private val apiModule = module {
