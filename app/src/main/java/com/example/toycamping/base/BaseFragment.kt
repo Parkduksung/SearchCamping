@@ -27,4 +27,8 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutId
         binding.lifecycleOwner = this
         return binding.root
     }
+
+    protected fun setToolbarVisibility(isVisible: Boolean) {
+        baseActivity?.setToobarVisibility(isVisible)
+    }
 }
