@@ -36,4 +36,9 @@ class FirebaseRepositoryImpl : FirebaseRepository {
     override suspend fun delete(): Task<Void>? = withContext(Dispatchers.IO) {
         return@withContext firebaseRemoteDataSource.delete()
     }
+
+    override suspend fun resetPass(resetPassToId: String): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseRemoteDataSource.resetPass(resetPassToId)
+        }
 }

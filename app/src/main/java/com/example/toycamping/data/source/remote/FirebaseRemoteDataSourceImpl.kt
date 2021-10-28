@@ -38,6 +38,10 @@ class FirebaseRemoteDataSourceImpl(private val firebaseAuth: FirebaseAuth) :
         return@withContext firebaseAuth.currentUser?.delete()
     }
 
+    override suspend fun resetPass(resetPassToId: String) : Task<Void> = withContext(Dispatchers.IO) {
+        return@withContext firebaseAuth.sendPasswordResetEmail(resetPassToId)
+    }
+
     override fun getFirebaseAuth(): FirebaseAuth =
         firebaseAuth
 

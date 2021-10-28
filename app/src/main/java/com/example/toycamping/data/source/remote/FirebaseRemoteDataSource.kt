@@ -20,6 +20,9 @@ interface FirebaseRemoteDataSource {
 
     suspend fun delete(): Task<Void>?
 
+    suspend fun resetPass(
+        resetPassToId: String
+    ): Task<Void>
 
     fun getFirebaseAuth(): FirebaseAuth
 
