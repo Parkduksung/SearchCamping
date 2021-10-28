@@ -2,16 +2,19 @@ package com.example.toycamping.di
 
 import androidx.room.Room
 import com.example.toycamping.api.GoCampingApi
+import com.example.toycamping.data.repo.FirebaseRepository
+import com.example.toycamping.data.repo.FirebaseRepositoryImpl
 import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.data.repo.GoCampingRepositoryImpl
 import com.example.toycamping.data.source.loca.GoCampingLocalDataSource
 import com.example.toycamping.data.source.loca.GoCampingLocalDataSourceImpl
+import com.example.toycamping.data.source.remote.FirebaseRemoteDataSource
+import com.example.toycamping.data.source.remote.FirebaseRemoteDataSourceImpl
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSourceImpl
 import com.example.toycamping.room.database.CampingDatabase
-import com.example.toycamping.viewmodel.BookmarkViewModel
-import com.example.toycamping.viewmodel.HomeViewModel
-import com.example.toycamping.viewmodel.MapViewModel
+import com.example.toycamping.viewmodel.*
+import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -31,15 +34,20 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         viewModel { HomeViewModel(androidApplication()) }
         viewModel { MapViewModel(androidApplication()) }
         viewModel { BookmarkViewModel(androidApplication()) }
+        viewModel { LoginViewModel(androidApplication()) }
+        viewModel { MyPageViewModel(androidApplication()) }
+        viewModel { DashBoardViewModel(androidApplication()) }
     }
 
     private val repositoryModule = module {
         single<GoCampingRepository> { GoCampingRepositoryImpl() }
+        single<FirebaseRepository> { FirebaseRepositoryImpl() }
     }
 
     private val sourceModule = module {
         single<GoCampingRemoteDataSource> { GoCampingRemoteDataSourceImpl() }
         single<GoCampingLocalDataSource> { GoCampingLocalDataSourceImpl() }
+        single<FirebaseRemoteDataSource> { FirebaseRemoteDataSourceImpl(FirebaseAuth.getInstance()) }
     }
 
     private val apiModule = module {
@@ -63,7 +71,6 @@ class AppKoinSetup : KoinBaseKoinSetup() {
                 .build()
         }
     }
-
 
     override fun getModules(): List<Module> {
         return listOf(

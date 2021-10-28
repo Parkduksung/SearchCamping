@@ -2,8 +2,10 @@ package com.example.toycamping.ext
 
 import android.content.Context
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.example.toycamping.R
 
 
@@ -28,4 +30,8 @@ fun ConstraintLayout.hidePOIInfoContainer(context: Context) {
             )
         )
     }
+}
+
+fun Fragment.showToast(message : String) {
+    Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
 }
