@@ -11,6 +11,7 @@ import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.BookmarkFragmentBinding
+import com.example.toycamping.ext.showToast
 import com.example.toycamping.room.entity.CampingEntity
 import com.example.toycamping.ui.adapter.BookmarkAdapter
 import com.example.toycamping.ui.adapter.viewholder.BookmarkListener
@@ -67,7 +68,7 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
                 bookmarkAdapter.addAllBookmarkData(viewState.bookmarkList)
             }
             is BookmarkViewModel.BookmarkViewState.Error -> {
-                Toast.makeText(requireContext(), viewState.errorMessage, Toast.LENGTH_SHORT).show()
+                showToast(viewState.errorMessage)
             }
 
             is BookmarkViewModel.BookmarkViewState.EmptyBookmarkList -> {

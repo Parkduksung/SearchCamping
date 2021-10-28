@@ -14,6 +14,7 @@ import com.example.toycamping.R
 import com.example.toycamping.base.BaseActivity
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.ActivityHomeBinding
+import com.example.toycamping.ext.showToast
 import com.example.toycamping.ui.mypage.MyPageFragment
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -48,15 +49,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
         when (viewState) {
 
             is HomeViewModel.HomeViewState.Error -> {
-                Toast.makeText(this, viewState.errorMessage, Toast.LENGTH_SHORT).show()
+                showToast(viewState.errorMessage)
             }
 
             is HomeViewModel.HomeViewState.AddBookmark -> {
-                Toast.makeText(this, "즐겨찾기가 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                showToast("즐겨찾기가 추가되었습니다.")
             }
 
             is HomeViewModel.HomeViewState.DeleteBookmark -> {
-                Toast.makeText(this, "즐겨찾기가 제거되었습니다.", Toast.LENGTH_SHORT).show()
+                showToast("즐겨찾기가 제거되었습니다.")
             }
 
         }
@@ -88,11 +89,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
             when {
                 grantResults.isEmpty() -> {
-                    Toast.makeText(this, "권한이 없습니다.", Toast.LENGTH_SHORT).show()
+                    showToast("권한이 없습니다.")
                 }
 
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
-                    Toast.makeText(this, "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+                    showToast("권한이 허용되었습니다.")
                     homeViewModel.permissionGrant()
                 }
 

@@ -13,6 +13,7 @@ import com.example.toycamping.databinding.MapFragmentBinding
 import com.example.toycamping.ext.hasPermission
 import com.example.toycamping.ext.hidePOIInfoContainer
 import com.example.toycamping.ext.showPOIInfoContainer
+import com.example.toycamping.ext.showToast
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
 import net.daum.mf.map.api.MapPOIItem
@@ -191,7 +192,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.Error -> {
-                Toast.makeText(requireContext(), viewState.errorMessage, Toast.LENGTH_SHORT).show()
+                showToast(viewState.errorMessage)
             }
 
             is MapViewModel.MapViewState.GetSelectPOIItem -> {
