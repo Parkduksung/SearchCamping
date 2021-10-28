@@ -63,6 +63,10 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes private val layoutId
         return toolbarHelper?.getCustomView()
     }
 
+    override fun setToobarVisibility(isVisible: Boolean) {
+        toolbarHelper?.setToobarVisibility(isVisible)
+    }
+
     companion object {
         private const val EMPTY_TOOLBAR_TITLE = ""
     }

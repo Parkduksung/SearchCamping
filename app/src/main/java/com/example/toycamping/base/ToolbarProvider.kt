@@ -16,4 +16,6 @@ interface ToolbarProvider {
     fun setCustomView(view: View, relativeHeight: Boolean)
 
     fun getCustomView(): View?
+
+    fun setToobarVisibility(isVisible: Boolean)
 }

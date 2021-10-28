@@ -7,10 +7,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.toycamping.R
 import com.google.android.material.appbar.MaterialToolbar
 
-class ToolbarHelper(activity: AppCompatActivity, rootView: ViewGroup) :
+class ToolbarHelper(activity: AppCompatActivity,private val rootView: ViewGroup) :
     ToolbarProvider {
     private var toolbar: MaterialToolbar
     private var actionBar: ActionBar?
@@ -58,6 +59,10 @@ class ToolbarHelper(activity: AppCompatActivity, rootView: ViewGroup) :
 
     override fun getCustomView(): View? {
         return toolbar.findViewWithTag(CUSTOM_VIEW_TAG)
+    }
+
+    override fun setToobarVisibility(isVisible: Boolean) {
+        rootView.isVisible = isVisible
     }
 
     companion object {
