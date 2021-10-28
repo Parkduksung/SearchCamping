@@ -1,18 +1,30 @@
 package com.example.toycamping.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.repo.FirebaseRepository
 import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.ext.ioScope
 import com.example.toycamping.room.entity.CampingEntity
 import com.example.toycamping.utils.Result
 import org.koin.java.KoinJavaComponent.inject
 
-class HomeViewModel(app: Application) : BaseViewModel(app) {
+class HomeViewModel(app: Application) : BaseViewModel(app), LifecycleObserver {
 
     private val goCampingRepository by inject<GoCampingRepository>(GoCampingRepository::class.java)
 
+    private val firebaseRepository by inject<FirebaseRepository>(FirebaseRepository::class.java)
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    private fun firebaseStateObserver() {
+        firebaseRepository.getFirebaseAuth().addAuthStateListener {
+            checkLoginState(it.currentUser != null)
+        }
+    }
 
     fun addBookmark(item: CampingEntity) {
         ioScope {
@@ -58,10 +70,21 @@ class HomeViewModel(app: Application) : BaseViewModel(app) {
     }
 
 
+    private fun checkLoginState(isLogin: Boolean) {
+        if (isLogin) {
+            viewStateChanged(HomeViewState.LoginState)
+        } else {
+            viewStateChanged(HomeViewState.NotLoginState)
+        }
+    }
+
+
     sealed class HomeViewState : ViewState {
         data class Error(val errorMessage: String) : HomeViewState()
         data class AddBookmark(val item: CampingEntity) : HomeViewState()
         data class DeleteBookmark(val item: CampingEntity) : HomeViewState()
         object PermissionGrant : HomeViewState()
+        object NotLoginState : HomeViewState()
+        object LoginState : HomeViewState()
     }
 }
