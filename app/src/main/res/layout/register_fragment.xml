@@ -44,6 +44,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:lines="1"
                 android:text="@={viewModel.registerId}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -62,6 +63,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:lines="1"
                 android:text="@={viewModel.registerPass}" />
 
         </com.google.android.material.textfield.TextInputLayout>
