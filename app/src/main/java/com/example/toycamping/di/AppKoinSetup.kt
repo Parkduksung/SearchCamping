@@ -38,6 +38,7 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         viewModel { MyPageViewModel(androidApplication()) }
         viewModel { DashBoardViewModel(androidApplication()) }
         viewModel { RegisterViewModel(androidApplication()) }
+        viewModel { ResetPassViewModel(androidApplication()) }
     }
 
     private val repositoryModule = module {
