@@ -2,6 +2,7 @@ package com.example.toycamping.ui.mypage
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.toycamping.App
 import com.example.toycamping.R
@@ -51,6 +52,15 @@ class LoginFragment :
 
             is LoginViewModel.LoginViewState.LoginFailure -> {
                 showToast(message = "로그인을 실패하였습니다.")
+            }
+
+            is LoginViewModel.LoginViewState.ShowProgress -> {
+                binding.progressbar.bringToFront()
+                binding.progressbar.isVisible = true
+            }
+
+            is LoginViewModel.LoginViewState.HideProgress -> {
+                binding.progressbar.isVisible = false
             }
 
             is LoginViewModel.LoginViewState.RouteResetPassword -> {

@@ -17,6 +17,7 @@ class LoginViewModel(app: Application) : BaseViewModel(app) {
 
 
     fun login() {
+        viewStateChanged(LoginViewState.ShowProgress)
         checkLogin()?.let {
             ioScope {
                 firebaseRepository.login(it.userId, it.userPass).addOnCompleteListener { task ->
@@ -25,9 +26,11 @@ class LoginViewModel(app: Application) : BaseViewModel(app) {
                     } else {
                         viewStateChanged(LoginViewState.LoginFailure)
                     }
+                    viewStateChanged(LoginViewState.HideProgress)
                 }
             }
         }
+
     }
 
 
@@ -65,6 +68,8 @@ class LoginViewModel(app: Application) : BaseViewModel(app) {
         object LoginFailure : LoginViewState()
         object RouteRegister : LoginViewState()
         object RouteResetPassword : LoginViewState()
+        object ShowProgress : LoginViewState()
+        object HideProgress : LoginViewState()
     }
 
 }
