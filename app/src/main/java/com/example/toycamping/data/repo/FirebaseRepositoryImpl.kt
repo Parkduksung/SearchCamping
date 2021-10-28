@@ -32,4 +32,8 @@ class FirebaseRepositoryImpl : FirebaseRepository {
     override fun getFirebaseAuth(): FirebaseAuth =
         firebaseRemoteDataSource.getFirebaseAuth()
 
+
+    override suspend fun delete(): Task<Void>? = withContext(Dispatchers.IO) {
+        return@withContext firebaseRemoteDataSource.delete()
+    }
 }

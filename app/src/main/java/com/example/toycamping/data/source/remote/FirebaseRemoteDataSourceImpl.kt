@@ -33,6 +33,11 @@ class FirebaseRemoteDataSourceImpl(private val firebaseAuth: FirebaseAuth) :
             )
         }
 
+
+    override suspend fun delete(): Task<Void>? = withContext(Dispatchers.IO) {
+        return@withContext firebaseAuth.currentUser?.delete()
+    }
+
     override fun getFirebaseAuth(): FirebaseAuth =
         firebaseAuth
 

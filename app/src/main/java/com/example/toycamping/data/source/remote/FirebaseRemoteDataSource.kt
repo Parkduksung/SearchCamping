@@ -18,6 +18,8 @@ interface FirebaseRemoteDataSource {
         password: String
     ): Task<AuthResult>
 
+    suspend fun delete(): Task<Void>?
+
 
     fun getFirebaseAuth(): FirebaseAuth
 
