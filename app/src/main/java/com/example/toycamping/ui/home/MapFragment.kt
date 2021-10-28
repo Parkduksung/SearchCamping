@@ -253,6 +253,11 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onResume() {
+        super.onResume()
+        setToolbarVisibility(true)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search_study -> {
