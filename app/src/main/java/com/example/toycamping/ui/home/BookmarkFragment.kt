@@ -68,7 +68,7 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
                 bookmarkAdapter.addAllBookmarkData(viewState.bookmarkList)
             }
             is BookmarkViewModel.BookmarkViewState.Error -> {
-                showToast(viewState.errorMessage)
+                showToast(message = viewState.errorMessage)
             }
 
             is BookmarkViewModel.BookmarkViewState.EmptyBookmarkList -> {

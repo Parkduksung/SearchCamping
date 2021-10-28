@@ -192,7 +192,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.Error -> {
-                showToast(viewState.errorMessage)
+                showToast(message = viewState.errorMessage)
             }
 
             is MapViewModel.MapViewState.GetSelectPOIItem -> {

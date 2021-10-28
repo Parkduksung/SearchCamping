@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import com.example.toycamping.App
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
@@ -39,11 +40,11 @@ class RegisterFragment : BaseFragment<RegisterFragmentBinding>(R.layout.register
         when (viewState) {
 
             is RegisterViewModel.RegisterViewState.RegisterSuccess -> {
-                showToast("회원가입에 성공하였습니다.")
+                showToast(App.instance.context(),message = "회원가입에 성공하였습니다.")
             }
 
             is RegisterViewModel.RegisterViewState.RegisterFailure -> {
-                showToast("회원가입에 실패하였습니다.")
+                showToast(message = "회원가입에 실패하였습니다.")
             }
 
             is RegisterViewModel.RegisterViewState.EmptyUserId -> {

@@ -3,6 +3,7 @@ package com.example.toycamping.ui.mypage
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.example.toycamping.App
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
@@ -36,11 +37,11 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
         when (viewState) {
 
             is DashBoardViewModel.DashBoardViewState.LogoutSuccess -> {
-                showToast("로그아웃 성공.")
+                showToast(App.instance.context(),"로그아웃 성공.")
             }
 
             is DashBoardViewModel.DashBoardViewState.LogoutFailure -> {
-                showToast("로그아웃 실패.")
+                showToast(message = "로그아웃 실패.")
             }
         }
     }

@@ -33,10 +33,10 @@ fun ConstraintLayout.hidePOIInfoContainer(context: Context) {
     }
 }
 
-fun Fragment.showToast(message: String) {
-    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+fun Fragment.showToast(context: Context = this.requireContext(), message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
-fun AppCompatActivity.showToast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+fun AppCompatActivity.showToast(context: Context = this, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

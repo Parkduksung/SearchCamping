@@ -3,6 +3,7 @@ package com.example.toycamping.ui.mypage
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.example.toycamping.App
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
@@ -37,19 +38,19 @@ class LoginFragment :
         when (viewState) {
 
             is LoginViewModel.LoginViewState.EmptyUserId -> {
-                showToast("아이디를 입력해 주세요.")
+                showToast(message = "아이디를 입력해 주세요.")
             }
 
             is LoginViewModel.LoginViewState.EmptyUserPass -> {
-                showToast("패스워드를 입력해 주세요.")
+                showToast(message = "패스워드를 입력해 주세요.")
             }
 
             is LoginViewModel.LoginViewState.LoginSuccess -> {
-                showToast("로그인을 성공하였습니다.")
+                showToast(App.instance.context(), message = "로그인을 성공하였습니다.")
             }
 
             is LoginViewModel.LoginViewState.LoginFailure -> {
-                showToast("로그인을 실패하였습니다.")
+                showToast(message = "로그인을 실패하였습니다.")
             }
 
             is LoginViewModel.LoginViewState.RouteResetPassword -> {

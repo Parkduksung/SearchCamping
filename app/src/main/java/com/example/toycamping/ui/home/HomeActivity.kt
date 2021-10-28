@@ -49,15 +49,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
         when (viewState) {
 
             is HomeViewModel.HomeViewState.Error -> {
-                showToast(viewState.errorMessage)
+                showToast(message = viewState.errorMessage)
             }
 
             is HomeViewModel.HomeViewState.AddBookmark -> {
-                showToast("즐겨찾기가 추가되었습니다.")
+                showToast(message = "즐겨찾기가 추가되었습니다.")
             }
 
             is HomeViewModel.HomeViewState.DeleteBookmark -> {
-                showToast("즐겨찾기가 제거되었습니다.")
+                showToast(message = "즐겨찾기가 제거되었습니다.")
             }
 
         }
@@ -89,11 +89,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
             when {
                 grantResults.isEmpty() -> {
-                    showToast("권한이 없습니다.")
+                    showToast(message = "권한이 없습니다.")
                 }
 
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
-                    showToast("권한이 허용되었습니다.")
+                    showToast(message = "권한이 허용되었습니다.")
                     homeViewModel.permissionGrant()
                 }
 
