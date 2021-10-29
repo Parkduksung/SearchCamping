@@ -1,6 +1,7 @@
 package com.example.toycamping.data.model
 
 data class CampingItem(
+    val contentId: String,
     val name: String,
     val address: String,
     val homepage: String? = null,
@@ -11,6 +12,7 @@ data class CampingItem(
 
 fun HashMap<String, String>.toCampingItem(): CampingItem =
     CampingItem(
+        contentId = getValue("contentId"),
         name = getValue("name"),
         address = getValue("address"),
         homepage = getValue("homepage"),

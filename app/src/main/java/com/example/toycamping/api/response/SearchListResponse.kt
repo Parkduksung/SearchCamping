@@ -185,6 +185,7 @@ data class SearchItem(
 
     fun toCampingItem(): CampingItem =
         CampingItem(
+            contentId = contentId.toString(),
             name = facltNm,
             address = addr1,
             tel = tel,
