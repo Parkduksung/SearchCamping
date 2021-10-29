@@ -7,6 +7,8 @@ import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.model.CampingItem
+import com.example.toycamping.data.model.toCampingItem
+import com.example.toycamping.data.repo.FirebaseRepository
 import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.ext.ioScope
 import com.example.toycamping.utils.GpsTracker
@@ -26,6 +28,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
     private val goCampingRepository: GoCampingRepository by inject(GoCampingRepository::class.java)
 
+    private val firebaseRepository by inject<FirebaseRepository>(FirebaseRepository::class.java)
+
     private val gpsTracker = GpsTracker(app)
 
     fun search() {
@@ -35,19 +39,41 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     }
 
     fun checkBookmarkState(itemName: String) {
-        ioScope {
-            when (val result = goCampingRepository.getCampingData(
-                itemName
-            )) {
-                is Result.Success -> {
-                    viewStateChanged(MapViewState.BookmarkState(result.data.like))
-                }
+        goCampingRepository.getSearchList(itemName,
+            onSuccess = { searchItem ->
 
-                is Result.Error -> {
-                    viewStateChanged(MapViewState.BookmarkState(false))
+                val toCampingItem = searchItem.response.body.items.item.toCampingItem()
+
+                firebaseRepository.getFirebaseAuth().currentUser?.email?.let { userId ->
+                    firebaseRepository.getFirebaseFireStore().collection(userId)
+                        .document("camping")
+                        .get().addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                if (it.result.exists()) {
+                                    val getResult: ArrayList<HashMap<String, String>> =
+                                        it.result.get("like") as ArrayList<HashMap<String, String>>
+
+                                    val toResultList = getResult.map { it.toCampingItem() }
+
+                                    viewStateChanged(
+                                        MapViewState.BookmarkState(
+                                            toResultList.contains(
+                                                toCampingItem
+                                            )
+                                        )
+                                    )
+                                } else {
+                                    viewStateChanged(MapViewState.BookmarkState(false))
+                                }
+                            } else {
+                                viewStateChanged(MapViewState.BookmarkState(false))
+                            }
+                        }
                 }
+            }, onFailure = {
+                viewStateChanged(MapViewState.BookmarkState(false))
             }
-        }
+        )
     }
 
     fun toggleBookmarkItem(itemName: String, isBookmark: Boolean) {
@@ -70,7 +96,6 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         ioScope {
 
             viewStateChanged(MapViewState.ShowProgress)
-
 
             when (val result = gpsTracker.getLocation()) {
                 is Result.Success -> {
@@ -115,13 +140,15 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
     }
 
     fun getSelectPOIItemInfo(itemName: String) {
+        viewStateChanged(MapViewState.ShowProgress)
         goCampingRepository.getSearchList(itemName,
             onSuccess = {
                 viewStateChanged(MapViewState.GetSelectPOIItem(it.response.body.items.item))
+                viewStateChanged(MapViewState.HideProgress)
             }, onFailure = {
                 viewStateChanged(MapViewState.Error("캠핑장 정보를 찾을 수 없습니다."))
+                viewStateChanged(MapViewState.HideProgress)
             })
-
     }
 
 
