@@ -257,6 +257,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
     override fun onResume() {
         super.onResume()
+        setNavigationIcon(R.drawable.ic_search)
         setToolbarVisibility(true)
     }
 
@@ -268,6 +269,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             R.id.search -> {
                 mapViewModel.searchCampingAroundCurrent()
+            }
+
+            android.R.id.home -> {
+
             }
 
         }

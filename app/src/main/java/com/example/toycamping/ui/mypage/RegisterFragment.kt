@@ -62,19 +62,15 @@ class RegisterFragment : BaseFragment<RegisterFragmentBinding>(R.layout.register
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_back, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onResume() {
         super.onResume()
+        setNavigationIcon(R.drawable.ic_back)
         setToolbarVisibility(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.back -> {
+            android.R.id.home -> {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container_route, LoginFragment()).commit()
             }
