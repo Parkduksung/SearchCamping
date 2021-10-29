@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "camping_table")
 data class CampingEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo(name = "contentId") val contentId: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "address") val address: String,
-    @ColumnInfo(name = "like") val like: Boolean,
     @ColumnInfo(name = "homepage") val homepage: String? = null,
     @ColumnInfo(name = "tel") val tel: String? = null,
     @ColumnInfo(name = "latitude") val lat: Double,
