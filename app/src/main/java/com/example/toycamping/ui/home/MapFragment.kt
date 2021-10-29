@@ -1,6 +1,7 @@
 package com.example.toycamping.ui.home
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
@@ -13,6 +14,7 @@ import com.example.toycamping.ext.hasPermission
 import com.example.toycamping.ext.hidePOIInfoContainer
 import com.example.toycamping.ext.showPOIInfoContainer
 import com.example.toycamping.ext.showToast
+import com.example.toycamping.ui.search.SearchActivity
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
 import net.daum.mf.map.api.MapPOIItem
@@ -273,6 +275,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             android.R.id.home -> {
 
+                val intent = Intent(requireContext(), SearchActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+                )
+                startActivity(intent)
             }
 
         }
