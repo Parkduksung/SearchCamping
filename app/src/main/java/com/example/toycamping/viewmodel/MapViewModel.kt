@@ -2,14 +2,13 @@ package com.example.toycamping.viewmodel
 
 import android.app.Application
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.ext.ioScope
-import com.example.toycamping.room.entity.CampingEntity
 import com.example.toycamping.utils.GpsTracker
 import com.example.toycamping.utils.Result
 import net.daum.mf.map.api.MapPOIItem
@@ -51,17 +50,14 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
-    fun toggleBookmark(itemName: String, isBookmark: Boolean) {
-
-
+    fun toggleBookmarkItem(itemName: String, isBookmark: Boolean) {
         goCampingRepository.getSearchList(itemName,
             onSuccess = {
+                val toCampingItem = it.response.body.items.item.toCampingItem()
                 if (isBookmark) {
-                    val toCampingEntity = it.response.body.items.item.toCampingEntity(false)
-                    viewStateChanged(MapViewState.AddBookmark(toCampingEntity))
+                    viewStateChanged(MapViewState.AddBookmarkItem(toCampingItem))
                 } else {
-                    val toCampingEntity = it.response.body.items.item.toCampingEntity(true)
-                    viewStateChanged(MapViewState.DeleteBookmark(toCampingEntity))
+                    viewStateChanged(MapViewState.DeleteBookmarkItem(toCampingItem))
                 }
             }, onFailure = {
 
@@ -255,9 +251,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         object ShowProgress : MapViewState()
         object HideProgress : MapViewState()
         data class BookmarkState(val isChecked: Boolean) : MapViewState()
-
-        data class AddBookmark(val item: CampingEntity) : MapViewState()
-        data class DeleteBookmark(val item: CampingEntity) : MapViewState()
+        data class AddBookmarkItem(val item: CampingItem) : MapViewState()
+        data class DeleteBookmarkItem(val item: CampingItem) : MapViewState()
     }
 
 }

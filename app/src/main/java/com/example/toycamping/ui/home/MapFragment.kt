@@ -3,7 +3,6 @@ package com.example.toycamping.ui.home
 import android.Manifest
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.example.toycamping.R
@@ -86,7 +85,9 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                     mapViewModel.checkBookmarkState(item.itemName)
 
                     binding.itemBookmark.setOnClickListener {
-                        mapViewModel.toggleBookmark(item.itemName, binding.itemBookmark.isChecked)
+                        mapViewModel.toggleBookmarkItem(
+                            item.itemName, binding.itemBookmark.isChecked
+                        )
                     }
                 }
             }
@@ -148,10 +149,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
     private fun onChangedHomeViewState(viewState: ViewState) {
 
         when (viewState) {
-            is HomeViewModel.HomeViewState.AddBookmark -> {
+            is HomeViewModel.HomeViewState.AddBookmarkItem -> {
                 binding.itemBookmark.isChecked = true
             }
-            is HomeViewModel.HomeViewState.DeleteBookmark -> {
+            is HomeViewModel.HomeViewState.DeleteBookmarkItem -> {
                 binding.itemBookmark.isChecked = false
             }
 
@@ -216,12 +217,12 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                 binding.itemBookmark.isChecked = viewState.isChecked
             }
 
-            is MapViewModel.MapViewState.AddBookmark -> {
-                homeViewModel.addBookmark(viewState.item)
+            is MapViewModel.MapViewState.AddBookmarkItem -> {
+                homeViewModel.addBookmarkItem(viewState.item)
             }
 
-            is MapViewModel.MapViewState.DeleteBookmark -> {
-                homeViewModel.deleteBookmark(viewState.item)
+            is MapViewModel.MapViewState.DeleteBookmarkItem -> {
+                homeViewModel.deleteBookmarkItem(viewState.item)
             }
         }
     }
