@@ -30,6 +30,8 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity android:name=".ui.search.SearchActivity" />
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="2741fbdb122356ec58103c28070afcc7" />

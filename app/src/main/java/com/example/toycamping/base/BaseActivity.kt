@@ -21,24 +21,12 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes private val layoutId
 
     private var toolbarHelper: ToolbarHelper? = null
 
-    private var backWait: Long = INIT_TIME
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = DataBindingUtil.setContentView(this, layoutId)
         setContentView(binding.root)
         initToolbarHelper()
-    }
-
-
-    override fun onBackPressed() {
-        if (System.currentTimeMillis() - backWait >= LIMIT_TIME) {
-            backWait = System.currentTimeMillis()
-            showToast(message = "뒤로가기 버튼을 한번 더 누르면 종료됩니다.")
-        } else {
-            super.onBackPressed()
-        }
     }
 
     private fun initToolbarHelper() {
@@ -82,8 +70,5 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes private val layoutId
 
     companion object {
         private const val EMPTY_TOOLBAR_TITLE = ""
-        private const val INIT_TIME = 0L
-        private const val LIMIT_TIME = 2000
-
     }
 }
