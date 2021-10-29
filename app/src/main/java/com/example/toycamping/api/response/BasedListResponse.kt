@@ -1,5 +1,6 @@
 package com.example.toycamping.api.response
 
+import com.example.toycamping.room.CampingEntity
 import com.google.gson.annotations.SerializedName
 
 data class BasedListResponse(
@@ -85,4 +86,14 @@ data class BasedListItem(
     val trlerAcmpnyAt: String,
     val wtrplCo: String,
     val zipcode: String
-)
+) {
+    fun toCampingEntity() : CampingEntity =
+        CampingEntity(
+            name = facltNm,
+            address = addr1,
+            tel = tel,
+            log = mapX,
+            lat = mapY,
+            contentId = contentId
+        )
+}
