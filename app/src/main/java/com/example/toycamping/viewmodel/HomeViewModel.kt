@@ -6,16 +6,12 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.data.repo.FirebaseRepository
-import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.ext.ioScope
-import com.example.toycamping.room.entity.CampingEntity
-import com.example.toycamping.utils.Result
 import org.koin.java.KoinJavaComponent.inject
 
 class HomeViewModel(app: Application) : BaseViewModel(app), LifecycleObserver {
-
-    private val goCampingRepository by inject<GoCampingRepository>(GoCampingRepository::class.java)
 
     private val firebaseRepository by inject<FirebaseRepository>(FirebaseRepository::class.java)
 
@@ -26,41 +22,33 @@ class HomeViewModel(app: Application) : BaseViewModel(app), LifecycleObserver {
         }
     }
 
-    fun addBookmark(item: CampingEntity) {
+    fun addBookmarkItem(item: CampingItem) {
         ioScope {
-            if (goCampingRepository.isExistCampingEntity(item.name)) {
+            firebaseRepository.getFirebaseAuth().currentUser?.email?.let { userId ->
 
-                when (val result =
-                    goCampingRepository.toggleBookmarkCampingData(item)) {
-                    is Result.Success -> {
-                        viewStateChanged(HomeViewState.AddBookmark(result.data))
-                    }
-
-                    is Result.Error -> {
+                firebaseRepository.addBookmarkItem(userId, item).addOnCompleteListener { dbResult ->
+                    if (dbResult.isSuccessful) {
+                        viewStateChanged(HomeViewState.AddBookmarkItem(item))
+                    } else {
                         viewStateChanged(HomeViewState.Error("즐겨찾기 추가 실패."))
                     }
-                }
-
-            } else {
-                if (goCampingRepository.registerCampingData(item.copy(like = true))) {
-                    viewStateChanged(HomeViewState.AddBookmark(item.copy(like = true)))
-                } else {
-                    viewStateChanged(HomeViewState.Error("즐겨찾기 추가 실패."))
                 }
             }
         }
     }
 
-    fun deleteBookmark(item: CampingEntity) {
+    fun deleteBookmarkItem(item: CampingItem) {
         ioScope {
-            when (val result =
-                goCampingRepository.toggleBookmarkCampingData(item)) {
-                is Result.Success -> {
-                    viewStateChanged(HomeViewState.DeleteBookmark(result.data))
-                }
-                is Result.Error -> {
-                    viewStateChanged(HomeViewState.Error("즐겨찾기 제거 실패."))
-                }
+            firebaseRepository.getFirebaseAuth().currentUser?.email?.let { userId ->
+
+                firebaseRepository.deleteBookmarkItem(userId, item)
+                    .addOnCompleteListener { dbResult ->
+                        if (dbResult.isSuccessful) {
+                            viewStateChanged(HomeViewState.DeleteBookmarkItem(item))
+                        } else {
+                            viewStateChanged(HomeViewState.Error("즐겨찾기 제거 실패."))
+                        }
+                    }
             }
         }
     }
@@ -81,8 +69,8 @@ class HomeViewModel(app: Application) : BaseViewModel(app), LifecycleObserver {
 
     sealed class HomeViewState : ViewState {
         data class Error(val errorMessage: String) : HomeViewState()
-        data class AddBookmark(val item: CampingEntity) : HomeViewState()
-        data class DeleteBookmark(val item: CampingEntity) : HomeViewState()
+        data class AddBookmarkItem(val item: CampingItem) : HomeViewState()
+        data class DeleteBookmarkItem(val item: CampingItem) : HomeViewState()
         object PermissionGrant : HomeViewState()
         object NotLoginState : HomeViewState()
         object LoginState : HomeViewState()

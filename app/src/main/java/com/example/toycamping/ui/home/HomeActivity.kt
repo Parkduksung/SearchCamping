@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -52,11 +51,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
                 showToast(message = viewState.errorMessage)
             }
 
-            is HomeViewModel.HomeViewState.AddBookmark -> {
+            is HomeViewModel.HomeViewState.AddBookmarkItem -> {
                 showToast(message = "즐겨찾기가 추가되었습니다.")
             }
 
-            is HomeViewModel.HomeViewState.DeleteBookmark -> {
+            is HomeViewModel.HomeViewState.DeleteBookmarkItem -> {
                 showToast(message = "즐겨찾기가 제거되었습니다.")
             }
 
