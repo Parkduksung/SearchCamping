@@ -53,40 +53,9 @@ class GoCampingRepositoryImpl :
         goCampingRemoteDataSource.getImageList(contentId, onSuccess, onFailure)
     }
 
-
-
-
-    override suspend fun getAllCampingData(): Result<List<CampingEntity>> =
-        withContext(Dispatchers.IO) {
-            return@withContext goCampingLocalDataSource.getAllCampingData()
-        }
-
-    override suspend fun toggleBookmarkCampingData(item: CampingEntity): Result<CampingEntity> =
-        withContext(Dispatchers.IO) {
-            return@withContext goCampingLocalDataSource.toggleBookmarkCampingData(item)
-        }
-
-    override suspend fun getAllBookmarkList(): Result<List<CampingEntity>> =
-        withContext(Dispatchers.IO) {
-            return@withContext goCampingLocalDataSource.getAllBookmarkList()
-        }
-
-    override suspend fun checkExistCampingData(): Boolean = withContext(Dispatchers.IO) {
-        return@withContext goCampingLocalDataSource.checkExistCampingData()
-    }
-
-    override suspend fun registerCampingData(campingEntity: CampingEntity): Boolean =
-        withContext(Dispatchers.IO) {
-            return@withContext goCampingLocalDataSource.registerCampingData(campingEntity)
-        }
-
     override suspend fun getCampingData(
         name: String
     ): Result<CampingEntity> = withContext(Dispatchers.IO) {
         return@withContext goCampingLocalDataSource.getCampingData(name)
-    }
-
-    override suspend fun isExistCampingEntity(name: String): Boolean = withContext(Dispatchers.IO) {
-        return@withContext goCampingLocalDataSource.isExistCampingEntity(name)
     }
 }
