@@ -174,7 +174,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
             })
     }
 
-    fun getGoCampingLocationList(longitude: Double, latitude: Double, radius: Int) {
+    private fun getGoCampingLocationList(longitude: Double, latitude: Double, radius: Int) {
+        viewStateChanged(MapViewState.ShowProgress)
         goCampingRepository.getLocationList(longitude, latitude, radius,
             onSuccess = {
                 if (!it.response.body.items.item.isNullOrEmpty()) {
@@ -215,13 +216,15 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
 
 
                         viewStateChanged(MapViewState.GetGoCampingLocationList(campingItemList.toTypedArray()))
-
+                        viewStateChanged(MapViewState.HideProgress)
                     }
                 } else {
                     viewStateChanged(MapViewState.Error("캠핑장을 찾을 수 없습니다."))
+                    viewStateChanged(MapViewState.HideProgress)
                 }
             }, onFailure = {
                 viewStateChanged(MapViewState.Error("캠핑장을 찾을 수 없습니다."))
+                viewStateChanged(MapViewState.HideProgress)
             })
     }
 
