@@ -18,21 +18,27 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
     fun register() {
         checkRegister()?.let { user ->
             ioScope {
-                firebaseRepository.register(user.id, user.pass).addOnCompleteListener {registerTask->
-                    if (registerTask.isSuccessful) {
-                        ioScope {
-                            firebaseRepository.createUserBookmarkDB(user.id).addOnCompleteListener {dbTask->
-                                if (dbTask.isSuccessful) {
-                                    viewStateChanged(RegisterViewState.RegisterSuccess)
-                                } else {
-                                    viewStateChanged(RegisterViewState.RegisterFailure)
-                                }
+                viewStateChanged(RegisterViewState.ShowProgress)
+                firebaseRepository.register(user.id, user.pass)
+                    .addOnCompleteListener { registerTask ->
+                        if (registerTask.isSuccessful) {
+                            ioScope {
+                                firebaseRepository.createUserBookmarkDB(user.id)
+                                    .addOnCompleteListener { dbTask ->
+                                        if (dbTask.isSuccessful) {
+                                            viewStateChanged(RegisterViewState.RegisterSuccess)
+                                            viewStateChanged(RegisterViewState.HideProgress)
+                                        } else {
+                                            viewStateChanged(RegisterViewState.RegisterFailure)
+                                            viewStateChanged(RegisterViewState.HideProgress)
+                                        }
+                                    }
                             }
+                        } else {
+                            viewStateChanged(RegisterViewState.RegisterFailure)
+                            viewStateChanged(RegisterViewState.HideProgress)
                         }
-                    } else {
-                        viewStateChanged(RegisterViewState.RegisterFailure)
                     }
-                }
             }
         }
     }
@@ -60,7 +66,8 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
         object EmptyUserPass : RegisterViewState()
         object RegisterSuccess : RegisterViewState()
         object RegisterFailure : RegisterViewState()
-        object RouteMyPage : RegisterViewState()
+        object ShowProgress : RegisterViewState()
+        object HideProgress : RegisterViewState()
     }
 
 }
