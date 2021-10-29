@@ -6,8 +6,6 @@ import com.example.toycamping.data.repo.FirebaseRepository
 import com.example.toycamping.data.repo.FirebaseRepositoryImpl
 import com.example.toycamping.data.repo.GoCampingRepository
 import com.example.toycamping.data.repo.GoCampingRepositoryImpl
-import com.example.toycamping.data.source.loca.GoCampingLocalDataSource
-import com.example.toycamping.data.source.loca.GoCampingLocalDataSourceImpl
 import com.example.toycamping.data.source.remote.FirebaseRemoteDataSource
 import com.example.toycamping.data.source.remote.FirebaseRemoteDataSourceImpl
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
@@ -28,7 +26,6 @@ class AppKoinSetup : KoinBaseKoinSetup() {
     companion object {
         private const val GO_CAMPING_BASE_URL =
             "http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/"
-
     }
 
     private val viewModelModule = module {
@@ -49,7 +46,6 @@ class AppKoinSetup : KoinBaseKoinSetup() {
 
     private val sourceModule = module {
         single<GoCampingRemoteDataSource> { GoCampingRemoteDataSourceImpl() }
-        single<GoCampingLocalDataSource> { GoCampingLocalDataSourceImpl() }
         single<FirebaseRemoteDataSource> {
             FirebaseRemoteDataSourceImpl(
                 FirebaseAuth.getInstance(),

@@ -1,23 +1,17 @@
 package com.example.toycamping.data.repo
 
-import com.example.toycamping.api.response.*
-import com.example.toycamping.data.source.loca.GoCampingLocalDataSource
+import com.example.toycamping.api.response.BasedListResponse
+import com.example.toycamping.api.response.ImageListResponse
+import com.example.toycamping.api.response.LocationBasedListResponse
+import com.example.toycamping.api.response.SearchListResponse
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
-import com.example.toycamping.room.entity.CampingEntity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
-import com.example.toycamping.utils.Result
 
 class GoCampingRepositoryImpl :
     GoCampingRepository {
 
     private val goCampingRemoteDataSource by inject<GoCampingRemoteDataSource>(
         GoCampingRemoteDataSource::class.java
-    )
-
-    private val goCampingLocalDataSource by inject<GoCampingLocalDataSource>(
-        GoCampingLocalDataSource::class.java
     )
 
     override fun getBasedList(
@@ -51,11 +45,5 @@ class GoCampingRepositoryImpl :
         onFailure: (throwable: Throwable) -> Unit
     ) {
         goCampingRemoteDataSource.getImageList(contentId, onSuccess, onFailure)
-    }
-
-    override suspend fun getCampingData(
-        name: String
-    ): Result<CampingEntity> = withContext(Dispatchers.IO) {
-        return@withContext goCampingLocalDataSource.getCampingData(name)
     }
 }

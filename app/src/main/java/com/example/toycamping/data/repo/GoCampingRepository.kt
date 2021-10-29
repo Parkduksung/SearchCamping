@@ -30,8 +30,4 @@ interface GoCampingRepository {
         onSuccess: (imageListResponse: ImageListResponse) -> Unit,
         onFailure: (throwable: Throwable) -> Unit
     )
-
-    suspend fun getCampingData(
-        name: String
-    ): Result<CampingEntity>
 }
