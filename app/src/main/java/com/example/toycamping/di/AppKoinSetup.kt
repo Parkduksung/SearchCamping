@@ -40,6 +40,7 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         viewModel { RegisterViewModel(androidApplication()) }
         viewModel { ResetPassViewModel(androidApplication()) }
         viewModel { SplashViewModel(androidApplication()) }
+        viewModel { SearchViewModel(androidApplication()) }
     }
 
     private val repositoryModule = module {
