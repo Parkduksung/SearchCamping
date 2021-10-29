@@ -1,6 +1,5 @@
 package com.example.toycamping.di
 
-import androidx.room.Room
 import com.example.toycamping.api.GoCampingApi
 import com.example.toycamping.data.repo.FirebaseRepository
 import com.example.toycamping.data.repo.FirebaseRepositoryImpl
@@ -10,7 +9,6 @@ import com.example.toycamping.data.source.remote.FirebaseRemoteDataSource
 import com.example.toycamping.data.source.remote.FirebaseRemoteDataSourceImpl
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSourceImpl
-import com.example.toycamping.room.database.CampingDatabase
 import com.example.toycamping.viewmodel.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -64,25 +62,12 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         }
     }
 
-    private val databaseModule = module {
-        single {
-            Room.databaseBuilder(
-                get(),
-                CampingDatabase::class.java,
-                "camping_database"
-            )
-                .fallbackToDestructiveMigration()
-                .build()
-        }
-    }
-
     override fun getModules(): List<Module> {
         return listOf(
             viewModelModule,
             repositoryModule,
             sourceModule,
-            apiModule,
-            databaseModule
+            apiModule
         )
     }
 }
