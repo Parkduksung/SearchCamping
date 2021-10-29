@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.databinding.BookmarkFragmentBinding
 import com.example.toycamping.ext.showToast
-import com.example.toycamping.room.entity.CampingEntity
 import com.example.toycamping.ui.adapter.BookmarkAdapter
 import com.example.toycamping.ui.adapter.viewholder.BookmarkListener
 import com.example.toycamping.viewmodel.BookmarkViewModel
@@ -26,17 +26,15 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
 
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
-    override fun getItemClick(item: CampingEntity) {
-        homeViewModel.deleteBookmark(item)
+    override fun getItemClick(item: CampingItem) {
+        homeViewModel.deleteBookmarkItem(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         initUi()
         initViewModel()
-
     }
 
     private fun initUi() {
@@ -79,10 +77,10 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
 
     private fun onChangedHomeViewState(viewState: HomeViewModel.HomeViewState) {
         when (viewState) {
-            is HomeViewModel.HomeViewState.AddBookmark -> {
+            is HomeViewModel.HomeViewState.AddBookmarkItem -> {
                 bookmarkAdapter.addBookmark(viewState.item)
             }
-            is HomeViewModel.HomeViewState.DeleteBookmark -> {
+            is HomeViewModel.HomeViewState.DeleteBookmarkItem -> {
                 bookmarkAdapter.deleteBookmark(viewState.item)
             }
 
@@ -92,6 +90,7 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
 
             is HomeViewModel.HomeViewState.LoginState -> {
                 binding.bookmarkRv.isVisible = true
+                bookmarkViewModel.getAllBookmark()
             }
         }
     }
@@ -103,7 +102,6 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
             layoutManager = LinearLayoutManager(requireContext())
             bookmarkAdapter.setBookmarkItemClickListener(this@BookmarkFragment)
         }
-        bookmarkViewModel.getAllBookmark()
     }
 
 }
