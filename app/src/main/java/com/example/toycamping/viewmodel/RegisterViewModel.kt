@@ -1,7 +1,6 @@
 package com.example.toycamping.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
@@ -17,13 +16,20 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
     val registerPass = MutableLiveData<String>()
 
     fun register() {
-        checkRegister()?.let {
+        checkRegister()?.let { user ->
             ioScope {
-                firebaseRepository.register(it.userId, it.userPass).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        viewStateChanged(RegisterViewState.RegisterSuccess)
+                firebaseRepository.register(user.id, user.pass).addOnCompleteListener {registerTask->
+                    if (registerTask.isSuccessful) {
+                        ioScope {
+                            firebaseRepository.createUserBookmarkDB(user.id).addOnCompleteListener {dbTask->
+                                if (dbTask.isSuccessful) {
+                                    viewStateChanged(RegisterViewState.RegisterSuccess)
+                                } else {
+                                    viewStateChanged(RegisterViewState.RegisterFailure)
+                                }
+                            }
+                        }
                     } else {
-                        Log.d("결과", it.exception?.message.toString())
                         viewStateChanged(RegisterViewState.RegisterFailure)
                     }
                 }
@@ -47,7 +53,7 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
-    private data class User(val userId: String, val userPass: String)
+    private data class User(val id: String, val pass: String)
 
     sealed class RegisterViewState : ViewState {
         object EmptyUserId : RegisterViewState()
