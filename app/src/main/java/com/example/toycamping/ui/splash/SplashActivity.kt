@@ -4,16 +4,58 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseActivity
+import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.ActivitySplashBinding
+import com.example.toycamping.ext.showToast
 import com.example.toycamping.ui.home.HomeActivity
+import com.example.toycamping.viewmodel.SplashViewModel
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
+
+    private val splashViewModel by viewModels<SplashViewModel>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        routeHomeActivity()
+
+        initViewModel()
+    }
+
+    private fun initViewModel() {
+        lifecycle.addObserver(splashViewModel)
+        splashViewModel.viewStateLiveData.observe(this) { viewState: ViewState? ->
+            (viewState as? SplashViewModel.SplashViewState)?.let { onChangedViewState(viewState) }
+        }
+    }
+
+    private fun onChangedViewState(viewState: SplashViewModel.SplashViewState) {
+        when (viewState) {
+
+            is SplashViewModel.SplashViewState.RouteMain -> {
+                routeHomeActivity()
+            }
+
+            is SplashViewModel.SplashViewState.ShowProgress -> {
+                showToast(
+                    message = """
+                    데이터 로딩중입니다.
+                    잠시만 기다려 주세요.
+                """.trimIndent()
+                )
+                binding.progressbar.bringToFront()
+                binding.progressbar.isVisible = true
+            }
+
+            is SplashViewModel.SplashViewState.HideProgress -> {
+                binding.progressbar.isVisible = false
+            }
+
+        }
     }
 
 
