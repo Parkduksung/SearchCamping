@@ -1,5 +1,7 @@
 package com.example.toycamping.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -28,6 +30,19 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
 
     override fun getItemClick(item: CampingItem) {
         homeViewModel.deleteBookmarkItem(item)
+    }
+
+    override fun call(number: String) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse(number)
+        }
+        startActivity(intent)
+    }
+
+    override fun link(url: String?) {
+        url?.let {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
