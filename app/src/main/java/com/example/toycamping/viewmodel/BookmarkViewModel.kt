@@ -23,13 +23,17 @@ class BookmarkViewModel(app: Application) : BaseViewModel(app), LifecycleObserve
                     .get().addOnCompleteListener {
                         if (it.isSuccessful) {
                             if (it.result.exists()) {
-                                val getResult: ArrayList<HashMap<String, String>> =
-                                    it.result.get("like") as ArrayList<HashMap<String, String>>
 
-                                val toResultList = getResult.map { it.toCampingItem() }
+                                val getResult: ArrayList<HashMap<String, String>>? =
+                                    it.result.get("like") as ArrayList<HashMap<String, String>>?
 
-                                viewStateChanged(BookmarkViewState.BookmarkList(toResultList))
+                                val toResultList = getResult?.map { it.toCampingItem() }
 
+                                if (!toResultList.isNullOrEmpty()) {
+                                    viewStateChanged(BookmarkViewState.BookmarkList(toResultList))
+                                } else {
+                                    viewStateChanged(BookmarkViewState.EmptyBookmarkList)
+                                }
                             } else {
                                 viewStateChanged(BookmarkViewState.EmptyBookmarkList)
                             }

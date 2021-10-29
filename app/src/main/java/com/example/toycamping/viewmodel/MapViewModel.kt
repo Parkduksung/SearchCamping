@@ -50,18 +50,22 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
                         .get().addOnCompleteListener {
                             if (it.isSuccessful) {
                                 if (it.result.exists()) {
-                                    val getResult: ArrayList<HashMap<String, String>> =
-                                        it.result.get("like") as ArrayList<HashMap<String, String>>
+                                    val getResult: ArrayList<HashMap<String, String>>? =
+                                        it.result.get("like") as ArrayList<HashMap<String, String>>?
 
-                                    val toResultList = getResult.map { it.toCampingItem() }
+                                    val toResultList = getResult?.map { it.toCampingItem() }
 
-                                    viewStateChanged(
-                                        MapViewState.BookmarkState(
-                                            toResultList.contains(
-                                                toCampingItem
+                                    if (!toResultList.isNullOrEmpty()) {
+                                        viewStateChanged(
+                                            MapViewState.BookmarkState(
+                                                toResultList.contains(
+                                                    toCampingItem
+                                                )
                                             )
                                         )
-                                    )
+                                    } else {
+                                        viewStateChanged(MapViewState.BookmarkState(false))
+                                    }
                                 } else {
                                     viewStateChanged(MapViewState.BookmarkState(false))
                                 }
