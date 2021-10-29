@@ -1,5 +1,6 @@
 package com.example.toycamping.data.repo
 
+import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.data.source.remote.FirebaseRemoteDataSource
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -40,8 +41,24 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         return@withContext firebaseRemoteDataSource.delete()
     }
 
+    override suspend fun createUserBookmarkDB(id: String): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseRemoteDataSource.createUserBookmarkDB(id)
+        }
+
     override suspend fun resetPass(resetPassToId: String): Task<Void> =
         withContext(Dispatchers.IO) {
             return@withContext firebaseRemoteDataSource.resetPass(resetPassToId)
         }
+
+    override suspend fun addBookmarkItem(id: String, campingItem: CampingItem): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseRemoteDataSource.addBookmarkItem(id, campingItem)
+        }
+
+    override suspend fun deleteBookmarkItem(id: String, campingItem: CampingItem): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseRemoteDataSource.deleteBookmarkItem(id, campingItem)
+        }
+
 }

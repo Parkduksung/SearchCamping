@@ -1,5 +1,6 @@
 package com.example.toycamping.data.repo
 
+import com.example.toycamping.data.model.CampingItem
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +26,22 @@ interface FirebaseRepository {
     suspend fun resetPass(
         resetPassToId: String
     ): Task<Void>
+
+
+    suspend fun createUserBookmarkDB(
+        id: String
+    ) : Task<Void>
+
+    suspend fun addBookmarkItem(
+        id: String,
+        campingItem: CampingItem
+    ): Task<Void>
+
+    suspend fun deleteBookmarkItem(
+        id: String,
+        campingItem: CampingItem
+    ): Task<Void>
+
 
     fun getFirebaseAuth(): FirebaseAuth
 
