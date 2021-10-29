@@ -97,6 +97,11 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        setToolbarVisibility(false)
+    }
+
     private fun startBookmarkAdapter() {
         binding.bookmarkRv.run {
             adapter = bookmarkAdapter

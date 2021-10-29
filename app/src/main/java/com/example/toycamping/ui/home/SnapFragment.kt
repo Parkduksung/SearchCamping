@@ -21,6 +21,11 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
         initViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setToolbarVisibility(false)
+    }
+
     private fun initViewModel() {
 
         homeViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState: ViewState? ->
