@@ -21,16 +21,26 @@ class GoCampingLocalDataSourceImpl : GoCampingLocalDataSource {
         }
 
     override suspend fun checkExistCampingData(): Boolean = withContext(Dispatchers.IO) {
-        return@withContext campingDatabase.campingDao().getAll().isNotEmpty()
+        return@withContext campingDatabase.campingDao().getAll().size == 2390
     }
 
-    override suspend fun registerCampingData(campingEntity: CampingEntity): Boolean =
+    override suspend fun registerCampingList(list: List<CampingEntity>): Boolean =
         withContext(Dispatchers.IO) {
-            return@withContext campingDatabase.campingDao()
-                .registerCampingEntity(campingEntity) > 0
+            return@withContext registerList(list)
         }
 
+    private fun registerList(list: List<CampingEntity>): Boolean {
+        var registerCount = 0
 
+        list.forEach { item ->
+            val result = campingDatabase.campingDao().registerCampingEntity(item)
+
+            if (result > 0) {
+                registerCount++
+            }
+        }
+        return registerCount == list.size
+    }
 
     override suspend fun getCampingData(
         name: String

@@ -67,8 +67,8 @@ class GoCampingRepositoryImpl :
         return@withContext goCampingLocalDataSource.checkExistCampingData()
     }
 
-    override suspend fun registerCampingData(campingEntity: CampingEntity): Boolean =
+    override suspend fun registerCampingList(list: List<CampingEntity>): Boolean =
         withContext(Dispatchers.IO) {
-            return@withContext goCampingLocalDataSource.registerCampingData(campingEntity)
+            return@withContext goCampingLocalDataSource.registerCampingList(list)
         }
 }

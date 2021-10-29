@@ -38,6 +38,6 @@ interface GoCampingRepository {
 
     suspend fun checkExistCampingData(): Boolean
 
-    suspend fun registerCampingData(campingEntity: CampingEntity): Boolean
+    suspend fun registerCampingList(list: List<CampingEntity>): Boolean
 
 }

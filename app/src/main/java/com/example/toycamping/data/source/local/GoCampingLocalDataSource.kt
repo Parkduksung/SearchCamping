@@ -9,7 +9,7 @@ interface GoCampingLocalDataSource {
 
     suspend fun checkExistCampingData(): Boolean
 
-    suspend fun registerCampingData(campingEntity: CampingEntity): Boolean
+    suspend fun registerCampingList(list: List<CampingEntity>): Boolean
 
     suspend fun getCampingData(
         name: String
