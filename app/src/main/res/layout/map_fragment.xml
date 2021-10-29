@@ -45,33 +45,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appbar" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.searchCampingAroundCurrent()}"
-            android:text="현재 위치에서 찾기"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="H, 1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/container_map"
-            app:layout_constraintVertical_bias=".03" />
-
-        <ImageView
-            android:id="@+id/iv_current_location"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:onClick="@{()->viewModel.setCurrentLocation()}"
-            android:src="@android:drawable/ic_menu_mylocation"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="H, 1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent=".1"
-            app:layout_constraintHorizontal_bias=".95"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/container_map"
-            app:layout_constraintVertical_bias=".05" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container_poi_info"

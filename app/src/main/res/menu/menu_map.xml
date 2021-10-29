@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/search_study"
-        android:icon="@drawable/ic_snap"
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
         android:title="@null"
         app:showAsAction="ifRoom" />
 
-
     <item
-        android:id="@+id/add_study"
-        android:icon="@drawable/ic_favorite"
+        android:id="@+id/current_location"
+        android:icon="@drawable/ic_location"
         android:title="@null"
         app:showAsAction="ifRoom" />
 

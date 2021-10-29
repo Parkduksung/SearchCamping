@@ -262,10 +262,12 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.search_study -> {
+            R.id.current_location -> {
+                mapViewModel.setCurrentLocation()
             }
 
-            R.id.add_study -> {
+            R.id.search -> {
+                mapViewModel.searchCampingAroundCurrent()
             }
 
         }
