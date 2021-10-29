@@ -4,7 +4,12 @@ import com.example.toycamping.api.response.BasedListResponse
 import com.example.toycamping.api.response.ImageListResponse
 import com.example.toycamping.api.response.LocationBasedListResponse
 import com.example.toycamping.api.response.SearchListResponse
+import com.example.toycamping.data.source.local.GoCampingLocalDataSource
 import com.example.toycamping.data.source.remote.GoCampingRemoteDataSource
+import com.example.toycamping.room.CampingEntity
+import com.example.toycamping.utils.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
 class GoCampingRepositoryImpl :
@@ -12,6 +17,11 @@ class GoCampingRepositoryImpl :
 
     private val goCampingRemoteDataSource by inject<GoCampingRemoteDataSource>(
         GoCampingRemoteDataSource::class.java
+    )
+
+
+    private val goCampingLocalDataSource by inject<GoCampingLocalDataSource>(
+        GoCampingLocalDataSource::class.java
     )
 
     override fun getBasedList(
@@ -46,4 +56,19 @@ class GoCampingRepositoryImpl :
     ) {
         goCampingRemoteDataSource.getImageList(contentId, onSuccess, onFailure)
     }
+
+
+    override suspend fun getAllCampingData(): Result<List<CampingEntity>> =
+        withContext(Dispatchers.IO) {
+            return@withContext goCampingLocalDataSource.getAllCampingData()
+        }
+
+    override suspend fun checkExistCampingData(): Boolean = withContext(Dispatchers.IO) {
+        return@withContext goCampingLocalDataSource.checkExistCampingData()
+    }
+
+    override suspend fun registerCampingData(campingEntity: CampingEntity): Boolean =
+        withContext(Dispatchers.IO) {
+            return@withContext goCampingLocalDataSource.registerCampingData(campingEntity)
+        }
 }

@@ -4,6 +4,8 @@ import com.example.toycamping.api.response.BasedListResponse
 import com.example.toycamping.api.response.ImageListResponse
 import com.example.toycamping.api.response.LocationBasedListResponse
 import com.example.toycamping.api.response.SearchListResponse
+import com.example.toycamping.room.CampingEntity
+import com.example.toycamping.utils.Result
 
 interface GoCampingRepository {
 
@@ -31,4 +33,11 @@ interface GoCampingRepository {
         onSuccess: (imageListResponse: ImageListResponse) -> Unit,
         onFailure: (throwable: Throwable) -> Unit
     )
+
+    suspend fun getAllCampingData(): Result<List<CampingEntity>>
+
+    suspend fun checkExistCampingData(): Boolean
+
+    suspend fun registerCampingData(campingEntity: CampingEntity): Boolean
+
 }
