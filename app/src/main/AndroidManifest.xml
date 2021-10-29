@@ -30,7 +30,9 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity android:name=".ui.search.SearchActivity" />
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
