@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -30,5 +31,9 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutId
 
     protected fun setToolbarVisibility(isVisible: Boolean) {
         baseActivity?.setToolbarVisibility(isVisible)
+    }
+
+    protected fun setNavigationIcon(@DrawableRes iconResId: Int) {
+        baseActivity?.setNavigationIcon(iconResId)
     }
 }
