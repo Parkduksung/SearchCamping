@@ -1,8 +1,9 @@
 package com.example.toycamping.data.repo
 
-import com.example.toycamping.api.response.*
-import com.example.toycamping.room.entity.CampingEntity
-import com.example.toycamping.utils.Result
+import com.example.toycamping.api.response.BasedListResponse
+import com.example.toycamping.api.response.ImageListResponse
+import com.example.toycamping.api.response.LocationBasedListResponse
+import com.example.toycamping.api.response.SearchListResponse
 
 interface GoCampingRepository {
 
