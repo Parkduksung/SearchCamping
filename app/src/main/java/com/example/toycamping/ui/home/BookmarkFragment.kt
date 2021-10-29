@@ -86,10 +86,12 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
 
             is HomeViewModel.HomeViewState.NotLoginState -> {
                 binding.bookmarkRv.isVisible = false
+                binding.containerNotLoginBookmark.isVisible = true
             }
 
             is HomeViewModel.HomeViewState.LoginState -> {
                 binding.bookmarkRv.isVisible = true
+                binding.containerNotLoginBookmark.isVisible = false
                 bookmarkViewModel.getAllBookmark()
             }
         }
