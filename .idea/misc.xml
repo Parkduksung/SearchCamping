@@ -19,8 +19,11 @@
         <entry key="app/src/main/res/drawable-v24/shape_border.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/shape_border_false.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/shape_border_true.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable/border_map_current_location.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable/current_location.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/ic_mypage.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/ic_place.xml" value="0.27760416666666665" />
+        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/ic_snap.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/layout-v26/login_fragment.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
@@ -40,7 +43,7 @@
         <entry key="app/src/main/res/layout/view_toolbar.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.335" />
         <entry key="app/src/main/res/menu/menu_back.xml" value="0.10064646866382533" />
-        <entry key="app/src/main/res/menu/menu_map.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/menu/menu_map.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_study.xml" value="0.26145833333333335" />
       </map>
     </option>
