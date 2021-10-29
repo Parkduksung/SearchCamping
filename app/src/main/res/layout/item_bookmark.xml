@@ -8,8 +8,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_margin="10dp">
+        android:layout_height="170dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_border">
 
         <TextView
             android:id="@+id/name"
@@ -30,10 +31,13 @@
             android:autoSizeMaxTextSize="25sp"
             android:autoSizeMinTextSize="5dp"
             android:autoSizeTextType="uniform"
+            android:gravity="start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent=".15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name"
+            app:layout_constraintVertical_bias=".2"
             app:layout_constraintWidth_percent=".8" />
 
         <CheckBox
@@ -50,6 +54,31 @@
             app:layout_constraintStart_toEndOf="@id/name"
             app:layout_constraintTop_toTopOf="@id/name" />
 
+        <ImageView
+            android:id="@+id/call"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/round_call"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="W , 1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address"
+            app:layout_constraintWidth_percent=".15" />
+
+        <ImageView
+            android:id="@+id/link"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/round_link"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="W , 1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address"
+            app:layout_constraintWidth_percent=".15" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
