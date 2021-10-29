@@ -3,13 +3,14 @@ package com.example.toycamping.ui.adapter
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toycamping.room.entity.CampingEntity
+import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.ui.adapter.viewholder.BookmarkListener
 import com.example.toycamping.ui.adapter.viewholder.BookmarkViewHolder
 
 class BookmarkAdapter : RecyclerView.Adapter<BookmarkViewHolder>() {
 
-    private val bookmarkList = mutableListOf<CampingEntity>()
+    private val _bookmarkSet = mutableSetOf<CampingItem>()
+    private val bookmarkList get() =  _bookmarkSet.toList()
 
     private lateinit var bookmarkListener: BookmarkListener
 
@@ -23,14 +24,14 @@ class BookmarkAdapter : RecyclerView.Adapter<BookmarkViewHolder>() {
         holder.bind(bookmarkList[position], bookmarkListener)
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addAllBookmarkData(list: List<CampingEntity>) {
-        this.bookmarkList.addAll(list)
+    fun addAllBookmarkData(list: List<CampingItem>) {
+        _bookmarkSet.addAll(list)
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun clear() {
-        bookmarkList.clear()
+        _bookmarkSet.clear()
         notifyDataSetChanged()
     }
 
@@ -39,13 +40,13 @@ class BookmarkAdapter : RecyclerView.Adapter<BookmarkViewHolder>() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun deleteBookmark(item: CampingEntity) {
-        bookmarkList.removeAll(bookmarkList.filter { it.name == item.name })
+    fun deleteBookmark(item: CampingItem) {
+        _bookmarkSet.removeAll(bookmarkList.filter { it.name == item.name })
         notifyDataSetChanged()
     }
 
-    fun addBookmark(item: CampingEntity) {
-        bookmarkList.add(item)
+    fun addBookmark(item: CampingItem) {
+        _bookmarkSet.add(item)
         notifyItemChanged(bookmarkList.lastIndex)
     }
 

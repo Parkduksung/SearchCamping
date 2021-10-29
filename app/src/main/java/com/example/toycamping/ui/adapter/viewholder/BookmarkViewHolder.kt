@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toycamping.R
+import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.databinding.ItemBookmarkBinding
-import com.example.toycamping.room.entity.CampingEntity
 
 
 class BookmarkViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -17,7 +17,7 @@ class BookmarkViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     private val binding = ItemBookmarkBinding.bind(itemView)
 
     fun bind(
-        item: CampingEntity,
+        item: CampingItem,
         itemClickListener: BookmarkListener
     ) {
 
@@ -33,5 +33,5 @@ class BookmarkViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
 }
 
 interface BookmarkListener {
-    fun getItemClick(item: CampingEntity)
+    fun getItemClick(item: CampingItem)
 }
