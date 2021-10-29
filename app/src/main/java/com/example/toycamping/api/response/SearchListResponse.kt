@@ -1,5 +1,6 @@
 package com.example.toycamping.api.response
 
+import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.room.entity.CampingEntity
 import com.google.gson.annotations.SerializedName
 
@@ -183,7 +184,7 @@ data class SearchItem(
     val zipcode: Int
 ) {
 
-    fun toCampingEntity(like : Boolean): CampingEntity =
+    fun toCampingEntity(like: Boolean): CampingEntity =
         CampingEntity(
             name = facltNm,
             address = addr1,
@@ -194,4 +195,13 @@ data class SearchItem(
             lat = mapY
         )
 
+    fun toCampingItem(): CampingItem =
+        CampingItem(
+            name = facltNm,
+            address = addr1,
+            tel = tel,
+            homepage = homepage,
+            log = mapX.toString(),
+            lat = mapY.toString()
+        )
 }
