@@ -16,10 +16,10 @@ interface GoCampingApi {
         private const val MOBILE_APP = "CarCamping"
 
         private const val BASE_URL =
-            "ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP\""
+            "ServiceKey=$GO_CAMPING_KEY&pageNo=1&numOfRows=2748&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"
 
         private const val BASEDLIST_URL =
-            "basedList?ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"
+            "basedList?numOfRows=2390&pageNo=1&ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"
 
         private const val LOCATION_LIST_URL =
             "locationBasedList?ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"

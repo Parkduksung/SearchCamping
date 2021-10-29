@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName
 
 data class BasedListResponse(
     @SerializedName("response")
-    val response: BasedResponse
+    val basedResponse: BasedResponse
 )
 
 data class BasedResponse(
     @SerializedName("body")
-    val body: BasedBody,
+    val basedListBody: BasedListBody,
     @SerializedName("header")
     val header: Header
 )
 
-data class BasedBody(
+data class BasedListBody(
     @SerializedName("items")
     val basedListItems: BasedListItems,
     @SerializedName("numOfRows")
@@ -27,35 +27,34 @@ data class BasedBody(
 
 data class BasedListItems(
     @SerializedName("item")
-    val item: List<BasedListItem>
+    val basedListItem: List<BasedListItem>
 )
-
 
 data class BasedListItem(
     val addr1: String,
-    val allar: Int,
+    val allar: String,
     val animalCmgCl: String,
-    val autoSiteCo: Int,
+    val autoSiteCo: String,
     val bizrno: String,
     val brazierCl: String,
     val caravAcmpnyAt: String,
-    val caravSiteCo: Int,
+    val caravSiteCo: String,
     val clturEventAt: String,
-    val contentId: Int,
+    val contentId: String,
     val createdtime: String,
     val doNm: String,
     val exprnProgrmAt: String,
-    val extshrCo: Int,
+    val extshrCo: String,
     val facltNm: String,
-    val fireSensorCo: Int,
-    val frprvtSandCo: Int,
-    val frprvtWrppCo: Int,
-    val glampSiteCo: Int,
-    val gnrlSiteCo: Int,
+    val fireSensorCo: String,
+    val frprvtSandCo: String,
+    val frprvtWrppCo: String,
+    val glampSiteCo: String,
+    val gnrlSiteCo: String,
     val induty: String,
-    val indvdlCaravSiteCo: Int,
+    val indvdlCaravSiteCo: String,
     val insrncAt: String,
-    val manageNmpr: Int,
+    val manageNmpr: String,
     val manageSttus: String,
     val mangeDivNm: String,
     val mapX: Double,
@@ -65,25 +64,25 @@ data class BasedListItem(
     val operPdCl: String,
     val prmisnDe: String,
     val sigunguNm: String,
-    val siteBottomCl1: Int,
-    val siteBottomCl2: Int,
-    val siteBottomCl3: Int,
-    val siteBottomCl4: Int,
-    val siteBottomCl5: Int,
-    val siteMg1Co: Int,
-    val siteMg1Vrticl: Int,
-    val siteMg1Width: Int,
-    val siteMg2Co: Int,
-    val siteMg2Vrticl: Int,
-    val siteMg2Width: Int,
-    val siteMg3Co: Int,
-    val siteMg3Vrticl: Int,
-    val siteMg3Width: Int,
-    val sitedStnc: Int,
-    val swrmCo: Int,
+    val siteBottomCl1: String,
+    val siteBottomCl2: String,
+    val siteBottomCl3: String,
+    val siteBottomCl4: String,
+    val siteBottomCl5: String,
+    val siteMg1Co: String,
+    val siteMg1Vrticl: String,
+    val siteMg1Width: String,
+    val siteMg2Co: String,
+    val siteMg2Vrticl: String,
+    val siteMg2Width: String,
+    val siteMg3Co: String,
+    val siteMg3Vrticl: String,
+    val siteMg3Width: String,
+    val sitedStnc: String,
+    val swrmCo: String,
     val tel: String,
-    val toiletCo: Int,
+    val toiletCo: String,
     val trlerAcmpnyAt: String,
-    val wtrplCo: Int,
-    val zipcode: Int
+    val wtrplCo: String,
+    val zipcode: String
 )
