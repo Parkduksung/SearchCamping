@@ -2,6 +2,7 @@ package com.example.toycamping.viewmodel
 
 import android.app.Application
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
@@ -140,6 +141,12 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
                 mapPoint.mapPointGeoCoord.latitude,
                 zoomLevelToRadius(currentZoomLevel.value ?: 0)
             )
+
+            Log.d(
+                "결과-current",
+                "long : ${mapPoint.mapPointGeoCoord.longitude} , lat : ${mapPoint.mapPointGeoCoord.latitude}"
+            )
+
         }
     }
 

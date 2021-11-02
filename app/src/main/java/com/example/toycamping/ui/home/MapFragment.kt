@@ -3,6 +3,7 @@ package com.example.toycamping.ui.home
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -199,6 +200,15 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.GetSelectPOIItem -> {
+
+                val toCampingItem = viewState.item.toCampingItem()
+
+                Log.d(
+                    "결과-select",
+                    "long : ${toCampingItem.log} , lat : ${toCampingItem.lat}"
+                )
+
+
                 with(binding) {
                     containerPoiInfo.showPOIInfoContainer(requireContext())
                     itemName.text = viewState.item.facltNm
