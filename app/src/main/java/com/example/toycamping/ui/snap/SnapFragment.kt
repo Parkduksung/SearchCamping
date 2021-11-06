@@ -93,6 +93,7 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
             is HomeViewModel.HomeViewState.LoginState -> {
                 binding.containerNotLoginSnap.isVisible = false
                 binding.rvSnap.isVisible = true
+                snapViewModel.getAllSnapList()
             }
 
             is HomeViewModel.HomeViewState.AddSnapItem -> {
