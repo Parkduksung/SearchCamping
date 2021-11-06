@@ -24,10 +24,20 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
                         if (registerTask.isSuccessful) {
                             ioScope {
                                 firebaseRepository.createUserBookmarkDB(user.id)
-                                    .addOnCompleteListener { dbTask ->
-                                        if (dbTask.isSuccessful) {
-                                            viewStateChanged(RegisterViewState.RegisterSuccess)
-                                            viewStateChanged(RegisterViewState.HideProgress)
+                                    .addOnCompleteListener { bookmarkDBTask ->
+                                        if (bookmarkDBTask.isSuccessful) {
+                                            ioScope {
+                                                firebaseRepository.createUserSnapDB(user.id)
+                                                    .addOnCompleteListener { snapDBTask ->
+                                                        if (snapDBTask.isSuccessful) {
+                                                            viewStateChanged(RegisterViewState.RegisterSuccess)
+                                                            viewStateChanged(RegisterViewState.HideProgress)
+                                                        } else {
+                                                            viewStateChanged(RegisterViewState.RegisterFailure)
+                                                            viewStateChanged(RegisterViewState.HideProgress)
+                                                        }
+                                                    }
+                                            }
                                         } else {
                                             viewStateChanged(RegisterViewState.RegisterFailure)
                                             viewStateChanged(RegisterViewState.HideProgress)
