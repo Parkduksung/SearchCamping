@@ -1,17 +1,24 @@
 package com.example.toycamping.data.source.remote
 
+import android.net.Uri
 import com.example.toycamping.data.model.CampingItem
+import com.example.toycamping.data.model.SnapItem
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FirebaseRemoteDataSourceImpl(
     private val firebaseAuth: FirebaseAuth,
-    private val fireStore: FirebaseFirestore
+    private val fireStore: FirebaseFirestore,
+    private val fireStorage: FirebaseStorage
 ) :
     FirebaseRemoteDataSource {
 
@@ -56,6 +63,11 @@ class FirebaseRemoteDataSourceImpl(
                 .set(emptyMap<String, CampingItem>())
         }
 
+    override suspend fun createUserSnapDB(id: String): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext fireStore.collection(id).document("snap")
+                .set(emptyMap<String, SnapItem>())
+        }
 
     override suspend fun addBookmarkItem(id: String, campingItem: CampingItem): Task<Void> =
         withContext(Dispatchers.IO) {
@@ -69,9 +81,27 @@ class FirebaseRemoteDataSourceImpl(
                 .update("like", FieldValue.arrayRemove(campingItem))
         }
 
+
+    override suspend fun addSnapItem(id: String, uri: Uri, snapItem: SnapItem): UploadTask =
+        withContext(Dispatchers.IO) {
+            return@withContext fireStorage.reference.child(id).child(snapItem.name!!)
+                .putFile(uri)
+        }
+
+    override suspend fun deleteSnapItem(id: String, snapItem: SnapItem): Task<Void> =
+        withContext(Dispatchers.IO) {
+            fireStore.collection(id).document("snap")
+                .update("item", FieldValue.arrayRemove(snapItem))
+            return@withContext fireStorage.reference.child(id).child(snapItem.name!!).delete()
+        }
+
+
     override fun getFirebaseAuth(): FirebaseAuth =
         firebaseAuth
 
     override fun getFirebaseFireStore(): FirebaseFirestore =
         fireStore
+
+    override fun getFirebaseStorage(): FirebaseStorage =
+        fireStorage
 }

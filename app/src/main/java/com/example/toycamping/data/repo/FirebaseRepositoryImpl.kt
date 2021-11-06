@@ -1,11 +1,15 @@
 package com.example.toycamping.data.repo
 
+import android.net.Uri
 import com.example.toycamping.data.model.CampingItem
+import com.example.toycamping.data.model.SnapItem
 import com.example.toycamping.data.source.remote.FirebaseRemoteDataSource
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
@@ -31,12 +35,6 @@ class FirebaseRepositoryImpl : FirebaseRepository {
             return@withContext firebaseRemoteDataSource.register(id, password)
         }
 
-    override fun getFirebaseAuth(): FirebaseAuth =
-        firebaseRemoteDataSource.getFirebaseAuth()
-
-    override fun getFirebaseFireStore(): FirebaseFirestore =
-        firebaseRemoteDataSource.getFirebaseFireStore()
-
     override suspend fun delete(): Task<Void>? = withContext(Dispatchers.IO) {
         return@withContext firebaseRemoteDataSource.delete()
     }
@@ -44,6 +42,11 @@ class FirebaseRepositoryImpl : FirebaseRepository {
     override suspend fun createUserBookmarkDB(id: String): Task<Void> =
         withContext(Dispatchers.IO) {
             return@withContext firebaseRemoteDataSource.createUserBookmarkDB(id)
+        }
+
+    override suspend fun createUserSnapDB(id: String): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseRemoteDataSource.createUserSnapDB(id)
         }
 
     override suspend fun resetPass(resetPassToId: String): Task<Void> =
@@ -60,5 +63,24 @@ class FirebaseRepositoryImpl : FirebaseRepository {
         withContext(Dispatchers.IO) {
             return@withContext firebaseRemoteDataSource.deleteBookmarkItem(id, campingItem)
         }
+
+    override suspend fun addSnapItem(id: String, uri: Uri, snapItem: SnapItem): UploadTask =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseRemoteDataSource.addSnapItem(id, uri, snapItem)
+        }
+
+    override suspend fun deleteSnapItem(id: String, snapItem: SnapItem): Task<Void> =
+        withContext(Dispatchers.IO) {
+            return@withContext firebaseRemoteDataSource.deleteSnapItem(id, snapItem)
+        }
+
+    override fun getFirebaseAuth(): FirebaseAuth =
+        firebaseRemoteDataSource.getFirebaseAuth()
+
+    override fun getFirebaseFireStore(): FirebaseFirestore =
+        firebaseRemoteDataSource.getFirebaseFireStore()
+
+    override fun getFirebaseStorage(): FirebaseStorage =
+        firebaseRemoteDataSource.getFirebaseStorage()
 
 }
