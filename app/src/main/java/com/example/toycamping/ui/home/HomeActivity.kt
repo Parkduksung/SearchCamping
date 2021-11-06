@@ -15,6 +15,7 @@ import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.ActivityHomeBinding
 import com.example.toycamping.ext.showToast
 import com.example.toycamping.ui.mypage.MyPageFragment
+import com.example.toycamping.ui.snap.SnapFragment
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
