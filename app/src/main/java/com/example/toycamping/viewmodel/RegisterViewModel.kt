@@ -19,36 +19,57 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
         checkRegister()?.let { user ->
             ioScope {
                 viewStateChanged(RegisterViewState.ShowProgress)
-                firebaseRepository.register(user.id, user.pass)
-                    .addOnCompleteListener { registerTask ->
-                        if (registerTask.isSuccessful) {
-                            ioScope {
-                                firebaseRepository.createUserBookmarkDB(user.id)
-                                    .addOnCompleteListener { bookmarkDBTask ->
-                                        if (bookmarkDBTask.isSuccessful) {
-                                            ioScope {
-                                                firebaseRepository.createUserSnapDB(user.id)
-                                                    .addOnCompleteListener { snapDBTask ->
-                                                        if (snapDBTask.isSuccessful) {
-                                                            viewStateChanged(RegisterViewState.RegisterSuccess)
-                                                            viewStateChanged(RegisterViewState.HideProgress)
-                                                        } else {
-                                                            viewStateChanged(RegisterViewState.RegisterFailure)
-                                                            viewStateChanged(RegisterViewState.HideProgress)
+                firebaseRepository.resetPass(user.id).addOnCompleteListener { checkRegisterTask ->
+                    if (!checkRegisterTask.isSuccessful) {
+                        ioScope {
+                            firebaseRepository.createUserBookmarkDB(user.id)
+                                .addOnCompleteListener { bookmarkDBTask ->
+                                    if (bookmarkDBTask.isSuccessful) {
+                                        ioScope {
+                                            firebaseRepository.createUserSnapDB(user.id)
+                                                .addOnCompleteListener { snapDBTask ->
+                                                    if (snapDBTask.isSuccessful) {
+                                                        ioScope {
+                                                            firebaseRepository.register(
+                                                                user.id,
+                                                                user.pass
+                                                            )
+                                                                .addOnCompleteListener { registerTask ->
+                                                                    if (registerTask.isSuccessful) {
+                                                                        viewStateChanged(
+                                                                            RegisterViewState.RegisterSuccess
+                                                                        )
+                                                                        viewStateChanged(
+                                                                            RegisterViewState.HideProgress
+                                                                        )
+                                                                    } else {
+                                                                        viewStateChanged(
+                                                                            RegisterViewState.RegisterFailure
+                                                                        )
+                                                                        viewStateChanged(
+                                                                            RegisterViewState.HideProgress
+                                                                        )
+                                                                    }
+                                                                }
                                                         }
+                                                    } else {
+                                                        viewStateChanged(RegisterViewState.RegisterFailure)
+                                                        viewStateChanged(RegisterViewState.HideProgress)
                                                     }
-                                            }
-                                        } else {
-                                            viewStateChanged(RegisterViewState.RegisterFailure)
-                                            viewStateChanged(RegisterViewState.HideProgress)
+                                                }
                                         }
+                                    } else {
+                                        viewStateChanged(RegisterViewState.RegisterFailure)
+                                        viewStateChanged(RegisterViewState.HideProgress)
                                     }
-                            }
-                        } else {
-                            viewStateChanged(RegisterViewState.RegisterFailure)
-                            viewStateChanged(RegisterViewState.HideProgress)
+                                }
+
                         }
+                    } else {
+                        viewStateChanged(RegisterViewState.RegisterFailure)
+                        viewStateChanged(RegisterViewState.HideProgress)
                     }
+                }
             }
         }
     }
