@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.15052083333333333" />
+        <entry key="app/src/main/res/drawable-v24/bg_mac_os_dialog_border.xml" value="0.26666666666666666" />
+        <entry key="app/src/main/res/drawable-v24/bg_top_border.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/drawable-v24/ic_cancel.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite1.xml" value="0.27760416666666665" />
@@ -34,11 +37,13 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/layout/add_snap_dialog.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/bookmark_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dashboard_fragment.xml" value="0.13489583333333333" />
         <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_snap.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2991227038545238" />
         <entry key="app/src/main/res/layout/mypage_fragment.xml" value="0.26145833333333335" />
@@ -54,6 +59,7 @@
         <entry key="app/src/main/res/menu/menu.xml" value="0.335" />
         <entry key="app/src/main/res/menu/menu_back.xml" value="0.10064646866382533" />
         <entry key="app/src/main/res/menu/menu_map.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_snap.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/menu/menu_study.xml" value="0.26145833333333335" />
       </map>
     </option>
