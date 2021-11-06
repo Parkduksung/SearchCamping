@@ -16,6 +16,7 @@ import com.example.toycamping.room.CampingDatabase
 import com.example.toycamping.viewmodel.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -41,6 +42,8 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         viewModel { ResetPassViewModel(androidApplication()) }
         viewModel { SplashViewModel(androidApplication()) }
         viewModel { SearchViewModel(androidApplication()) }
+        viewModel { SnapViewModel(androidApplication()) }
+        viewModel { AddSnapDialogViewModel(androidApplication()) }
     }
 
     private val repositoryModule = module {
@@ -54,7 +57,8 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         single<FirebaseRemoteDataSource> {
             FirebaseRemoteDataSourceImpl(
                 FirebaseAuth.getInstance(),
-                FirebaseFirestore.getInstance()
+                FirebaseFirestore.getInstance(),
+                FirebaseStorage.getInstance()
             )
         }
     }
