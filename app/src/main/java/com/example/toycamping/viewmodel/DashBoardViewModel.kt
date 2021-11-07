@@ -3,6 +3,7 @@ package com.example.toycamping.viewmodel
 import android.app.Application
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.model.QuestionItem
 import com.example.toycamping.data.repo.FirebaseRepository
 import com.example.toycamping.ext.ioScope
 import org.koin.java.KoinJavaComponent.inject
@@ -62,6 +63,22 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
         viewStateChanged(DashBoardViewState.ShowIdentify)
     }
 
+    fun addQuestion(item: QuestionItem?) {
+        item?.let {
+            ioScope {
+                firebaseRepository.getFirebaseFireStore().collection("question")
+                    .document()
+                    .set(item).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            viewStateChanged(DashBoardViewState.AddQuestionSuccess)
+                        } else {
+                            viewStateChanged(DashBoardViewState.AddQuestionFailure)
+                        }
+                    }
+            }
+        }
+    }
+
 
     sealed class DashBoardViewState : ViewState {
         object ShowLogoutDialog : DashBoardViewState()
@@ -71,6 +88,8 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
         object ShowIdentify : DashBoardViewState()
         object LogoutSuccess : DashBoardViewState()
         object LogoutFailure : DashBoardViewState()
+        object AddQuestionSuccess : DashBoardViewState()
+        object AddQuestionFailure : DashBoardViewState()
         object WithdrawSuccess : DashBoardViewState()
         object WithdrawFailure : DashBoardViewState()
         object Error : DashBoardViewState()

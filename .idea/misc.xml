@@ -47,6 +47,8 @@
         <entry key="app/src/main/res/layout/add_snap_dialog.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/bookmark_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dashboard_fragment.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/dialog_add_question.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/layout/dialog_identify.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/dialog_mypage.xml" value="0.1" />
         <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
