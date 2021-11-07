@@ -1,5 +1,6 @@
 package com.example.toycamping.ui.mypage
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -22,6 +23,7 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = dashboardViewModel
 
+        initUi()
         initViewModel()
     }
 
@@ -35,6 +37,11 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
         }
     }
 
+    private fun initUi() {
+        dashboardViewModel.getUserInfo()
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun onChangedLoginViewState(viewState: DashBoardViewModel.DashBoardViewState) {
         when (viewState) {
 
@@ -88,6 +95,13 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
 
             is DashBoardViewModel.DashBoardViewState.AddQuestionSuccess -> {
                 showToast(message = "문의사항이 등록되었습니다.")
+            }
+
+            is DashBoardViewModel.DashBoardViewState.GetUserInfo -> {
+                with(binding) {
+                    tvLoginId.text = "${viewState.id}님 환영합니다."
+                    tvLoginNickname.text = viewState.nickname
+                }
             }
         }
     }

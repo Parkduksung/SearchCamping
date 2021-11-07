@@ -79,8 +79,26 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun getUserInfo() {
+        firebaseRepository.getFirebaseAuth().currentUser?.email?.let { userId ->
+            firebaseRepository.getFirebaseFireStore().collection(userId).document("nickname").get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        viewStateChanged(
+                            DashBoardViewState.GetUserInfo(
+                                userId,
+                                it.result.get("nickname").toString()
+                            )
+                        )
+                    }
+                }
+        }
+
+    }
+
 
     sealed class DashBoardViewState : ViewState {
+        data class GetUserInfo(val id: String, val nickname: String) : DashBoardViewState()
         object ShowLogoutDialog : DashBoardViewState()
         object ShowWithdrawDialog : DashBoardViewState()
         object ShowQuestion : DashBoardViewState()
