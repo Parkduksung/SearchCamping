@@ -99,8 +99,8 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
 
             is DashBoardViewModel.DashBoardViewState.GetUserInfo -> {
                 with(binding) {
-                    tvLoginId.text = "${viewState.id}님 환영합니다."
-                    tvLoginNickname.text = viewState.nickname
+                    tvLoginId.text = viewState.id
+                    tvLoginNickname.text = "${viewState.nickname}님 환영합니다."
                 }
             }
         }
