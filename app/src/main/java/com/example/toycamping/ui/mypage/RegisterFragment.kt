@@ -54,6 +54,10 @@ class RegisterFragment : BaseFragment<RegisterFragmentBinding>(R.layout.register
                 showToast(message = "회원가입 패스워드를 입력하세요.")
             }
 
+            is RegisterViewModel.RegisterViewState.EmptyUserNickname -> {
+                showToast(message = "회원가입 닉네임을 입력하세요.")
+            }
+
             is RegisterViewModel.RegisterViewState.ShowProgress -> {
                 binding.progressbar.isVisible = true
             }
