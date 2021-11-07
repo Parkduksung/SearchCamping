@@ -7,6 +7,7 @@ import com.example.toycamping.App
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.model.QuestionItem
 import com.example.toycamping.databinding.DashboardFragmentBinding
 import com.example.toycamping.ext.showDialog
 import com.example.toycamping.ext.showToast
@@ -74,13 +75,38 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
             }
 
             is DashBoardViewModel.DashBoardViewState.ShowQuestion -> {
-                showToast(message = "ShowQuestion")
+                startAddQuestionDialog()
             }
 
             is DashBoardViewModel.DashBoardViewState.ShowIdentify -> {
-                showToast(message = "ShowIdentify")
+                startIdentifyDialog()
+            }
 
+            is DashBoardViewModel.DashBoardViewState.AddQuestionFailure -> {
+                showToast(message = "문의사항 등록이 실패하였습니다.")
+            }
+
+            is DashBoardViewModel.DashBoardViewState.AddQuestionSuccess -> {
+                showToast(message = "문의사항이 등록되었습니다.")
             }
         }
+    }
+
+    private fun startAddQuestionDialog() {
+        val dialog = AddQuestionDialogFragment.newInstance(title = "문의사항")
+        dialog.show(parentFragmentManager, dialog::class.simpleName)
+
+        parentFragmentManager.setFragmentResultListener(
+            AddQuestionDialogFragment.SUBMIT,
+            this
+        ) { _: String, bundle: Bundle ->
+            val getQuestionItem = bundle.getParcelable<QuestionItem>(AddQuestionDialogFragment.ITEM)
+            dashboardViewModel.addQuestion(getQuestionItem)
+        }
+    }
+
+    private fun startIdentifyDialog() {
+        val dialog = DialogIdentifyFragment.newInstance(title = "개인정보처리방침")
+        dialog.show(parentFragmentManager, dialog::class.simpleName)
     }
 }
