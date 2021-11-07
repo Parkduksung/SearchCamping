@@ -44,6 +44,7 @@ class AppKoinSetup : KoinBaseKoinSetup() {
         viewModel { SearchViewModel(androidApplication()) }
         viewModel { SnapViewModel(androidApplication()) }
         viewModel { AddSnapDialogViewModel(androidApplication()) }
+        viewModel { DialogViewModel(androidApplication()) }
     }
 
     private val repositoryModule = module {
