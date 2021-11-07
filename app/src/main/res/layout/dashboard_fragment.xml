@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,19 +10,157 @@
             type="com.example.toycamping.viewmodel.DashBoardViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
+        android:id="@+id/ll_myPage_login"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:weightSum="40"
+        tools:ignore="UselessParent,SpUsage,ContentDescription, NestedWeights, RtlHardcoded">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="1.1.1"
+            android:textColor="@color/colorGrayBasic"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_weight="5"
+            tools:ignore="MissingConstraints,UnusedAttribute">
+
+            <ImageView
+                android:id="@+id/iv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_user"
+                app:layout_constraintHorizontal_bias="0.95"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_login_nickname"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMaxTextSize="25dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="닉네임 공간"
+                android:textColor="@color/colorBlue"
+                app:layout_constraintEnd_toStartOf="@id/iv_login"
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_login_id"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="20dp"
+                android:autoSizeMinTextSize="3dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="@color/colorBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_login_nickname" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
+            android:id="@+id/btn_notification"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_weight="6"
+            android:background="?selectableItemBackground"
+            android:backgroundTint="@color/white"
+            android:drawableEnd="@drawable/ic_notification"
+            android:gravity="center_vertical"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="공지사항"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_question"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:background="?selectableItemBackground"
+            android:backgroundTint="@color/white"
+            android:drawableEnd="@drawable/ic_email"
+            android:gravity="center_vertical"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="문의사항"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_identity"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:background="?selectableItemBackground"
+            android:backgroundTint="@color/white"
+            android:drawableEnd="@drawable/ic_identity"
+            android:gravity="center_vertical"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="개인정보 처리방침"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:background="?selectableItemBackground"
+            android:backgroundTint="@color/white"
+            android:drawableEnd="@drawable/ic_logout"
+            android:gravity="center_vertical"
+            android:onClick="@{()->viewModel.logout()}"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:text="로그아웃"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_withdrawal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.logout()}"
-            android:text="logout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bottom_line"
+            android:text="회원탈퇴"
+            android:textSize="15dp" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

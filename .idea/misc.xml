@@ -6,6 +6,7 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.15052083333333333" />
         <entry key="app/src/main/res/drawable-v24/bg_mac_os_dialog_border.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/drawable-v24/bg_top_border.xml" value="0.26666666666666666" />
+        <entry key="app/src/main/res/drawable-v24/bottom_line_2.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/drawable-v24/ic_cancel.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite1.xml" value="0.27760416666666665" />
@@ -15,6 +16,9 @@
         <entry key="app/src/main/res/drawable-v24/ic_favorite_select1.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite_select2.xml" value="0.159375" />
         <entry key="app/src/main/res/drawable-v24/ic_favorite_white.xml" value="0.15104166666666666" />
+        <entry key="app/src/main/res/drawable-v24/ic_identity.xml" value="0.26666666666666666" />
+        <entry key="app/src/main/res/drawable-v24/ic_logout.xml" value="0.26666666666666666" />
+        <entry key="app/src/main/res/drawable-v24/ic_user.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/drawable-v24/round_bookmark_no.xml" value="0.159375" />
         <entry key="app/src/main/res/drawable-v24/round_bookmark_ok.xml" value="0.159375" />
         <entry key="app/src/main/res/drawable-v24/selector_checkbox_bookmark1.xml" value="0.27760416666666665" />
@@ -25,6 +29,7 @@
         <entry key="app/src/main/res/drawable/border_map_current_location.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/current_location.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/ic_call.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/drawable/ic_email.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/drawable/ic_mypage.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/ic_place.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.27760416666666665" />
@@ -39,7 +44,7 @@
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/add_snap_dialog.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/bookmark_fragment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/dashboard_fragment.xml" value="0.13489583333333333" />
+        <entry key="app/src/main/res/layout/dashboard_fragment.xml" value="0.165" />
         <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.1" />
