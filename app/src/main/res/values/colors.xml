@@ -10,4 +10,5 @@
     <color name="colorBlue">#4180b9</color>
     <color name="colorGrayBasic">#E0E0E0</color>
     <color name="defaultColor">#808080</color>
+    <color name="transparent">#4D000000</color>
 </resources>
