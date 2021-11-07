@@ -18,6 +18,8 @@ class HomeViewModel(app: Application) : BaseViewModel(app), LifecycleObserver {
 
     private val firebaseRepository by inject<FirebaseRepository>(FirebaseRepository::class.java)
 
+    private var isShowLoginViewDialog = false
+
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun firebaseStateObserver() {
         firebaseRepository.getFirebaseAuth().addAuthStateListener {
@@ -110,11 +112,19 @@ class HomeViewModel(app: Application) : BaseViewModel(app), LifecycleObserver {
         viewStateChanged(HomeViewState.PermissionGrant)
     }
 
+    fun startLoginView() {
+        if (!isShowLoginViewDialog) {
+            viewStateChanged(HomeViewState.StartLoginView)
+            isShowLoginViewDialog = true
+        }
+    }
+
     private fun checkLoginState(isLogin: Boolean) {
         if (isLogin) {
             viewStateChanged(HomeViewState.LoginState)
         } else {
             viewStateChanged(HomeViewState.NotLoginState)
+            isShowLoginViewDialog = false
         }
     }
 
@@ -124,6 +134,7 @@ class HomeViewModel(app: Application) : BaseViewModel(app), LifecycleObserver {
         data class DeleteBookmarkItem(val item: CampingItem) : HomeViewState()
         data class AddSnapItem(val item: SnapItem) : HomeViewState()
         data class DeleteSnapItem(val item: SnapItem) : HomeViewState()
+        object StartLoginView : HomeViewState()
         object PermissionGrant : HomeViewState()
         object NotLoginState : HomeViewState()
         object LoginState : HomeViewState()

@@ -39,6 +39,14 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun checkLoginState() {
+        ioScope {
+            if (firebaseRepository.getFirebaseAuth().currentUser == null) {
+                viewStateChanged(MapViewState.ShowLoginView)
+            }
+        }
+    }
+
     fun checkBookmarkState(itemName: String) {
         goCampingRepository.getSearchList(itemName,
             onSuccess = { searchItem ->
@@ -291,6 +299,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         data class Error(val errorMessage: String) : MapViewState()
         object ShowProgress : MapViewState()
         object HideProgress : MapViewState()
+        object ShowLoginView : MapViewState()
         data class BookmarkState(val isChecked: Boolean) : MapViewState()
         data class AddBookmarkItem(val item: CampingItem) : MapViewState()
         data class DeleteBookmarkItem(val item: CampingItem) : MapViewState()

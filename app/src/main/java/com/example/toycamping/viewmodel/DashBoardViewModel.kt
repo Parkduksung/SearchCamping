@@ -11,7 +11,7 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
 
     private val firebaseRepository by inject<FirebaseRepository>(FirebaseRepository::class.java)
 
-    fun logout() {
+    private fun logout() {
         ioScope {
             if (firebaseRepository.logout()) {
                 viewStateChanged(LoginViewModel.LoginViewState.LoginSuccess)
@@ -21,10 +21,59 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
-    sealed class DashBoardViewState : ViewState {
-        object LogoutSuccess : DashBoardViewState()
-        object LogoutFailure : DashBoardViewState()
+    private fun withdraw() {
+
     }
 
+    fun checkType(type: String?) {
+        if (type != null) {
+            when (type) {
+                "logout" -> {
+                    logout()
+                }
+
+                "withdraw" -> {
+                    withdraw()
+                }
+            }
+        } else {
+            viewStateChanged(DashBoardViewState.Error)
+        }
+    }
+
+
+    fun showLogoutDialog() {
+        viewStateChanged(DashBoardViewState.ShowLogoutDialog)
+    }
+
+    fun showWithdrawDialog() {
+        viewStateChanged(DashBoardViewState.ShowWithdrawDialog)
+    }
+
+    fun showQuestion() {
+        viewStateChanged(DashBoardViewState.ShowQuestion)
+    }
+
+    fun showNotification() {
+        viewStateChanged(DashBoardViewState.ShowNotification)
+    }
+
+    fun showIdentify() {
+        viewStateChanged(DashBoardViewState.ShowIdentify)
+    }
+
+
+    sealed class DashBoardViewState : ViewState {
+        object ShowLogoutDialog : DashBoardViewState()
+        object ShowWithdrawDialog : DashBoardViewState()
+        object ShowQuestion : DashBoardViewState()
+        object ShowNotification : DashBoardViewState()
+        object ShowIdentify : DashBoardViewState()
+        object LogoutSuccess : DashBoardViewState()
+        object LogoutFailure : DashBoardViewState()
+        object WithdrawSuccess : DashBoardViewState()
+        object WithdrawFailure : DashBoardViewState()
+        object Error : DashBoardViewState()
+    }
 
 }

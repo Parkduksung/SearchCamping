@@ -6,6 +6,7 @@ import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.model.SnapItem
 import com.example.toycamping.data.model.toSnapItem
 import com.example.toycamping.data.repo.FirebaseRepository
+import com.example.toycamping.ext.ioScope
 import org.koin.java.KoinJavaComponent
 
 class SnapViewModel(app: Application) : BaseViewModel(app) {
@@ -51,11 +52,20 @@ class SnapViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun checkLoginState() {
+        ioScope {
+            if (firebaseRepository.getFirebaseAuth().currentUser == null) {
+                viewStateChanged(SnapViewState.ShowLoginView)
+            }
+        }
+    }
+
 
     sealed class SnapViewState : ViewState {
         data class Error(val message: String) : SnapViewState()
         data class SnapList(val list: List<SnapItem>) : SnapViewState()
         object EmptySnapList : SnapViewState()
         object AddSnapDialog : SnapViewState()
+        object ShowLoginView : SnapViewState()
     }
 }

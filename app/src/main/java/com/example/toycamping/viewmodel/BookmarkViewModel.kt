@@ -45,11 +45,20 @@ class BookmarkViewModel(app: Application) : BaseViewModel(app), LifecycleObserve
         }
     }
 
+    fun checkLoginState() {
+        ioScope {
+            if (firebaseRepository.getFirebaseAuth().currentUser == null) {
+                viewStateChanged(BookmarkViewState.ShowLoginView)
+            }
+        }
+    }
+
 
     sealed class BookmarkViewState : ViewState {
         data class BookmarkList(val bookmarkList: List<CampingItem>) : BookmarkViewState()
         data class Error(val errorMessage: String) : BookmarkViewState()
         object EmptyBookmarkList : BookmarkViewState()
+        object ShowLoginView : BookmarkViewState()
     }
 
 }

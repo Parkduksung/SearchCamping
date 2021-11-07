@@ -3,7 +3,6 @@ package com.example.toycamping.ui.home
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -11,10 +10,7 @@ import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.MapFragmentBinding
-import com.example.toycamping.ext.hasPermission
-import com.example.toycamping.ext.hidePOIInfoContainer
-import com.example.toycamping.ext.showPOIInfoContainer
-import com.example.toycamping.ext.showToast
+import com.example.toycamping.ext.*
 import com.example.toycamping.ui.search.SearchActivity
 import com.example.toycamping.viewmodel.HomeViewModel
 import com.example.toycamping.viewmodel.MapViewModel
@@ -200,15 +196,6 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
             }
 
             is MapViewModel.MapViewState.GetSelectPOIItem -> {
-
-                val toCampingItem = viewState.item.toCampingItem()
-
-                Log.d(
-                    "결과-select",
-                    "long : ${toCampingItem.log} , lat : ${toCampingItem.lat}"
-                )
-
-
                 with(binding) {
                     containerPoiInfo.showPOIInfoContainer(requireContext())
                     itemName.text = viewState.item.facltNm
@@ -235,6 +222,10 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
 
             is MapViewModel.MapViewState.DeleteBookmarkItem -> {
                 homeViewModel.deleteBookmarkItem(viewState.item)
+            }
+
+            is MapViewModel.MapViewState.ShowLoginView -> {
+                homeViewModel.startLoginView()
             }
         }
     }
@@ -271,6 +262,7 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         super.onResume()
         setNavigationIcon(R.drawable.ic_search)
         setToolbarVisibility(true)
+        mapViewModel.checkLoginState()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

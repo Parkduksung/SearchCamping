@@ -38,6 +38,7 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
     override fun onResume() {
         super.onResume()
         setToolbarVisibility(true)
+        snapViewModel.checkLoginState()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -139,6 +140,10 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
 
             is SnapViewModel.SnapViewState.SnapList -> {
                 snapAdapter.addAll(viewState.list)
+            }
+
+            is SnapViewModel.SnapViewState.ShowLoginView -> {
+                homeViewModel.startLoginView()
             }
         }
     }

@@ -13,7 +13,9 @@ import com.example.toycamping.R
 import com.example.toycamping.base.BaseActivity
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.ActivityHomeBinding
+import com.example.toycamping.ext.showDialog
 import com.example.toycamping.ext.showToast
+import com.example.toycamping.ui.mypage.DialogFragment
 import com.example.toycamping.ui.mypage.MyPageFragment
 import com.example.toycamping.ui.snap.SnapFragment
 import com.example.toycamping.viewmodel.HomeViewModel
@@ -59,6 +61,23 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(R.layout.activity_home) {
 
             is HomeViewModel.HomeViewState.DeleteBookmarkItem -> {
                 showToast(message = "즐겨찾기가 제거되었습니다.")
+            }
+
+            is HomeViewModel.HomeViewState.StartLoginView -> {
+                showDialog(
+                    title = "로그인 화면으로 이동하나요?",
+                    detail = "즐겨찾기, 스냅 기능을 사용하시려면 로그인이 필요합니다!",
+                    titleButton = "이동",
+                    type = "loginView"
+                ) { _, result ->
+
+                    val getResultType =
+                        result.getString(DialogFragment.TYPE)
+
+                    if (getResultType == "loginView") {
+                        binding.viewPager.currentItem = 4
+                    }
+                }
             }
 
         }

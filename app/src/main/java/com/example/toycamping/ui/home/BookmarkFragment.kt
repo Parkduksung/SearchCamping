@@ -13,11 +13,14 @@ import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.databinding.BookmarkFragmentBinding
+import com.example.toycamping.ext.showDialog
 import com.example.toycamping.ext.showToast
 import com.example.toycamping.ui.adapter.BookmarkAdapter
 import com.example.toycamping.ui.adapter.viewholder.BookmarkListener
+import com.example.toycamping.ui.mypage.DialogFragment
 import com.example.toycamping.viewmodel.BookmarkViewModel
 import com.example.toycamping.viewmodel.HomeViewModel
+import com.example.toycamping.viewmodel.MapViewModel
 
 class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark_fragment),
     BookmarkListener {
@@ -86,6 +89,12 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
             is BookmarkViewModel.BookmarkViewState.EmptyBookmarkList -> {
 
             }
+
+            is BookmarkViewModel.BookmarkViewState.ShowLoginView -> {
+                homeViewModel.startLoginView()
+            }
+
+
         }
     }
 
@@ -116,6 +125,7 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
     override fun onResume() {
         super.onResume()
         setToolbarVisibility(false)
+        bookmarkViewModel.checkLoginState()
     }
 
     private fun startBookmarkAdapter() {

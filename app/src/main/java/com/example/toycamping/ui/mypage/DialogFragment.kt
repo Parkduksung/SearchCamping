@@ -13,11 +13,11 @@ import com.example.toycamping.base.BaseDialogFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.DialogMypageBinding
 import com.example.toycamping.ext.showToast
-import com.example.toycamping.viewmodel.MyPageDialogViewModel
+import com.example.toycamping.viewmodel.DialogViewModel
 
 class DialogFragment : BaseDialogFragment<DialogMypageBinding>(R.layout.dialog_mypage) {
 
-    private val myPageDialogViewModel by viewModels<MyPageDialogViewModel>()
+    private val myPageDialogViewModel by viewModels<DialogViewModel>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -37,7 +37,7 @@ class DialogFragment : BaseDialogFragment<DialogMypageBinding>(R.layout.dialog_m
         binding.viewModel = myPageDialogViewModel
 
         myPageDialogViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState: ViewState? ->
-            (viewState as? MyPageDialogViewModel.MyPageDialogViewState)?.let {
+            (viewState as? DialogViewModel.MyPageDialogViewState)?.let {
                 onChangedMyPageDialogViewState(
                     viewState
                 )
@@ -45,20 +45,20 @@ class DialogFragment : BaseDialogFragment<DialogMypageBinding>(R.layout.dialog_m
         }
     }
 
-    private fun onChangedMyPageDialogViewState(viewState: MyPageDialogViewModel.MyPageDialogViewState) {
+    private fun onChangedMyPageDialogViewState(viewState: DialogViewModel.MyPageDialogViewState) {
 
         when (viewState) {
-            is MyPageDialogViewModel.MyPageDialogViewState.ClickOK -> {
+            is DialogViewModel.MyPageDialogViewState.ClickOK -> {
                 val getType = arguments?.getString(KEY_TYPE)
                 setFragmentResult(SUBMIT, bundleOf(TYPE to getType))
                 dismiss()
             }
 
-            is MyPageDialogViewModel.MyPageDialogViewState.ClickNO -> {
+            is DialogViewModel.MyPageDialogViewState.ClickNO -> {
                 dismiss()
             }
 
-            is MyPageDialogViewModel.MyPageDialogViewState.Error -> {
+            is DialogViewModel.MyPageDialogViewState.Error -> {
                 showToast(message = viewState.message)
             }
         }
