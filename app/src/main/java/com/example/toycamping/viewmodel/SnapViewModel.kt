@@ -20,10 +20,7 @@ class SnapViewModel(app: Application) : BaseViewModel(app) {
     }
 
     fun getAllSnapList() {
-
-        viewStateChanged(SnapViewState.ShowProgress)
         firebaseRepository.getFirebaseAuth().currentUser?.email?.let { userId ->
-
             firebaseRepository.getFirebaseFireStore().collection(userId).document("snap").get()
                 .addOnCompleteListener {
                     if (it.isSuccessful) {

@@ -45,7 +45,6 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
             binding.progressbar.isVisible = true
             homeViewModel.deleteSnapItem(it)
         }
-        snapViewModel.getAllSnapList()
     }
 
 
@@ -71,12 +70,14 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
 
             is HomeViewModel.HomeViewState.NotLoginState -> {
                 binding.containerNotLoginSnap.isVisible = true
+                binding.containerAppbar.isVisible = false
                 binding.rvSnap.isVisible = false
                 snapAdapter.clear()
             }
 
             is HomeViewModel.HomeViewState.LoginState -> {
                 binding.containerNotLoginSnap.isVisible = false
+                binding.containerAppbar.isVisible = true
                 binding.rvSnap.isVisible = true
                 snapViewModel.getAllSnapList()
             }

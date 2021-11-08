@@ -79,6 +79,7 @@
             android:lines="1"
             android:padding="20dp"
             android:text="즐겨찾기를 추가해 보세요!"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
