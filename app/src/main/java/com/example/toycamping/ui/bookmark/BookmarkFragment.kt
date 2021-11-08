@@ -1,4 +1,4 @@
-package com.example.toycamping.ui.home
+package com.example.toycamping.ui.bookmark
 
 import android.content.Intent
 import android.net.Uri
@@ -13,14 +13,11 @@ import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.model.CampingItem
 import com.example.toycamping.databinding.BookmarkFragmentBinding
-import com.example.toycamping.ext.showDialog
 import com.example.toycamping.ext.showToast
 import com.example.toycamping.ui.adapter.BookmarkAdapter
 import com.example.toycamping.ui.adapter.viewholder.BookmarkListener
-import com.example.toycamping.ui.mypage.DialogFragment
 import com.example.toycamping.viewmodel.BookmarkViewModel
 import com.example.toycamping.viewmodel.HomeViewModel
-import com.example.toycamping.viewmodel.MapViewModel
 
 class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark_fragment),
     BookmarkListener {
@@ -81,20 +78,21 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
         when (viewState) {
             is BookmarkViewModel.BookmarkViewState.BookmarkList -> {
                 bookmarkAdapter.addAllBookmarkData(viewState.bookmarkList)
+                binding.bookmarkRv.isVisible = true
+                binding.tvEmptyBookmark.isVisible = false
             }
             is BookmarkViewModel.BookmarkViewState.Error -> {
                 showToast(message = viewState.errorMessage)
             }
 
             is BookmarkViewModel.BookmarkViewState.EmptyBookmarkList -> {
-
+                binding.bookmarkRv.isVisible = false
+                binding.tvEmptyBookmark.isVisible = true
             }
 
             is BookmarkViewModel.BookmarkViewState.ShowLoginView -> {
                 homeViewModel.startLoginView()
             }
-
-
         }
     }
 
@@ -103,9 +101,15 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
         when (viewState) {
             is HomeViewModel.HomeViewState.AddBookmarkItem -> {
                 bookmarkAdapter.addBookmark(viewState.item)
+                binding.bookmarkRv.isVisible = true
+                binding.tvEmptyBookmark.isVisible = false
             }
             is HomeViewModel.HomeViewState.DeleteBookmarkItem -> {
                 bookmarkAdapter.deleteBookmark(viewState.item)
+                if(bookmarkAdapter.itemCount == 0){
+                    binding.bookmarkRv.isVisible = false
+                    binding.tvEmptyBookmark.isVisible = true
+                }
             }
 
             is HomeViewModel.HomeViewState.NotLoginState -> {
@@ -124,7 +128,6 @@ class BookmarkFragment : BaseFragment<BookmarkFragmentBinding>(R.layout.bookmark
 
     override fun onResume() {
         super.onResume()
-        setToolbarVisibility(false)
         bookmarkViewModel.checkLoginState()
     }
 
