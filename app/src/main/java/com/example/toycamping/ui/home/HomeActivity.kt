@@ -15,6 +15,7 @@ import com.example.toycamping.base.ViewState
 import com.example.toycamping.databinding.ActivityHomeBinding
 import com.example.toycamping.ext.showDialog
 import com.example.toycamping.ext.showToast
+import com.example.toycamping.ui.bookmark.BookmarkFragment
 import com.example.toycamping.ui.mypage.DialogFragment
 import com.example.toycamping.ui.mypage.MyPageFragment
 import com.example.toycamping.ui.snap.SnapFragment

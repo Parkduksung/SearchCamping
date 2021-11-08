@@ -289,6 +289,10 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         return locationA.distanceTo(locationB).toInt()
     }
 
+    fun routeSearch(){
+        viewStateChanged(MapViewState.RouteSearch)
+    }
+
 
     sealed class MapViewState : ViewState {
         data class SetZoomLevel(val zoomLevel: Int) : MapViewState()
@@ -300,6 +304,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
         object ShowProgress : MapViewState()
         object HideProgress : MapViewState()
         object ShowLoginView : MapViewState()
+        object RouteSearch : MapViewState()
         data class BookmarkState(val isChecked: Boolean) : MapViewState()
         data class AddBookmarkItem(val item: CampingItem) : MapViewState()
         data class DeleteBookmarkItem(val item: CampingItem) : MapViewState()

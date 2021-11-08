@@ -212,6 +212,13 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
                 binding.progressbar.isVisible = false
             }
 
+            is MapViewModel.MapViewState.RouteSearch -> {
+                val intent = Intent(requireContext(), SearchActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+                )
+                startActivity(intent)
+            }
+
             is MapViewModel.MapViewState.BookmarkState -> {
                 binding.itemBookmark.isChecked = viewState.isChecked
             }
@@ -253,38 +260,9 @@ class MapFragment : BaseFragment<MapFragmentBinding>(R.layout.map_fragment) {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_map, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onResume() {
         super.onResume()
-        setNavigationIcon(R.drawable.ic_search)
-        setToolbarVisibility(true)
         mapViewModel.checkLoginState()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.current_location -> {
-                mapViewModel.setCurrentLocation()
-            }
-
-            R.id.search -> {
-                mapViewModel.searchCampingAroundCurrent()
-            }
-
-            android.R.id.home -> {
-
-                val intent = Intent(requireContext(), SearchActivity::class.java).addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK
-                )
-                startActivity(intent)
-            }
-
-        }
-        return super.onOptionsItemSelected(item)
     }
 
 
