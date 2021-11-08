@@ -2,9 +2,6 @@ package com.example.toycamping.ui.snap
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -37,22 +34,7 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
 
     override fun onResume() {
         super.onResume()
-        setToolbarVisibility(true)
         snapViewModel.checkLoginState()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_snap, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add_snap -> {
-                snapViewModel.showAddSnapDialog()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initUi() {
@@ -60,7 +42,7 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
             adapter = snapAdapter
         }
         snapAdapter.setOnLongClickListener {
-            showToast(message = "롱클릭.")
+            binding.progressbar.isVisible = true
             homeViewModel.deleteSnapItem(it)
         }
         snapViewModel.getAllSnapList()
@@ -68,6 +50,8 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
 
 
     private fun initViewModel() {
+
+        binding.viewModel = snapViewModel
 
         homeViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState: ViewState? ->
             (viewState as? HomeViewModel.HomeViewState)?.let {
@@ -98,11 +82,22 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
             }
 
             is HomeViewModel.HomeViewState.AddSnapItem -> {
+                showToast(message = "스냅이 추가되었습니다.")
                 snapAdapter.add(item = viewState.item)
+                binding.rvSnap.isVisible = true
+                binding.tvEmptySnap.isVisible = false
+                binding.progressbar.isVisible = false
             }
 
             is HomeViewModel.HomeViewState.DeleteSnapItem -> {
+                showToast(message = "스냅이 삭제되었습니다.")
                 snapAdapter.delete(item = viewState.item)
+                binding.progressbar.isVisible = false
+                if (snapAdapter.itemCount == 0) {
+                    binding.rvSnap.isVisible = false
+                    binding.tvEmptySnap.isVisible = true
+                }
+
             }
         }
     }
@@ -120,6 +115,7 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
             val getUri = bundle.getParcelable<Uri>(AddSnapDialogFragment.URI)
 
             if (getItem != null && getUri != null) {
+                binding.progressbar.isVisible = true
                 homeViewModel.addSnapItem(getItem, getUri)
             } else {
                 showToast(message = "스냅 추가 실패.")
@@ -140,10 +136,25 @@ class SnapFragment : BaseFragment<SnapFragmentBinding>(R.layout.snap_fragment) {
 
             is SnapViewModel.SnapViewState.SnapList -> {
                 snapAdapter.addAll(viewState.list)
+                binding.rvSnap.isVisible = true
+                binding.tvEmptySnap.isVisible = false
             }
 
             is SnapViewModel.SnapViewState.ShowLoginView -> {
                 homeViewModel.startLoginView()
+            }
+
+            is SnapViewModel.SnapViewState.EmptySnapList -> {
+                binding.rvSnap.isVisible = false
+                binding.tvEmptySnap.isVisible = true
+            }
+
+            is SnapViewModel.SnapViewState.ShowProgress -> {
+                binding.progressbar.isVisible = true
+            }
+
+            is SnapViewModel.SnapViewState.HideProgress -> {
+                binding.progressbar.isVisible = false
             }
         }
     }

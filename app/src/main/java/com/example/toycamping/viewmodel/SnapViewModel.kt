@@ -21,6 +21,7 @@ class SnapViewModel(app: Application) : BaseViewModel(app) {
 
     fun getAllSnapList() {
 
+        viewStateChanged(SnapViewState.ShowProgress)
         firebaseRepository.getFirebaseAuth().currentUser?.email?.let { userId ->
 
             firebaseRepository.getFirebaseFireStore().collection(userId).document("snap").get()
@@ -39,14 +40,18 @@ class SnapViewModel(app: Application) : BaseViewModel(app) {
                                         toResultList
                                     )
                                 )
+                                viewStateChanged(SnapViewState.HideProgress)
                             } else {
                                 viewStateChanged(SnapViewState.EmptySnapList)
+                                viewStateChanged(SnapViewState.HideProgress)
                             }
                         } else {
                             viewStateChanged(SnapViewState.EmptySnapList)
+                            viewStateChanged(SnapViewState.HideProgress)
                         }
                     } else {
                         viewStateChanged(BookmarkViewModel.BookmarkViewState.Error(it.exception?.message.toString()))
+                        viewStateChanged(SnapViewState.HideProgress)
                     }
                 }
         }
@@ -67,5 +72,7 @@ class SnapViewModel(app: Application) : BaseViewModel(app) {
         object EmptySnapList : SnapViewState()
         object AddSnapDialog : SnapViewState()
         object ShowLoginView : SnapViewState()
+        object ShowProgress : SnapViewState()
+        object HideProgress : SnapViewState()
     }
 }
