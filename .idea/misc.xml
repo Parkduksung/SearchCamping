@@ -41,23 +41,23 @@
         <entry key="app/src/main/res/drawable/round_url.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/drawable/selector_border.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout-v26/login_fragment.xml" value="0.26145833333333335" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/add_snap_dialog.xml" value="0.26145833333333335" />
-        <entry key="app/src/main/res/layout/bookmark_fragment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/dashboard_fragment.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/bookmark_fragment.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/dashboard_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_add_question.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/dialog_identify.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/dialog_mypage.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_notification.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
-        <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_notification.xml" value="0.26145833333333335" />
-        <entry key="app/src/main/res/layout/item_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_search.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_snap.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2991227038545238" />
+        <entry key="app/src/main/res/layout/map_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/mypage_fragment.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/mypage_login_fragment.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/register_fragment.xml" value="0.165" />
@@ -65,6 +65,7 @@
         <entry key="app/src/main/res/layout/reset_pass_fragment.xml" value="0.12715298885511653" />
         <entry key="app/src/main/res/layout/selector_border.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/shape_border.xml" value="0.19270833333333334" />
+        <entry key="app/src/main/res/layout/snap_fragment.xml" value="0.12715298885511653" />
         <entry key="app/src/main/res/layout/user_fragment.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/view_search.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/view_toolbar.xml" value="0.26145833333333335" />

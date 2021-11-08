@@ -15,6 +15,34 @@
         android:layout_height="match_parent"
         tools:ignore="UnusedAttribute">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent=".07"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".0">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/add_snap"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:onClick="@{()->viewModel.routeLogin()}"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
