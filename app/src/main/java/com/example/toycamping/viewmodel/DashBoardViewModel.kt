@@ -1,7 +1,6 @@
 package com.example.toycamping.viewmodel
 
 import android.app.Application
-import android.util.Log
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
 import com.example.toycamping.data.model.NotificationItem
@@ -100,22 +99,17 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
             firebaseRepository.getFirebaseFireStore().collection("notification").get()
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
-
-                        Log.d("결과","여기탐?" )
                         if (!it.result.isEmpty) {
                             val notifyList = mutableListOf<NotificationItem>()
                             for (dc in it.result.documents) {
                                 val item = dc.toObject(NotificationItem::class.java)
                                 item?.let { notificationItem -> notifyList.add(notificationItem) }
                             }
-                            Log.d("결과","여기탐?3" )
-                            Log.d("결과","${notifyList.size}" )
                             viewStateChanged(DashBoardViewState.ShowNotification(notifyList))
                         } else {
                             viewStateChanged(DashBoardViewState.EmptyNotificationItem)
                         }
                     } else {
-                        Log.d("결과","여기탐?2" )
                         viewStateChanged(DashBoardViewState.ErrorGetNotificationItem)
                     }
                 }
@@ -124,10 +118,6 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
 
     fun showIdentify() {
         viewStateChanged(DashBoardViewState.ShowIdentify)
-    }
-
-    fun showDashboard() {
-        viewStateChanged(DashBoardViewState.ShowDashboard)
     }
 
     fun addQuestion(item: QuestionItem?) {
@@ -163,6 +153,10 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
 
     }
 
+    fun routeDashboard() {
+        viewStateChanged(DashBoardViewState.RouteDashboard)
+    }
+
 
     sealed class DashBoardViewState : ViewState {
         data class GetUserInfo(val id: String, val nickname: String) : DashBoardViewState()
@@ -172,7 +166,6 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
         data class ShowNotification(val list: List<NotificationItem>) : DashBoardViewState()
         object ErrorGetNotificationItem : DashBoardViewState()
         object EmptyNotificationItem : DashBoardViewState()
-        object ShowDashboard : DashBoardViewState()
         object ShowIdentify : DashBoardViewState()
         object LogoutSuccess : DashBoardViewState()
         object LogoutFailure : DashBoardViewState()
@@ -181,6 +174,7 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
         object WithdrawSuccess : DashBoardViewState()
         object WithdrawFailure : DashBoardViewState()
         object Error : DashBoardViewState()
+        object RouteDashboard : DashBoardViewState()
     }
 
 }

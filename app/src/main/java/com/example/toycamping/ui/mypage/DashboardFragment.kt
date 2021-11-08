@@ -2,7 +2,6 @@ package com.example.toycamping.ui.mypage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -32,15 +31,6 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
 
         initUi()
         initViewModel()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                dashboardViewModel.showDashboard()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initViewModel() {
@@ -122,7 +112,7 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
                 notificationAdapter.getAll(viewState.list)
             }
 
-            is DashBoardViewModel.DashBoardViewState.ShowDashboard -> {
+            is DashBoardViewModel.DashBoardViewState.RouteDashboard -> {
                 viewNotification(isShow = false)
                 notificationAdapter.clear()
             }
@@ -184,9 +174,5 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
     private fun viewNotification(isShow: Boolean) {
         binding.containerDashboard.isVisible = !isShow
         binding.containerNotification.isVisible = isShow
-        setToolbarVisibility(isShow)
-        if (isShow) {
-            setNavigationIcon(R.drawable.ic_back)
-        }
     }
 }
