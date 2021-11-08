@@ -1,8 +1,6 @@
 package com.example.toycamping.viewmodel
 
 import android.app.Application
-import android.location.Location
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.toycamping.api.response.SearchItem
 import com.example.toycamping.base.BaseViewModel
@@ -147,14 +145,8 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
             getGoCampingLocationList(
                 mapPoint.mapPointGeoCoord.longitude,
                 mapPoint.mapPointGeoCoord.latitude,
-                zoomLevelToRadius(currentZoomLevel.value ?: 0)
+                zoomLevelToRadius(50000)
             )
-
-            Log.d(
-                "결과-current",
-                "long : ${mapPoint.mapPointGeoCoord.longitude} , lat : ${mapPoint.mapPointGeoCoord.latitude}"
-            )
-
         }
     }
 
@@ -202,26 +194,9 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
                     ioScope {
                         val campingItemList = mutableSetOf<MapPOIItem>()
 
-                        val resultList = it.response.body.items.item.sortedBy {
-                            getDistance(
-                                currentCenterMapPoint.value!!,
-                                MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude)
-                            )
-                        }
+                        val resultList = it.response.body.items.item
 
-
-                        val zoomLevel = autoZoomLevel(
-                            getDistance(
-                                currentCenterMapPoint.value!!,
-                                MapPoint.mapPointWithGeoCoord(
-                                    resultList[resultList.lastIndex].latitude,
-                                    resultList[resultList.lastIndex].longitude
-                                )
-                            )
-                        )
-
-                        viewStateChanged(MapViewState.SetZoomLevel(zoomLevel))
-
+                        viewStateChanged(MapViewState.SetZoomLevel(8))
 
                         resultList.forEach { item ->
                             val mapPOIItem = MapPOIItem().apply {
@@ -232,7 +207,6 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
                             }
                             campingItemList.add(mapPOIItem)
                         }
-
 
                         viewStateChanged(MapViewState.GetGoCampingLocationList(campingItemList.toTypedArray()))
                         viewStateChanged(MapViewState.HideProgress)
@@ -247,49 +221,7 @@ class MapViewModel(app: Application) : BaseViewModel(app) {
             })
     }
 
-
-    private fun autoZoomLevel(
-        firstDistance: Int
-    ): Int {
-
-        var zoomLevel = 0
-
-        for (i in -1..10) {
-            if (i < 0) {
-                if (((2.0).pow(i) * 100) > firstDistance && firstDistance >= 0) {
-                    zoomLevel = i
-                    break
-                }
-            } else if (i == 0) {
-                if (((2.0).pow(i) * 100) > firstDistance && firstDistance >= ((2.0).pow(i - 1) * 100)) {
-                    zoomLevel = i
-                    break
-                }
-            } else if (i > 0) {
-                if (((2.0).pow(i - 1) * 100) <= firstDistance && firstDistance < ((2.0).pow(i) * 100)) {
-                    zoomLevel = i
-                    break
-                }
-            }
-        }
-        return zoomLevel
-    }
-
-    private fun getDistance(oldCenter: MapPoint, currentCenter: MapPoint): Int {
-
-        val locationA = Location("A")
-        val locationB = Location("B")
-
-        locationA.latitude = oldCenter.mapPointGeoCoord.latitude
-        locationA.longitude = oldCenter.mapPointGeoCoord.longitude
-
-        locationB.latitude = currentCenter.mapPointGeoCoord.latitude
-        locationB.longitude = currentCenter.mapPointGeoCoord.longitude
-
-        return locationA.distanceTo(locationB).toInt()
-    }
-
-    fun routeSearch(){
+    fun routeSearch() {
         viewStateChanged(MapViewState.RouteSearch)
     }
 

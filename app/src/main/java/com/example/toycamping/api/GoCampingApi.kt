@@ -22,7 +22,7 @@ interface GoCampingApi {
             "basedList?numOfRows=2390&pageNo=1&ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"
 
         private const val LOCATION_LIST_URL =
-            "locationBasedList?ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"
+            "locationBasedList?numOfRows=300&pageNo=1&ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"
 
         private const val SEARCH_LIST_URL =
             "searchList?ServiceKey=$GO_CAMPING_KEY&MobileOS=$MOBILE_OS&MobileApp=$MOBILE_APP"
