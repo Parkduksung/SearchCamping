@@ -17,14 +17,13 @@ class SplashViewModel(app: Application) : BaseViewModel(app), LifecycleObserver 
         GoCampingRepository::class.java
     )
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun start() {
         ioScope {
             if (goCampingRepository.checkExistCampingData()) {
                 viewStateChanged(SplashViewState.RouteMain)
             } else {
-                viewStateChanged(SplashViewState.ShowProgress)
-
+                viewStateChanged(SplashViewState.LoadData)
                 goCampingRepository.getBasedList(
                     onSuccess = {
                         val toCampingEntity =
@@ -33,14 +32,13 @@ class SplashViewModel(app: Application) : BaseViewModel(app), LifecycleObserver 
                         ioScope {
                             if (goCampingRepository.registerCampingList(toCampingEntity)) {
                                 viewStateChanged(SplashViewState.RouteMain)
-                                viewStateChanged(SplashViewState.HideProgress)
                             } else {
-                                viewStateChanged(SplashViewState.HideProgress)
+                                viewStateChanged(SplashViewState.Error)
                             }
                         }
                     },
                     onFailure = {
-                        viewStateChanged(SplashViewState.HideProgress)
+                        viewStateChanged(SplashViewState.Error)
                     }
                 )
             }
@@ -48,8 +46,8 @@ class SplashViewModel(app: Application) : BaseViewModel(app), LifecycleObserver 
     }
 
     sealed class SplashViewState : ViewState {
-        object ShowProgress : SplashViewState()
-        object HideProgress : SplashViewState()
+        object LoadData : SplashViewState()
+        object Error : SplashViewState()
         object RouteMain : SplashViewState()
     }
 

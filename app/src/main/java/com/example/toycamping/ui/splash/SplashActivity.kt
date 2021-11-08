@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseActivity
 import com.example.toycamping.base.ViewState
@@ -13,6 +12,7 @@ import com.example.toycamping.databinding.ActivitySplashBinding
 import com.example.toycamping.ext.showToast
 import com.example.toycamping.ui.home.HomeActivity
 import com.example.toycamping.viewmodel.SplashViewModel
+import kotlin.system.exitProcess
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
 
@@ -40,19 +40,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                 routeHomeActivity()
             }
 
-            is SplashViewModel.SplashViewState.ShowProgress -> {
+            is SplashViewModel.SplashViewState.LoadData -> {
                 showToast(
                     message = """
                     데이터 로딩중입니다.
                     잠시만 기다려 주세요.
                 """.trimIndent()
                 )
-                binding.progressbar.bringToFront()
-                binding.progressbar.isVisible = true
             }
 
-            is SplashViewModel.SplashViewState.HideProgress -> {
-                binding.progressbar.isVisible = false
+            is SplashViewModel.SplashViewState.Error -> {
+                showToast(
+                    message = """
+                        문제가 발생하였습니다.
+                        앱을 다시 실행해 주세요.
+                """.trimIndent()
+                )
+                exitProcess(0)
             }
 
         }
@@ -72,7 +76,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     }
 
     companion object {
-        private const val DELAY_ROUTE_TIME = 1500L
+        private const val DELAY_ROUTE_TIME = 2000L
 
     }
 }
