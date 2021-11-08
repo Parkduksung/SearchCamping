@@ -50,8 +50,10 @@
         <entry key="app/src/main/res/layout/dialog_add_question.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/dialog_identify.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/dialog_mypage.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_notification.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/ic_cancel.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.26145833333333335" />
+        <entry key="app/src/main/res/layout/item_notification.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_snap.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.1" />
