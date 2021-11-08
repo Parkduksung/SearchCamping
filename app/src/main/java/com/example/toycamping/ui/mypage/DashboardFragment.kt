@@ -53,6 +53,14 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
                 showToast(message = "로그아웃 실패.")
             }
 
+            is DashBoardViewModel.DashBoardViewState.WithdrawSuccess -> {
+                showToast(App.instance.context(), "회원탈퇴 성공.")
+            }
+
+            is DashBoardViewModel.DashBoardViewState.WithdrawFailure -> {
+                showToast(message = "회원탈퇴 실패.")
+            }
+
             is DashBoardViewModel.DashBoardViewState.ShowLogoutDialog -> {
                 showDialog(
                     title = "로그아웃 하시겠어요?",
@@ -78,6 +86,7 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
             }
 
             is DashBoardViewModel.DashBoardViewState.ShowNotification -> {
+
                 showToast(message = "ShowNotification")
             }
 

@@ -23,7 +23,45 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
     }
 
     private fun withdraw() {
+        ioScope {
+            firebaseRepository.getFirebaseAuth().currentUser?.email?.let { userId ->
 
+                firebaseRepository.getFirebaseFireStore().collection(userId).document("snap")
+                    .delete().addOnCompleteListener {
+                        if (it.isSuccessful) {
+
+                            firebaseRepository.getFirebaseFireStore().collection(userId)
+                                .document("camping").delete().addOnCompleteListener {
+
+                                    if (it.isSuccessful) {
+
+                                        firebaseRepository.getFirebaseFireStore().collection(userId)
+                                            .document("nickname").delete().addOnCompleteListener {
+
+                                                if (it.isSuccessful) {
+                                                    firebaseRepository.getFirebaseAuth().currentUser?.delete()
+                                                        ?.addOnCompleteListener {
+                                                            if (it.isSuccessful) {
+                                                                viewStateChanged(DashBoardViewState.WithdrawSuccess)
+                                                            } else {
+                                                                viewStateChanged(DashBoardViewState.WithdrawFailure)
+                                                            }
+                                                        }
+                                                } else {
+                                                    viewStateChanged(DashBoardViewState.WithdrawFailure)
+                                                }
+                                            }
+
+                                    } else {
+                                        viewStateChanged(DashBoardViewState.WithdrawFailure)
+                                    }
+                                }
+                        } else {
+                            viewStateChanged(DashBoardViewState.WithdrawFailure)
+                        }
+                    }
+            }
+        }
     }
 
     fun checkType(type: String?) {
