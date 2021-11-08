@@ -7,7 +7,8 @@ import com.example.toycamping.ui.adapter.viewholder.SnapViewHolder
 
 class SnapAdapter : RecyclerView.Adapter<SnapViewHolder>() {
 
-    private val snapList = mutableListOf<SnapItem>()
+    private val snapSet = mutableSetOf<SnapItem>()
+    private val snapList get() = snapSet.toList().sortedByDescending { it.date }
 
     private lateinit var itemLongClick: (item: SnapItem) -> Unit
 
@@ -24,22 +25,22 @@ class SnapAdapter : RecyclerView.Adapter<SnapViewHolder>() {
 
     fun addAll(list: List<SnapItem>) {
         list.sortedByDescending { it.date }
-        snapList.addAll(list)
+        snapSet.addAll(list)
         notifyDataSetChanged()
     }
 
     fun add(item: SnapItem) {
-        snapList.add(0, item)
+        snapSet.add(item)
         notifyItemChanged(0)
     }
 
-    fun delete(item : SnapItem) {
-        snapList.remove(item)
+    fun delete(item: SnapItem) {
+        snapSet.remove(item)
         notifyDataSetChanged()
     }
 
     fun clear() {
-        snapList.clear()
+        snapSet.clear()
         notifyDataSetChanged()
     }
 

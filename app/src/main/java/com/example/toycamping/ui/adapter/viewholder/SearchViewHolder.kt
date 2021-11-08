@@ -2,6 +2,7 @@ package com.example.toycamping.ui.adapter.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toycamping.R
 import com.example.toycamping.databinding.ItemSearchBinding
@@ -27,10 +28,25 @@ class SearchViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
             itemView.setOnClickListener {
                 itemClickListener.getItemClick(item)
             }
+
+            call.isVisible = !item.tel.isNullOrEmpty()
+            link.isVisible = !item.homepage.isNullOrEmpty()
+
+
+            call.setOnClickListener {
+                val convertNumber = "tel:" + item.tel?.filter { it.isDigit() }
+                itemClickListener.call(convertNumber)
+            }
+
+            link.setOnClickListener {
+                itemClickListener.link(item.homepage)
+            }
         }
     }
 }
 
 interface SearchListener {
     fun getItemClick(item: CampingEntity)
+    fun call(number: String)
+    fun link(url: String?)
 }
