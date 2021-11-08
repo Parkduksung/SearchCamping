@@ -1,9 +1,6 @@
 package com.example.toycamping.ui.mypage
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import com.example.toycamping.App
 import com.example.toycamping.R
@@ -57,23 +54,11 @@ class ResetPassFragment : BaseFragment<ResetPassFragmentBinding>(R.layout.reset_
                 showToast(message = "초기화할 아이디를 입력하세요.")
             }
 
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setNavigationIcon(R.drawable.ic_back)
-        setToolbarVisibility(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
+            is ResetPassViewModel.ResetPassViewState.RouteLogin -> {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container_route, LoginFragment()).commit()
             }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
+        }
+    }
 }

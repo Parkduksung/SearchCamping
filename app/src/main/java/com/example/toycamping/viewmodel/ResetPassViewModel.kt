@@ -41,11 +41,16 @@ class ResetPassViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun routeLogin(){
+        viewStateChanged(ResetPassViewState.RouteLogin)
+    }
+
 
     sealed class ResetPassViewState : ViewState {
         object EmptyResetId : ResetPassViewState()
         object ResetPassSuccess : ResetPassViewState()
         object ResetPassFailure : ResetPassViewState()
+        object RouteLogin : ResetPassViewState()
     }
 
 
