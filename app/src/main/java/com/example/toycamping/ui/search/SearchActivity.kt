@@ -1,6 +1,8 @@
 package com.example.toycamping.ui.search
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
@@ -31,6 +33,19 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
 
     override fun getItemClick(item: CampingEntity) {
         showToast(message = item.name)
+    }
+
+    override fun call(number: String) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse(number)
+        }
+        startActivity(intent)
+    }
+
+    override fun link(url: String?) {
+        url?.let {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +117,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
                 binding.searchRv.isVisible = true
                 binding.guideSearch.isVisible = false
                 binding.noExistData.isVisible = false
+                searchAdapter.clear()
                 searchAdapter.addAllSearchData(viewState.list)
             }
 
