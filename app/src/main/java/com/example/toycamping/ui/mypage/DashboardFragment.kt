@@ -2,16 +2,21 @@ package com.example.toycamping.ui.mypage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.toycamping.App
 import com.example.toycamping.R
 import com.example.toycamping.base.BaseFragment
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.model.NotificationItem
 import com.example.toycamping.data.model.QuestionItem
 import com.example.toycamping.databinding.DashboardFragmentBinding
+import com.example.toycamping.ext.convertDate
 import com.example.toycamping.ext.showDialog
 import com.example.toycamping.ext.showToast
+import com.example.toycamping.ui.adapter.NotificationAdapter
 import com.example.toycamping.viewmodel.DashBoardViewModel
 
 class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashboard_fragment) {
@@ -19,12 +24,23 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
 
     private val dashboardViewModel by viewModels<DashBoardViewModel>()
 
+    private val notificationAdapter by lazy { NotificationAdapter() }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = dashboardViewModel
 
         initUi()
         initViewModel()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                dashboardViewModel.showDashboard()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initViewModel() {
@@ -39,6 +55,14 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
 
     private fun initUi() {
         dashboardViewModel.getUserInfo()
+
+        binding.rvNotification.run {
+            adapter = notificationAdapter
+        }
+
+        notificationAdapter.setOnItemClickListener {
+            startNotificationDialog(it)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -59,6 +83,14 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
 
             is DashBoardViewModel.DashBoardViewState.WithdrawFailure -> {
                 showToast(message = "회원탈퇴 실패.")
+            }
+
+            is DashBoardViewModel.DashBoardViewState.EmptyNotificationItem -> {
+                showToast(message = "공지사항 없음.")
+            }
+
+            is DashBoardViewModel.DashBoardViewState.ErrorGetNotificationItem -> {
+                showToast(message = "공지사항 가져오기를 실패하였습니다.")
             }
 
             is DashBoardViewModel.DashBoardViewState.ShowLogoutDialog -> {
@@ -86,9 +118,15 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
             }
 
             is DashBoardViewModel.DashBoardViewState.ShowNotification -> {
-
-                showToast(message = "ShowNotification")
+                viewNotification(isShow = true)
+                notificationAdapter.getAll(viewState.list)
             }
+
+            is DashBoardViewModel.DashBoardViewState.ShowDashboard -> {
+                viewNotification(isShow = false)
+                notificationAdapter.clear()
+            }
+
 
             is DashBoardViewModel.DashBoardViewState.ShowQuestion -> {
                 startAddQuestionDialog()
@@ -128,8 +166,27 @@ class DashboardFragment : BaseFragment<DashboardFragmentBinding>(R.layout.dashbo
         }
     }
 
+    private fun startNotificationDialog(item: NotificationItem) {
+        val dialog = DialogNotificationFragment.newInstance(
+            title = item.title.orEmpty(),
+            detail = item.detail.orEmpty(),
+            date = item.date?.convertDate().orEmpty()
+        )
+        dialog.show(parentFragmentManager, dialog::class.simpleName)
+    }
+
+
     private fun startIdentifyDialog() {
         val dialog = DialogIdentifyFragment.newInstance(title = "개인정보처리방침")
         dialog.show(parentFragmentManager, dialog::class.simpleName)
+    }
+
+    private fun viewNotification(isShow: Boolean) {
+        binding.containerDashboard.isVisible = !isShow
+        binding.containerNotification.isVisible = isShow
+        setToolbarVisibility(isShow)
+        if (isShow) {
+            setNavigationIcon(R.drawable.ic_back)
+        }
     }
 }

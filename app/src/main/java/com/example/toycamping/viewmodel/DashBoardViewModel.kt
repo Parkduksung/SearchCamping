@@ -1,8 +1,10 @@
 package com.example.toycamping.viewmodel
 
 import android.app.Application
+import android.util.Log
 import com.example.toycamping.base.BaseViewModel
 import com.example.toycamping.base.ViewState
+import com.example.toycamping.data.model.NotificationItem
 import com.example.toycamping.data.model.QuestionItem
 import com.example.toycamping.data.repo.FirebaseRepository
 import com.example.toycamping.ext.ioScope
@@ -94,11 +96,38 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
     }
 
     fun showNotification() {
-        viewStateChanged(DashBoardViewState.ShowNotification)
+        ioScope {
+            firebaseRepository.getFirebaseFireStore().collection("notification").get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+
+                        Log.d("결과","여기탐?" )
+                        if (!it.result.isEmpty) {
+                            val notifyList = mutableListOf<NotificationItem>()
+                            for (dc in it.result.documents) {
+                                val item = dc.toObject(NotificationItem::class.java)
+                                item?.let { notificationItem -> notifyList.add(notificationItem) }
+                            }
+                            Log.d("결과","여기탐?3" )
+                            Log.d("결과","${notifyList.size}" )
+                            viewStateChanged(DashBoardViewState.ShowNotification(notifyList))
+                        } else {
+                            viewStateChanged(DashBoardViewState.EmptyNotificationItem)
+                        }
+                    } else {
+                        Log.d("결과","여기탐?2" )
+                        viewStateChanged(DashBoardViewState.ErrorGetNotificationItem)
+                    }
+                }
+        }
     }
 
     fun showIdentify() {
         viewStateChanged(DashBoardViewState.ShowIdentify)
+    }
+
+    fun showDashboard() {
+        viewStateChanged(DashBoardViewState.ShowDashboard)
     }
 
     fun addQuestion(item: QuestionItem?) {
@@ -140,7 +169,10 @@ class DashBoardViewModel(app: Application) : BaseViewModel(app) {
         object ShowLogoutDialog : DashBoardViewState()
         object ShowWithdrawDialog : DashBoardViewState()
         object ShowQuestion : DashBoardViewState()
-        object ShowNotification : DashBoardViewState()
+        data class ShowNotification(val list: List<NotificationItem>) : DashBoardViewState()
+        object ErrorGetNotificationItem : DashBoardViewState()
+        object EmptyNotificationItem : DashBoardViewState()
+        object ShowDashboard : DashBoardViewState()
         object ShowIdentify : DashBoardViewState()
         object LogoutSuccess : DashBoardViewState()
         object LogoutFailure : DashBoardViewState()
