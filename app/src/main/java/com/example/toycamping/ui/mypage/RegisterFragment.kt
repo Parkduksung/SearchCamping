@@ -1,7 +1,6 @@
 package com.example.toycamping.ui.mypage
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import com.example.toycamping.App
@@ -65,24 +64,12 @@ class RegisterFragment : BaseFragment<RegisterFragmentBinding>(R.layout.register
             is RegisterViewModel.RegisterViewState.HideProgress -> {
                 binding.progressbar.isVisible = false
             }
-        }
-    }
 
-
-    override fun onResume() {
-        super.onResume()
-        setNavigationIcon(R.drawable.ic_back)
-        setToolbarVisibility(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
+            is RegisterViewModel.RegisterViewState.RouteLogin -> {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container_route, LoginFragment()).commit()
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 
 }

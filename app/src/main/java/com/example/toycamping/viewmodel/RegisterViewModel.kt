@@ -117,6 +117,10 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
         }
     }
 
+    fun routeLogin(){
+        viewStateChanged(RegisterViewState.RouteLogin)
+    }
+
     private data class User(val id: String, val pass: String)
 
     sealed class RegisterViewState : ViewState {
@@ -127,6 +131,7 @@ class RegisterViewModel(app: Application) : BaseViewModel(app) {
         object RegisterFailure : RegisterViewState()
         object ShowProgress : RegisterViewState()
         object HideProgress : RegisterViewState()
+        object RouteLogin : RegisterViewState()
     }
 
 }
