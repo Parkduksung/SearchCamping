@@ -66,13 +66,27 @@
                 android:background="@drawable/round_link"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="W , 1:1"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/find_page"
                 app:layout_constraintHorizontal_bias=".15"
                 app:layout_constraintStart_toEndOf="@id/call"
                 app:layout_constraintTop_toBottomOf="@id/address"
                 app:layout_constraintVertical_bias=".7"
                 app:layout_constraintWidth_percent=".15" />
 
+
+            <ImageView
+                android:id="@+id/find_page"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/round_find_page"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W , 1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".15"
+                app:layout_constraintStart_toEndOf="@id/link"
+                app:layout_constraintTop_toBottomOf="@id/address"
+                app:layout_constraintVertical_bias=".7"
+                app:layout_constraintWidth_percent=".15" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

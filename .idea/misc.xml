@@ -38,6 +38,8 @@
         <entry key="app/src/main/res/drawable/ic_snap.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/drawable/round_call_no.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/drawable/round_call_ok.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/drawable/round_find_page.xml" value="0.2733333333333333" />
+        <entry key="app/src/main/res/drawable/round_link.xml" value="0.2733333333333333" />
         <entry key="app/src/main/res/drawable/round_url.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/drawable/selector_border.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/layout-v26/login_fragment.xml" value="0.26145833333333335" />

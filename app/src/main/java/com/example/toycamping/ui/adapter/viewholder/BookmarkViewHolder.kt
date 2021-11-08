@@ -43,6 +43,9 @@ class BookmarkViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
                 itemClickListener.link(item.homepage)
             }
 
+            findPage.setOnClickListener {
+                itemClickListener.link("https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=${item.name}")
+            }
         }
     }
 }
