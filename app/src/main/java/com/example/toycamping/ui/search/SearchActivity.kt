@@ -32,7 +32,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(R.layout.activity_sea
     private lateinit var viewSearchBinding: ViewSearchBinding
 
     override fun getItemClick(item: CampingEntity) {
-        showToast(message = item.name)
     }
 
     override fun call(number: String) {
